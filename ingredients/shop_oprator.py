@@ -13,6 +13,20 @@ class operators:
         self.__email = email
         self.__password = password
     
+    @property
+    def email(self):
+        return self.__email
+    @email.setter
+    def email(self, value):
+        print('error use changeemail method')
+
+    @property
+    def password(self):
+        return self.__password
+    @password.setter
+    def password(self, value):
+        print('error use changepassword method')
+
 
     def changepassword(self, oldpassword, newpassword):
        pass
