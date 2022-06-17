@@ -1,14 +1,14 @@
+# -*- coding: utf-8 -*-
 
-from re import T
+# Form implementation generated from reading ui file 'operator.ui'
+#
+# Created by: PyQt5 UI code generator 5.9.2
+#
+# WARNING! All changes made in this file will be lost!
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
-from ingredients.customer import *
-from ingredients.shop_oprator import *
-from ingredients.shop_seller import *
-
-################################ start operator panel ###################################
-class operator_panel(object):
+class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(1582, 921)
@@ -136,21 +136,11 @@ class operator_panel(object):
         self.pushButton_4 = QtWidgets.QPushButton(self.tab)
         self.pushButton_4.setObjectName("pushButton_4")
         self.gridLayout_6.addWidget(self.pushButton_4, 7, 4, 1, 1)
-        self.seller_report_list = QtWidgets.QTableWidget(self.tab)
-        self.seller_report_list.setObjectName("seller_report_list")
-        self.seller_report_list.setColumnCount(0)
-        self.seller_report_list.setRowCount(0)
-
-
-        #_________________________ seller report table fill __________________________
-        self.seller_report_list.setColumnWidth(0,100)
-        self.seller_report_list.setColumnWidth(1,150)
-        self.seller_report_list.setHorizontalHeaderLabels([])
-
-        # self.seller_report_load_data()
-        #________________________________________________________________________ 
-
-        self.gridLayout_6.addWidget(self.seller_report_list, 1, 3, 5, 1)
+        self.seller_repor_list = QtWidgets.QTableWidget(self.tab)
+        self.seller_repor_list.setObjectName("seller_repor_list")
+        self.seller_repor_list.setColumnCount(0)
+        self.seller_repor_list.setRowCount(0)
+        self.gridLayout_6.addWidget(self.seller_repor_list, 1, 3, 5, 1)
         self.sallerrate_list = QtWidgets.QTableWidget(self.tab)
         self.sallerrate_list.setObjectName("sallerrate_list")
         self.sallerrate_list.setColumnCount(0)
@@ -184,18 +174,8 @@ class operator_panel(object):
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.seller_list_table = QtWidgets.QTableWidget(self.tab)
         self.seller_list_table.setObjectName("seller_list_table")
-        self.seller_list_table.setColumnCount(3)
+        self.seller_list_table.setColumnCount(0)
         self.seller_list_table.setRowCount(0)
-
-        #_________________________ seller table fill __________________________
-        self.seller_list_table.setColumnWidth(0,100)
-        self.seller_list_table.setColumnWidth(1,150)
-        self.seller_list_table.setColumnWidth(2,100)
-
-        self.seller_list_table.setHorizontalHeaderLabels(['SL_ID', 'EMAIL', 'SCORE'])
-
-        self.seller_load_data()
-        #________________________________________________________________________  
         self.verticalLayout_7.addWidget(self.seller_list_table)
         self.gridLayout_6.addLayout(self.verticalLayout_7, 1, 2, 1, 1)
         self.verticalLayout_13 = QtWidgets.QVBoxLayout()
@@ -206,21 +186,8 @@ class operator_panel(object):
         self.gridLayout_6.addWidget(self.pushButton, 7, 0, 1, 1)
         self.sell_report_table = QtWidgets.QTableWidget(self.tab)
         self.sell_report_table.setObjectName("sell_report_table")
-        self.sell_report_table.setColumnCount(5)
+        self.sell_report_table.setColumnCount(0)
         self.sell_report_table.setRowCount(0)
-
-        #_________________________ seller table fill __________________________
-        self.sell_report_table.setColumnWidth(0,100)
-        self.sell_report_table.setColumnWidth(1,100)
-        self.sell_report_table.setColumnWidth(2,100)
-        self.sell_report_table.setColumnWidth(3,100)
-        self.sell_report_table.setColumnWidth(4,100)
-
-        self.sell_report_table.setHorizontalHeaderLabels(['PR_ID', 'SHOP_NAME','SL_ID', 'DATE', 'CU_ID'])
-
-        self.sell_report_load_data()
-        #________________________________________________________________________  
-        
         self.gridLayout_6.addWidget(self.sell_report_table, 1, 0, 5, 1)
         self.label = QtWidgets.QLabel(self.tab)
         self.label.setMaximumSize(QtCore.QSize(16777215, 50))
@@ -269,19 +236,8 @@ class operator_panel(object):
         self.gridLayout_8.addWidget(self.costumer_list_sort, 2, 0, 1, 1)
         self.costumerlist_table = QtWidgets.QTableWidget(self.tab_2)
         self.costumerlist_table.setObjectName("costumerlist_table")
-        self.costumerlist_table.setColumnCount(3)
+        self.costumerlist_table.setColumnCount(0)
         self.costumerlist_table.setRowCount(0)
-
-        #_________________________ costumer table fill __________________________
-        self.costumerlist_table.setColumnWidth(0,100)
-        self.costumerlist_table.setColumnWidth(1,200)
-        self.costumerlist_table.setColumnWidth(2,80)
-
-        self.costumerlist_table.setHorizontalHeaderLabels(['CU_ID', 'EMAIL', 'LOCATION'])
-
-        self.costumer_load_data()
-        #________________________________________________________________________   
-
         self.gridLayout_8.addWidget(self.costumerlist_table, 1, 0, 1, 1)
         self.label_7 = QtWidgets.QLabel(self.tab_2)
         self.label_7.setObjectName("label_7")
@@ -365,73 +321,14 @@ class operator_panel(object):
         self.label_5.setText(_translate("Form", "products"))
         self.product_table_refresh.setText(_translate("Form", "refresh"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("Form", "COSTUMER / PRODUCTS"))
-        
-    def __row_count(self, table_name:str):
-        conn = sqlite3.connect('database.sqlite3')
-        cursor = conn.execute("SELECT count(*) FROM %s"%(table_name))
-        for row in cursor:
-            return row[0]
 
-    #_____________________ costumer load data function _____________________
-    def costumer_load_data(self):
-        conn = sqlite3.connect('database.sqlite3')
-        cur = conn.cursor()
-        query = 'SELECT CU_ID, EMAIL, LOCATION FROM CUSTOMER'
-        row_count = self.__row_count('CUSTOMER')
-
-        self.costumerlist_table.setRowCount(row_count)
-        tablerow = 0 
-        for row in cur.execute(query):
-            self.costumerlist_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
-            self.costumerlist_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
-            self.costumerlist_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
-            tablerow +=1
-    #________________________________________________________________________
-
-
-    #_____________________ seller load data function ________________________
-    def seller_load_data(self):
-        conn = sqlite3.connect('database.sqlite3')
-        cur = conn.cursor()
-        query = 'SELECT SL_ID,EMAIL,SCORE FROM SELLER'
-        row_count = self.__row_count('SELLER')
-
-        self.seller_list_table.setRowCount(row_count)
-        tablerow = 0 
-        for row in cur.execute(query):
-            self.seller_list_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
-            self.seller_list_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
-            self.seller_list_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
-
-            tablerow +=1
-    #________________________________________________________________________
-
-
-    #_____________________ sell report load data function ________________________
-    def sell_report_load_data(self):
-        conn = sqlite3.connect('database.sqlite3')
-        cur = conn.cursor()
-        query = 'SELECT PR_ID, SHOP_NAME, SL_ID, DATE_TIME, CU_ID FROM SELL_REPORT'
-        row_count = self.__row_count('SELL_REPORT')
-
-        self.sell_report_table.setRowCount(row_count)
-        tablerow = 0 
-        for row in cur.execute(query):
-            self.sell_report_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
-            self.sell_report_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
-            self.sell_report_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
-            self.sell_report_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[3]))
-            self.sell_report_table.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(row[4]))
-            tablerow +=1
-    #________________________________________________________________________
-
-################################ end operator panel #####################################
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
-    ui = operator_panel()
+    ui = Ui_Form()
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
+
