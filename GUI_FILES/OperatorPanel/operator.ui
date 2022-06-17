@@ -14,7 +14,111 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="3">
+   <item row="2" column="2">
+    <widget class="QLabel" name="label_19">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" rowspan="2">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QPushButton" name="profile_button">
+       <property name="text">
+        <string>Profile</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="log_out_button">
+       <property name="text">
+        <string>logout</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="4">
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_20">
+       <property name="text">
+        <string>new product</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QPushButton" name="new_product_refresh">
+       <property name="text">
+        <string>refresh</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0" colspan="4">
+      <widget class="QPushButton" name="accept_button">
+       <property name="text">
+        <string>accept</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QPushButton" name="new_seller_table_refresh">
+       <property name="text">
+        <string>refresh</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QPushButton" name="new_buy_table_refresh">
+       <property name="text">
+        <string>refresh</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QTableWidget" name="new_buy_request_table"/>
+     </item>
+     <item row="1" column="1">
+      <widget class="QTableWidget" name="new_product_tabel"/>
+     </item>
+     <item row="1" column="2">
+      <widget class="QTableWidget" name="new_seller_request_table"/>
+     </item>
+     <item row="9" column="0" colspan="3">
+      <widget class="QLabel" name="label_18">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>ID</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>new buy request</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>new seller request</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1" colspan="2">
+      <widget class="QLineEdit" name="CU_ID_SL_ID_line_accept"/>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="4">
     <layout class="QVBoxLayout" name="verticalLayout_15">
      <item>
       <widget class="QLabel" name="label_11">
@@ -96,90 +200,10 @@
      </item>
     </layout>
    </item>
-   <item row="0" column="0">
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <widget class="QPushButton" name="home_button">
-       <property name="text">
-        <string>home</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="log_out_button">
-       <property name="text">
-        <string>logout</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="0" column="4">
-    <layout class="QGridLayout" name="gridLayout_3">
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>ID</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_9">
-       <property name="text">
-        <string>new buy request</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="label_10">
-       <property name="text">
-        <string>new seller request</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QTableWidget" name="new_buy_request_table"/>
-     </item>
-     <item row="2" column="1">
-      <widget class="QPushButton" name="new_seller_table_refresh">
-       <property name="text">
-        <string>refresh</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="new_buy_table_refresh">
-       <property name="text">
-        <string>refresh</string>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="0" colspan="3">
-      <widget class="QPushButton" name="pushButton_9">
-       <property name="text">
-        <string>accept</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QTableWidget" name="new_seller_request_table"/>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="CU_ID_SL_ID_line_accept"/>
-     </item>
-     <item row="9" column="0" colspan="2">
-      <widget class="QLabel" name="label_18">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="0" column="2">
+   <item row="0" column="2" rowspan="2">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -190,60 +214,10 @@
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
           <layout class="QGridLayout" name="gridLayout_6">
-           <item row="4" column="2">
-            <widget class="QLineEdit" name="lineEdit_3"/>
-           </item>
-           <item row="8" column="0">
-            <layout class="QVBoxLayout" name="verticalLayout_10"/>
-           </item>
-           <item row="8" column="3">
-            <layout class="QVBoxLayout" name="verticalLayout_12"/>
-           </item>
-           <item row="7" column="3">
-            <widget class="QPushButton" name="pushButton_3">
-             <property name="text">
-              <string>refresh</string>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="4">
-            <widget class="QPushButton" name="pushButton_4">
-             <property name="text">
-              <string>refresh</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="3" rowspan="5">
-            <widget class="QTableWidget" name="seller_repor_list"/>
-           </item>
-           <item row="1" column="4" rowspan="5">
-            <widget class="QTableWidget" name="sallerrate_list"/>
-           </item>
-           <item row="3" column="2">
-            <widget class="QPushButton" name="pushButton_2">
-             <property name="text">
-              <string>refresh</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="2">
-            <widget class="QPushButton" name="pushButton_15">
-             <property name="text">
-              <string>delete</string>
-             </property>
-            </widget>
-           </item>
            <item row="7" column="2">
-            <widget class="QPushButton" name="pushButton_16">
+            <widget class="QPushButton" name="seller_list_add_button">
              <property name="text">
               <string>add</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QPushButton" name="pushButton_11">
-             <property name="text">
-              <string>sort</string>
              </property>
             </widget>
            </item>
@@ -254,8 +228,19 @@
              </property>
             </widget>
            </item>
-           <item row="8" column="2">
-            <layout class="QVBoxLayout" name="verticalLayout_11"/>
+           <item row="2" column="2">
+            <widget class="QPushButton" name="seller_list_sort_button">
+             <property name="text">
+              <string>sort</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="2">
+            <widget class="QPushButton" name="seller_list_delete_button">
+             <property name="text">
+              <string>delete</string>
+             </property>
+            </widget>
            </item>
            <item row="0" column="2">
             <widget class="QLabel" name="label_2">
@@ -278,11 +263,22 @@
              </item>
             </layout>
            </item>
-           <item row="8" column="4">
-            <layout class="QVBoxLayout" name="verticalLayout_13"/>
-           </item>
            <item row="7" column="0">
-            <widget class="QPushButton" name="pushButton">
+            <widget class="QPushButton" name="sell_report_refresh_button">
+             <property name="text">
+              <string>refresh</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QPushButton" name="seller_list_refresh_button">
+             <property name="text">
+              <string>refresh</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="4">
+            <widget class="QPushButton" name="seller_rate_refresh_button">
              <property name="text">
               <string>refresh</string>
              </property>
@@ -290,19 +286,6 @@
            </item>
            <item row="1" column="0" rowspan="5">
             <widget class="QTableWidget" name="sell_report_table"/>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>50</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Sell report</string>
-             </property>
-            </widget>
            </item>
            <item row="7" column="5">
             <widget class="QPushButton" name="pushButton_18">
@@ -318,8 +301,37 @@
              </property>
             </widget>
            </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>50</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Sell report</string>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="5" rowspan="5">
             <widget class="QTableWidget" name="shop_report_table"/>
+           </item>
+           <item row="1" column="4" rowspan="5">
+            <widget class="QTableWidget" name="sallerrate_list"/>
+           </item>
+           <item row="4" column="2">
+            <widget class="QLineEdit" name="lineEdit_3"/>
+           </item>
+           <item row="7" column="3">
+            <widget class="QPushButton" name="seller_report_refresh_button">
+             <property name="text">
+              <string>refresh</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3" rowspan="5">
+            <widget class="QTableWidget" name="seller_repor_list"/>
            </item>
           </layout>
          </item>
@@ -345,7 +357,7 @@
           <widget class="QLineEdit" name="costumer_ID_line"/>
          </item>
          <item row="7" column="0">
-          <widget class="QPushButton" name="pushButton_12">
+          <widget class="QPushButton" name="costumer_list_refresh_button">
            <property name="text">
             <string>sort</string>
            </property>
@@ -427,13 +439,6 @@
        </item>
       </layout>
      </widget>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QLabel" name="label_19">
-     <property name="text">
-      <string/>
-     </property>
     </widget>
    </item>
   </layout>
