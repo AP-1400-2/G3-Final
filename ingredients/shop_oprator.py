@@ -103,10 +103,9 @@ class operators:
 
     def off_code_generator(self, EXP, PR_ID, CU_ID, NUM, PERC):
         num = str(rint(1000000,9999999))
-        off_code = 'off%s' %(num)
+        off_code = 'off{}' .format(num)
         conn = sqlite3.connect('database.sqlite3')
-        conn.execute('''INSERT INTO OFF (CODE, PR_ID, EXP_DATE, CU_ID, NUMBER, PERCENTAGE) \
-            VALUES('%s','%s','%s','%s','%s');'''%(off_code, PR_ID, str(EXP), CU_ID, str(NUM), str(PERC)))
+        conn.execute('''INSERT INTO OFF (CODE, PR_ID, EXP_DATE, CU_ID, NUMBER, PERCENTAGE) VALUES('{}','{}','{}','{}','{}','{}');'''.format(off_code, PR_ID, EXP, CU_ID, NUM, PERC))
         conn.commit()
         conn.close()
 

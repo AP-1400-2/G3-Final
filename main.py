@@ -90,7 +90,7 @@ class operator_panel(object):
         self.generate_off = QtWidgets.QPushButton(Form)
         self.generate_off.setObjectName("generate_off")
         #____________________________ home button _______________________
-        self.generate_off.clicked.connect(self.generate_off_code())
+        self.generate_off.clicked.connect(self.generate_off_code)
         #________________________________________________________________
 
     
@@ -127,7 +127,7 @@ class operator_panel(object):
         self.new_seller_table_refresh = QtWidgets.QPushButton(Form)
         self.new_seller_table_refresh.setObjectName("new_seller_table_refresh")
         #___________________________new_seller_table_refresh ___________________________
-        self.new_seller_table_refresh.clicked.connect(self.new_seller_refresh())
+        # self.new_seller_table_refresh.clicked.connect(self.new_seller_refresh)
         #_______________________________________________________________________________
         self.gridLayout_3.addWidget(self.new_seller_table_refresh, 2, 1, 1, 1)
         self.new_buy_table_refresh = QtWidgets.QPushButton(Form)
@@ -499,18 +499,18 @@ class operator_panel(object):
 
 
     #____________________________new_seller_refresh __________________________
-    def new_seller_refresh(self):
-        conn = sqlite3.connect('database.sqlite3')
-        cur = conn.cursor()
-        query = "SELECT SL_ID FROM SELLER WHERE STATUS = 'NEW'"
-        row_count = self.__row_count_SPECIAL('SELLER','STATUS')
-        self.new_seller_request_table.setRowCount(row_count)
-        tablerow = 0 
-        for row in cur.execute(query):
-            self.new_seller_request_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
-            self.new_seller_request_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
-            tablerow +=1
-    #_________________________________________________________________________
+    # def new_seller_refresh(self):
+    #     conn = sqlite3.connect('database.sqlite3')
+    #     cur = conn.cursor()
+    #     query = "SELECT SL_ID FROM SELLER WHERE STATUS = 'NEW'"
+    #     row_count = self.__row_count_SPECIAL('SELLER','STATUS')
+    #     self.new_seller_request_table.setRowCount(row_count)
+    #     tablerow = 0 
+    #     for row in cur.execute(query):
+    #         self.new_seller_request_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
+    #         self.new_seller_request_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
+    #         tablerow +=1
+    # #_________________________________________________________________________
 
 
     #_________________________________generate off code ____________________________
@@ -529,7 +529,7 @@ class operator_panel(object):
     def load_off_data(self):
         conn = sqlite3.connect('database.sqlite3')
         cur = conn.cursor()
-        query = "SELECT * FROM OFF"
+        query = "SELECT CODE,PR_ID,EXP_DATE,CU_ID,NUMBER, PERCENTAGE FROM OFF"
         row_count = self.__row_count('OFF')
 
         self.off_code_table.setRowCount(row_count)
