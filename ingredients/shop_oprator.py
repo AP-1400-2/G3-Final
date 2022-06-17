@@ -107,10 +107,28 @@ class operators:
 
 
     def cu_id_generator(self):
-        pass
+        '''
+        in this method we generate id for costumers 'CU123456'
+        '''
+        conn = sqlite3.connect('database.sqlite3')
+        cursor = conn.execute ("SELECT count(*) FROM CUSTOMER")
+        for row in cursor:
+            num_of_records = row[0]
+        num = (111111 + num_of_records ) 
+        CU_id = 'CU%d' %(num)
+        return CU_id 
 
     def SL_id_generator(self):
-        pass
+        '''
+        in this method we generate id for seller 'SL123456'
+        '''
+        conn = sqlite3.connect('database.sqlite3')
+        cursor = conn.execute ("SELECT count(*) FROM CUSTOMER")
+        for row in cursor:
+            num_of_records = row[0]
+        num = (111111 + num_of_records )  
+        SL_id = 'SL%d' %(num)
+        return SL_id 
 
 # shop sql table
 
