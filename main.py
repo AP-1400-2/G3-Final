@@ -1,13 +1,18 @@
 
-from re import T
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import * 
+
 
 
 from ingredients.customer import *
-from ingredients.shop_oprator import *
+from ingredients.shop_oprator import operators
+from ingredients.shop_oprator import shop
 from ingredients.shop_seller import *
 
+import sqlite3
+
 ################################ start operator panel ###################################
+the_operator = operators('hello', 1234)
 class operator_panel(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -21,28 +26,50 @@ class operator_panel(object):
         self.verticalLayout_15.addWidget(self.label_11)
         self.off_code_table = QtWidgets.QTableWidget(Form)
         self.off_code_table.setObjectName("off_code_table")
-        self.off_code_table.setColumnCount(0)
+        self.off_code_table.setColumnCount(6)
         self.off_code_table.setRowCount(0)
+    #_____________________ OFF CODE TABLE ______________________
+        self.off_code_table.setColumnWidth(0,100)
+        self.off_code_table.setColumnWidth(1,100)
+        self.off_code_table.setColumnWidth(2,100)
+        self.off_code_table.setColumnWidth(3,100)
+        self.off_code_table.setColumnWidth(4,100)
+        self.off_code_table.setColumnWidth(5,100)
+
+        self.off_code_table.setHorizontalHeaderLabels(['CODE','PR_ID', 'EXP', 'CU_ID', 'NUMBER', 'PERCENTAGE'])
+
+        self.load_off_data()
+    #___________________________________________________________
         self.verticalLayout_15.addWidget(self.off_code_table)
         self.refresh_off_table = QtWidgets.QPushButton(Form)
         self.refresh_off_table.setObjectName("refresh_off_table")
+    #______________ OFF CODE TABLE refresh button ______________
+        self.refresh_off_table.clicked.connect(self.load_off_data)
+    #___________________________________________________________
+    
         self.verticalLayout_15.addWidget(self.refresh_off_table)
         self.gridLayout_5 = QtWidgets.QGridLayout()
         self.gridLayout_5.setObjectName("gridLayout_5")
         self.off_num = QtWidgets.QLineEdit(Form)
         self.off_num.setObjectName("off_num")
+    
         self.gridLayout_5.addWidget(self.off_num, 1, 1, 1, 1)
         self.off_EXP_date = QtWidgets.QLineEdit(Form)
         self.off_EXP_date.setObjectName("off_EXP_date")
+ 
         self.gridLayout_5.addWidget(self.off_EXP_date, 0, 1, 1, 1)
         self.off_percentage = QtWidgets.QLineEdit(Form)
         self.off_percentage.setObjectName("off_percentage")
+
         self.gridLayout_5.addWidget(self.off_percentage, 4, 1, 1, 1)
         self.off_CU_ID = QtWidgets.QLineEdit(Form)
         self.off_CU_ID.setObjectName("off_CU_ID")
+
         self.gridLayout_5.addWidget(self.off_CU_ID, 2, 1, 1, 1)
         self.off_PR_ID = QtWidgets.QLineEdit(Form)
         self.off_PR_ID.setObjectName("off_PR_ID")
+
+    
         self.gridLayout_5.addWidget(self.off_PR_ID, 3, 1, 1, 1)
         self.label_12 = QtWidgets.QLabel(Form)
         self.label_12.setObjectName("label_12")
@@ -62,12 +89,20 @@ class operator_panel(object):
         self.verticalLayout_15.addLayout(self.gridLayout_5)
         self.generate_off = QtWidgets.QPushButton(Form)
         self.generate_off.setObjectName("generate_off")
+        #____________________________ home button _______________________
+        self.generate_off.clicked.connect(self.generate_off_code())
+        #________________________________________________________________
+
+    
         self.verticalLayout_15.addWidget(self.generate_off)
         self.gridLayout_2.addLayout(self.verticalLayout_15, 0, 3, 1, 1)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.home_button = QtWidgets.QPushButton(Form)
         self.home_button.setObjectName("home_button")
+        #____________________________ home button _______________________
+
+        #________________________________________________________________
         self.verticalLayout_2.addWidget(self.home_button)
         self.log_out_button = QtWidgets.QPushButton(Form)
         self.log_out_button.setObjectName("log_out_button")
@@ -91,6 +126,9 @@ class operator_panel(object):
         self.gridLayout_3.addWidget(self.new_buy_request_table, 1, 0, 1, 1)
         self.new_seller_table_refresh = QtWidgets.QPushButton(Form)
         self.new_seller_table_refresh.setObjectName("new_seller_table_refresh")
+        #___________________________new_seller_table_refresh ___________________________
+        self.new_seller_table_refresh.clicked.connect(self.new_seller_refresh())
+        #_______________________________________________________________________________
         self.gridLayout_3.addWidget(self.new_seller_table_refresh, 2, 1, 1, 1)
         self.new_buy_table_refresh = QtWidgets.QPushButton(Form)
         self.new_buy_table_refresh.setObjectName("new_buy_table_refresh")
@@ -100,8 +138,14 @@ class operator_panel(object):
         self.gridLayout_3.addWidget(self.pushButton_9, 8, 0, 1, 3)
         self.new_seller_request_table = QtWidgets.QTableWidget(Form)
         self.new_seller_request_table.setObjectName("new_seller_request_table")
-        self.new_seller_request_table.setColumnCount(0)
+        self.new_seller_request_table.setColumnCount(2)
         self.new_seller_request_table.setRowCount(0)
+        #___________________________new_seller_table ___________________________
+        self.new_seller_request_table.setColumnWidth(0,100)
+        self.new_seller_request_table.setColumnWidth(1,150)
+        self.new_seller_request_table.setHorizontalHeaderLabels(['SL_ID','STATUS'])
+        #_______________________________________________________________________
+
         self.gridLayout_3.addWidget(self.new_seller_request_table, 1, 1, 1, 1)
         self.CU_ID_SL_ID_line_accept = QtWidgets.QLineEdit(Form)
         self.CU_ID_SL_ID_line_accept.setObjectName("CU_ID_SL_ID_line_accept")
@@ -269,17 +313,40 @@ class operator_panel(object):
         self.gridLayout_8.addWidget(self.costumer_list_sort, 2, 0, 1, 1)
         self.costumerlist_table = QtWidgets.QTableWidget(self.tab_2)
         self.costumerlist_table.setObjectName("costumerlist_table")
-        self.costumerlist_table.setColumnCount(3)
+        self.costumerlist_table.setColumnCount(4)
         self.costumerlist_table.setRowCount(0)
 
         #_________________________ costumer table fill __________________________
         self.costumerlist_table.setColumnWidth(0,100)
         self.costumerlist_table.setColumnWidth(1,200)
         self.costumerlist_table.setColumnWidth(2,80)
+        self.costumerlist_table.setColumnWidth(3,100)
 
-        self.costumerlist_table.setHorizontalHeaderLabels(['CU_ID', 'EMAIL', 'LOCATION'])
 
+        self.costumerlist_table.setHorizontalHeaderLabels(['', 'CU_ID', 'EMAIL', 'LOCATION'])
+        self.costumerlist_table.verticalHeader().hide()
         self.costumer_load_data()
+        for index in range(self.costumerlist_table.rowCount()):
+            self.btn = QPushButton("show")
+            self.costumerlist_table.setCellWidget(index, 0, self.btn)
+        self.btn.clicked.connect(self.costumer_load_data)
+    # @QtCore.pyqtSlot()
+    # def onSectionCountChanged(self):
+    #     while self.btn:
+    #         button = self.btn.pop()
+    #         button.deleteLater()
+    #     for i in range(self.count()):
+    #         button = QtWidgets.QPushButton(self)
+    #         button.setCursor(QtCore.Qt.ArrowCursor)
+    #         self.btn.append(button)
+    #         self.update_data()
+    #         self.adjustPositions()
+    # def setModel(self, model):
+    #     super().setModel(model)
+    #     if self.model() is not None:
+    #         self.model().headerDataChanged.connect(self.update_data)
+
+
         #________________________________________________________________________   
 
         self.gridLayout_8.addWidget(self.costumerlist_table, 1, 0, 1, 1)
@@ -371,6 +438,11 @@ class operator_panel(object):
         cursor = conn.execute("SELECT count(*) FROM %s"%(table_name))
         for row in cursor:
             return row[0]
+    def __row_count_SPECIAL(self, table_name:str, SPECIAL):
+        conn = sqlite3.connect('database.sqlite3')
+        cursor = conn.execute("SELECT count(%s) FROM %s"%(SPECIAL ,table_name))
+        for row in cursor:
+            return row[0]
 
     #_____________________ costumer load data function _____________________
     def costumer_load_data(self):
@@ -425,7 +497,138 @@ class operator_panel(object):
             tablerow +=1
     #________________________________________________________________________
 
+
+    #____________________________new_seller_refresh __________________________
+    def new_seller_refresh(self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = "SELECT SL_ID FROM SELLER WHERE STATUS = 'NEW'"
+        row_count = self.__row_count_SPECIAL('SELLER','STATUS')
+        self.new_seller_request_table.setRowCount(row_count)
+        tablerow = 0 
+        for row in cur.execute(query):
+            self.new_seller_request_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
+            self.new_seller_request_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
+            tablerow +=1
+    #_________________________________________________________________________
+
+
+    #_________________________________generate off code ____________________________
+    def generate_off_code(self):
+        exp = self.off_EXP_date.text()
+        num = self.off_num.text()
+        perecentage = self.off_percentage.text()
+        off_cu_id = self.off_CU_ID.text()
+        off_pr_id = self.off_PR_ID.text()
+
+        the_operator.off_code_generator(exp, off_pr_id,off_cu_id,num,perecentage)
+    #_______________________________________________________________________________
+
+
+    #____________________________________ load off data______________________________
+    def load_off_data(self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = "SELECT * FROM OFF"
+        row_count = self.__row_count('OFF')
+
+        self.off_code_table.setRowCount(row_count)
+        tablerow = 0 
+        for row in cur.execute(query):
+            self.off_code_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
+            self.off_code_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
+            self.off_code_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
+            self.off_code_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[3]))
+            self.off_code_table.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(row[4]))
+            self.off_code_table.setItem(tablerow, 5, QtWidgets.QTableWidgetItem(row[5]))
+            tablerow +=1
+
+    #________________________________________________________________________________
 ################################ end operator panel #####################################
+
+
+################################ start login panel ###################################
+
+#__________________________________ main login _______________________________________
+class main_login(object):
+    def setupUi(self, login):
+        login.setObjectName("login")
+        login.resize(423, 721)
+        self.gridLayout_2 = QtWidgets.QGridLayout(login)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.gridLayout = QtWidgets.QGridLayout()
+        self.gridLayout.setObjectName("gridLayout")
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.login_push_button = QtWidgets.QPushButton(login)
+        self.login_push_button.setObjectName("login_push_button")
+        self.horizontalLayout.addWidget(self.login_push_button)
+        self.register_push_button = QtWidgets.QPushButton(login)
+        self.register_push_button.setObjectName("register_push_button")
+        self.horizontalLayout.addWidget(self.register_push_button)
+        self.gridLayout.addLayout(self.horizontalLayout, 2, 0, 1, 1)
+        self.gridLayout_3 = QtWidgets.QGridLayout()
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.login_password = QtWidgets.QLineEdit(login)
+        self.login_password.setObjectName("login_password")
+        self.gridLayout_3.addWidget(self.login_password, 1, 1, 1, 1)
+        self.login_email = QtWidgets.QLineEdit(login)
+        self.login_email.setObjectName("login_email")
+        self.gridLayout_3.addWidget(self.login_email, 0, 1, 1, 1)
+        self.login_email_label = QtWidgets.QLabel(login)
+        self.login_email_label.setObjectName("login_email_label")
+        self.gridLayout_3.addWidget(self.login_email_label, 0, 0, 1, 1)
+        self.login_pass_label = QtWidgets.QLabel(login)
+        self.login_pass_label.setObjectName("login_pass_label")
+        self.gridLayout_3.addWidget(self.login_pass_label, 1, 0, 1, 1)
+        self.gridLayout.addLayout(self.gridLayout_3, 1, 0, 1, 1)
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.operator_seller_login_page = QtWidgets.QPushButton(login)
+        self.operator_seller_login_page.setObjectName("operator_seller_login_page")
+        self.verticalLayout.addWidget(self.operator_seller_login_page)
+        self.status_label = QtWidgets.QLabel(login)
+        self.status_label.setObjectName("status_label")
+        self.verticalLayout.addWidget(self.status_label)
+        self.gridLayout.addLayout(self.verticalLayout, 3, 0, 1, 1)
+        self.label = QtWidgets.QLabel(login)
+        self.label.setObjectName("label")
+        self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
+        self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
+
+        self.retranslateUi(login)
+        QtCore.QMetaObject.connectSlotsByName(login)
+
+    def retranslateUi(self, login):
+        _translate = QtCore.QCoreApplication.translate
+        login.setWindowTitle(_translate("login", "Form"))
+        self.login_push_button.setText(_translate("login", "login"))
+        self.register_push_button.setText(_translate("login", "register"))
+        self.login_email_label.setText(_translate("login", "email"))
+        self.login_pass_label.setText(_translate("login", "password"))
+        self.operator_seller_login_page.setText(_translate("login", "I\'m Operator / seller"))
+        self.status_label.setText(_translate("login", "TextLabel"))
+        self.label.setText(_translate("login", "Welcome"))
+
+#_____________________________________________________________________________________
+
+#__________________________________ register  ________________________________________
+
+#_____________________________________________________________________________________
+
+#__________________________________ seller register  _________________________________
+
+#_____________________________________________________________________________________
+
+#__________________________________ operator register  _______________________________
+
+#_____________________________________________________________________________________
+
+#__________________________________ operator & seller login  _________________________
+
+#_____________________________________________________________________________________
+
+################################ end login panel #####################################
 
 if __name__ == "__main__":
     import sys

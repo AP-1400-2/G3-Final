@@ -1,5 +1,5 @@
 import sqlite3
-
+from random import randint as rint
 # operator sql table
 
 '''CREATE TABLE "OPERATOR" (
@@ -101,8 +101,14 @@ class operators:
         pass
 
 
-    def off_code_generator(self, percentage, EXP, PR_ID, CU_ID, NUM, PERC):
-        pass
+    def off_code_generator(self, EXP, PR_ID, CU_ID, NUM, PERC):
+        num = str(rint(1000000,9999999))
+        off_code = 'off%s' %(num)
+        conn = sqlite3.connect('database.sqlite3')
+        conn.execute('''INSERT INTO OFF (CODE, PR_ID, EXP_DATE, CU_ID, NUMBER, PERCENTAGE) \
+            VALUES('%s','%s','%s','%s','%s');'''%(off_code, PR_ID, str(EXP), CU_ID, str(NUM), str(PERC)))
+        conn.commit()
+        conn.close()
 
 
 
