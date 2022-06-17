@@ -1,3 +1,4 @@
+import sqlite3
 
 # operator sql table
 
@@ -29,11 +30,34 @@ class operators:
 
 
     def changepassword(self, oldpassword, newpassword):
-       pass
+        conn = sqlite3.connect('database.sqlite3')
+        old_password = conn.execute("SELECT PASSWORD FROM OPERATOR WHERE EMAIL = '%s' " %(self.__email))
+        if old_password == oldpassword:
+            try:
+                conn.execute("UPDATE OPERATOR PASSWORD = '%s' WHERE EMAIL = '%s'" %(newpassword, self.__email))
+                conn.commit()            
+            except sqlite3.Error:
+                print("error! something went wrong")
+            else:
+                print("Done!")
 
 
     def changeemail(self, newewmail, password):
-       pass
+        conn = sqlite3.connect('database.sqlite3')
+        cursor = conn.execute("SELECT PASSWORD FROM OPERATOR WHERE EMAIL = '%s' " %(self.__email))
+        for row in cursor:
+            database_password = row[0]
+        if database_password == password:
+            try:
+                conn.execute("UPDATE OPERATOR EMAIL = '%s' WHERE EMAIL = '%s'" %(newewmail, self.__email))
+                conn.commit()
+            except sqlite3.Error:
+                print("error! something went wrong")
+            else:
+                print("Done!")
+
+
+
 
 
     def add_to_db(self):
