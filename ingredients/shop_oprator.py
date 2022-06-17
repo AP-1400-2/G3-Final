@@ -57,11 +57,19 @@ class operators:
                 print("Done!")
 
 
+    def save_to_db(self):
+        conn = sqlite3.connect('database.sqlite3')
+        data = self.__dict__
+        try:
+            conn.execute('''INSERT INTO OPERATOR(EMAIL,PASSWORD) \
+                        VALUES('%s','%s');'''%(data['_operators__email'],data['_operators__password']))
+            conn.commit()
+        except sqlite3.Error:
+            print("error! something went wrong")
+        else:
+            print("Done!")
 
 
-
-    def add_to_db(self):
-        pass
 
     def check_product(self):
         pass
