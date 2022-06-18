@@ -326,7 +326,7 @@ class operator_panel(object):
         for index in range(self.costumerlist_table.rowCount()):
             self.btn = QPushButton("show")
             self.costumerlist_table.setCellWidget(index, 0, self.btn)
-        self.btn.clicked.connect(self.costumer_load_data)
+        self.btn.clicked.connect(self.print_test)
         #________________________________________________________________________ 
         self.gridLayout_8.addWidget(self.costumerlist_table, 1, 0, 1, 1)
         self.label_7 = QtWidgets.QLabel(self.tab_2)
@@ -362,9 +362,14 @@ class operator_panel(object):
         self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
+    #____________________ test _____________________________________
+    def print_test(self):
+        print("test done!")
+    #_______________________________________________________________
+
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "Operator panel"))
         self.profile_button.setText(_translate("Form", "Profile"))
         self.log_out_button.setText(_translate("Form", "logout"))
         self.label_20.setText(_translate("Form", "new product"))
