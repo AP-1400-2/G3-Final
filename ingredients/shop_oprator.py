@@ -31,10 +31,10 @@ class operators:
 
     def changepassword(self, oldpassword, newpassword):
         conn = sqlite3.connect('database.sqlite3')
-        old_password = conn.execute("SELECT PASSWORD FROM OPERATOR WHERE EMAIL = '%s' " %(self.__email))
+        old_password = conn.execute("SELECT PASSWORD FROM OPERATOR WHERE EMAIL = '{}' " .format(self.__email))
         if old_password == oldpassword:
             try:
-                conn.execute("UPDATE OPERATOR PASSWORD = '%s' WHERE EMAIL = '%s'" %(newpassword, self.__email))
+                conn.execute("UPDATE OPERATOR PASSWORD = '{}' WHERE EMAIL = '{}'" .format(newpassword, self.__email))
                 conn.commit()            
             except sqlite3.Error:
                 print("error! something went wrong")
@@ -44,12 +44,12 @@ class operators:
 
     def changeemail(self, newewmail, password):
         conn = sqlite3.connect('database.sqlite3')
-        cursor = conn.execute("SELECT PASSWORD FROM OPERATOR WHERE EMAIL = '%s' " %(self.__email))
+        cursor = conn.execute("SELECT PASSWORD FROM OPERATOR WHERE EMAIL = '{}' " .format(self.__email))
         for row in cursor:
             database_password = row[0]
         if database_password == password:
             try:
-                conn.execute("UPDATE OPERATOR EMAIL = '%s' WHERE EMAIL = '%s'" %(newewmail, self.__email))
+                conn.execute("UPDATE OPERATOR EMAIL = '{}' WHERE EMAIL = '{}'" .format(newewmail, self.__email))
                 conn.commit()
             except sqlite3.Error:
                 print("error! something went wrong")
@@ -62,7 +62,7 @@ class operators:
         data = self.__dict__
         try:
             conn.execute('''INSERT INTO OPERATOR(EMAIL,PASSWORD) \
-                        VALUES('%s','%s');'''%(data['_operators__email'],data['_operators__password']))
+                        VALUES('{}','{}');'''.format(data['_operators__email'],data['_operators__password']))
             conn.commit()
         except sqlite3.Error:
             print("error! something went wrong")
@@ -92,12 +92,17 @@ class operators:
         pass
     
 
-    def report(self, subject):
+    def costumer_report (self, CU_ID):
         pass
 
 
 
-    def report_rate(self, shop_name):
+    def seller_report(self, SL_ID):
+        pass
+
+
+    def product_report(self):
+    # give list of all products and number of them 
         pass
 
 
@@ -105,7 +110,8 @@ class operators:
         num = str(rint(1000000,9999999))
         off_code = 'off{}' .format(num)
         conn = sqlite3.connect('database.sqlite3')
-        conn.execute('''INSERT INTO OFF (CODE, PR_ID, EXP_DATE, CU_ID, NUMBER, PERCENTAGE) VALUES('{}','{}','{}','{}','{}','{}');'''.format(off_code, PR_ID, EXP, CU_ID, NUM, PERC))
+        conn.execute('''INSERT INTO OFF (CODE, PR_ID, EXP_DATE, CU_ID, NUMBER, PERCENTAGE) \
+             VALUES('{}','{}','{}','{}','{}','{}');'''.format(off_code, PR_ID, EXP, CU_ID, NUM, PERC))
         conn.commit()
         conn.close()
 
@@ -161,6 +167,7 @@ class shop:
     def add_to_db(self):
         pass
 
+
     def add_costumer(self, CU_ID):
         pass
 
@@ -188,6 +195,6 @@ class shop:
         pass
 
 
-    def time_compute(self):
+    def time_compute(self, CU_location, SL_location):
         pass
 
