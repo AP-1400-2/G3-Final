@@ -71,13 +71,37 @@ class operators:
 
 
 
+    def load_cu_profile(self, CU_ID):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        information_query = "SELECT CU_ID, EMAIL, PASSWORD, LOCATION, SCORE, TotalPurchase FROM COSTUMER WHERE CU_ID = '{}'" .format(CU_ID)
+        order_list_query = "SELECT SL_ID, ORDER_LIST, DATE, STATUS FROM 'ORDER' WHERE CU_ID = '{}'" .format(CU_ID)
+        basket_list_query = "SELECT BASKET FROM COSTUMER WHERE CU_ID = '{}'" .format(CU_ID)
+        favorite_list_query = "SELECT FAVORIT FROM COSTUMER WHERE CU_ID = '{}'" .format(CU_ID)
+        comments_list_query = "SELECT PR_ID, COMMENT FROM COMMENT_LIST WHERE CU_ID = '{}'" .format(CU_ID)
+
+        information_query_data = cur.execute(information_query)
+        order_list_query_data = cur.execute(order_list_query)
+        basket_list_query_data = cur.execute(basket_list_query)
+        favorite_list_query_data = cur.execute(favorite_list_query)
+        comments_list_query_data = cur.execute(comments_list_query)
+
+        return information_query_data, order_list_query_data, basket_list_query_data, favorite_list_query_data, comments_list_query_data
+
+
     def check_product(self):
-        pass
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = "SELECT PR_ID, NAME, NUMBER, PRICE, SELLER_SL_ID, STATUS FROM 'PRODUCT' WHERE STATUS = 'NEW' "
+        new_product_report_data = cur.execute(query)
+        return new_product_report_data
 
     def accept_product(self, PR_ID):
        pass
 
 
+    def reject_product(self, PR_ID):
+        pass
 
     def check_seller(self):
         pass
@@ -86,25 +110,54 @@ class operators:
         pass
 
     def check_order(self):
-        pass
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = "SELECT CU_ID, SL_ID, ORDER_LIST, DATE, STATUS FROM 'ORDER' WHERE STATUS = 'NEW' "
+        new_order_report_data = cur.execute(query)
+        return new_order_report_data
 
     def accept_order(self, CU_ID):
         pass
+
+    def reject_order(self, CU_ID):
+        pass
     
 
-    def costumer_report (self, CU_ID):
-        pass
+    def costumer_report (self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = 'SELECT CU_ID, EMAIL, LOCATION FROM COSTUMER'
+        costumer_report_data = cur.execute(query)
+        return costumer_report_data
 
+    def shop_reports(self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = 'SELECT NAME, PRODUCTS_PR_ID, COSTUMER_CU_ID, SELLER_SL_ID  FROM SHOP'
+        shop_report_data = cur.execute(query)
+        return shop_report_data
 
-
-    def seller_report(self, SL_ID):
-        pass
-
+    def seller_report(self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = 'SELECT SL_ID,EMAIL,SCORE FROM SELLER'
+        seller_report_data = cur.execute(query)
+        return seller_report_data
 
     def product_report(self):
     # give list of all products and number of them 
-        pass
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = 'SELECT PR_ID,NAME,NUMBER, PRICE FROM PRODUCT'
+        product_report_data = cur.execute(query)
+        return product_report_data
 
+    def sell_report(self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = 'SELECT PR_ID, SHOP_NAME, SL_ID, DATE_TIME, CU_ID FROM SELL_REPORT'
+        sell_report_data =  cur.execute(query)
+        return sell_report_data
 
     def off_code_generator(self, EXP, PR_ID, CU_ID, NUM, PERC):
         num = str(rint(1000000,9999999))

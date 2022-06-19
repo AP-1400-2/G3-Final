@@ -10,6 +10,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import * 
+from PyQt5.QtWidgets import * 
+
 
 
 
@@ -63,13 +65,81 @@ class operator_panel(object):
         self.gridLayout_3.addWidget(self.new_buy_table_refresh, 2, 0, 1, 1)
         self.new_buy_request_table = QtWidgets.QTableWidget(Form)
         self.new_buy_request_table.setObjectName("new_buy_request_table")
-        self.new_buy_request_table.setColumnCount(0)
+        self.new_buy_request_table.setColumnCount(7)
         self.new_buy_request_table.setRowCount(0)
+    #_________________________ buy request table fill __________________________
+        self.new_buy_request_table.setColumnWidth(0,60)
+        self.new_buy_request_table.setColumnWidth(1,60)
+        self.new_buy_request_table.setColumnWidth(2,100)
+        self.new_buy_request_table.setColumnWidth(3,150)
+        self.new_buy_request_table.setColumnWidth(4,150)
+        self.new_buy_request_table.setColumnWidth(5,150)
+        self.new_buy_request_table.setColumnWidth(6,150)
+
+
+        self.buy_request_load_data()
+        self.new_buy_request_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
+
+        self.new_buy_request_table.setHorizontalHeaderLabels(['accept', 'reject', 'CU_ID','SL_ID', 'ORDER LIST', 'DATE', 'STATUS' ])
+        self.new_buy_request_table.verticalHeader().hide()
+        self.new_buy_request_table.cellClicked.connect(self.print_test)
+
+        for index in range(self.new_buy_request_table.rowCount()):
+            self.buy_request_accept  = QPushButton("✅")
+                
+            self.new_buy_request_table.setCellWidget(index, 0, self.buy_request_accept )
+
+        for index in range(self.new_buy_request_table.rowCount()):
+            self.buy_request_reject  = QPushButton("❌")
+            
+
+            self.new_buy_request_table.setCellWidget(index, 1, self.buy_request_reject )
+
+            # self.show_seller_profile.clicked.connect(self.get_buy_id)
+        
+
+        
+        #________________________________________________________________________  
+
+        
         self.gridLayout_3.addWidget(self.new_buy_request_table, 1, 0, 1, 1)
         self.new_product_tabel = QtWidgets.QTableWidget(Form)
         self.new_product_tabel.setObjectName("new_product_tabel")
-        self.new_product_tabel.setColumnCount(0)
+        self.new_product_tabel.setColumnCount(8)
         self.new_product_tabel.setRowCount(0)
+
+    #_________________________ buy request table fill __________________________
+        self.new_product_tabel.setColumnWidth(0,60)
+        self.new_product_tabel.setColumnWidth(1,60)
+        self.new_product_tabel.setColumnWidth(2,100)
+        self.new_product_tabel.setColumnWidth(3,150)
+        self.new_product_tabel.setColumnWidth(4,150)
+        self.new_product_tabel.setColumnWidth(5,150)
+        self.new_product_tabel.setColumnWidth(6,150)
+        self.new_product_tabel.setColumnWidth(7,150)
+
+        self.new_product_request_load_data()
+        self.new_buy_request_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
+
+        self.new_product_tabel.setHorizontalHeaderLabels(['accept', 'reject', 'PR_ID','NAME', 'NUMBER', 'PRICE', 'SELLER LIST', 'STATUS' ])
+        self.new_product_tabel.verticalHeader().hide()
+        self.new_product_tabel.cellClicked.connect(self.print_test)
+
+        for index in range(self.new_product_tabel.rowCount()):
+            self.product_request_accept  = QPushButton("✅")
+                
+            self.new_product_tabel.setCellWidget(index, 0, self.product_request_accept )
+
+        for index in range(self.new_product_tabel.rowCount()):
+            self.product_request_reject  = QPushButton("❌")
+            
+
+            self.new_product_tabel.setCellWidget(index, 1, self.product_request_reject )
+
+            # self.show_seller_profile.clicked.connect(self.get_buy_id)
+    #________________________________________________________________________
+
+
         self.gridLayout_3.addWidget(self.new_product_tabel, 1, 1, 1, 1)
         self.new_seller_request_table = QtWidgets.QTableWidget(Form)
         self.new_seller_request_table.setObjectName("new_seller_request_table")
@@ -200,16 +270,31 @@ class operator_panel(object):
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.seller_list_table = QtWidgets.QTableWidget(self.tab)
         self.seller_list_table.setObjectName("seller_list_table")
-        self.seller_list_table.setColumnCount(3)
+        self.seller_list_table.setColumnCount(4)
         self.seller_list_table.setRowCount(0)
         #_________________________ seller table fill __________________________
-        self.seller_list_table.setColumnWidth(0,100)
-        self.seller_list_table.setColumnWidth(1,150)
-        self.seller_list_table.setColumnWidth(2,100)
+        self.seller_list_table.setColumnWidth(0,60)
+        self.seller_list_table.setColumnWidth(1,100)
+        self.seller_list_table.setColumnWidth(2,150)
+        self.seller_list_table.setColumnWidth(3,100)
 
-        self.seller_list_table.setHorizontalHeaderLabels(['SL_ID', 'EMAIL', 'SCORE'])
+
 
         self.seller_load_data()
+        self.seller_list_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
+
+        self.seller_list_table.setHorizontalHeaderLabels(['profile', 'SL_ID', 'EMAIL', 'SCORE'])
+        self.seller_list_table.verticalHeader().hide()
+        self.seller_list_table.cellClicked.connect(self.print_test)
+
+        for index in range(self.seller_list_table.rowCount()):
+            self.show_seller_profile  = QPushButton("🙍")
+            self.seller_list_table.setCellWidget(index, 0, self.show_seller_profile )
+
+            self.show_seller_profile.clicked.connect(self.get_SL_ID)
+            self.show_seller_profile.setStyleSheet("background-color : #c9c9c9")
+
+        
         #________________________________________________________________________  
         self.verticalLayout_7.addWidget(self.seller_list_table)
         self.gridLayout_6.addLayout(self.verticalLayout_7, 1, 2, 1, 1)
@@ -226,7 +311,7 @@ class operator_panel(object):
         self.sell_report_table.setObjectName("sell_report_table")
         self.sell_report_table.setColumnCount(5)
         self.sell_report_table.setRowCount(0)
-        #_________________________ seller table fill __________________________
+        #_________________________ sell table fill __________________________
         self.sell_report_table.setColumnWidth(0,100)
         self.sell_report_table.setColumnWidth(1,100)
         self.sell_report_table.setColumnWidth(2,100)
@@ -236,6 +321,8 @@ class operator_panel(object):
         self.sell_report_table.setHorizontalHeaderLabels(['PR_ID', 'SHOP_NAME','SL_ID', 'DATE', 'CU_ID'])
 
         self.sell_report_load_data()
+
+        
         #________________________________________________________________________ 
         self.gridLayout_6.addWidget(self.sell_report_table, 1, 0, 5, 1)
         self.pushButton_18 = QtWidgets.QPushButton(self.tab)
@@ -250,8 +337,18 @@ class operator_panel(object):
         self.gridLayout_6.addWidget(self.label, 0, 0, 1, 1)
         self.shop_report_table = QtWidgets.QTableWidget(self.tab)
         self.shop_report_table.setObjectName("shop_report_table")
-        self.shop_report_table.setColumnCount(0)
+        self.shop_report_table.setColumnCount(4)
         self.shop_report_table.setRowCount(0)
+        #_____________________shop report table fill_________________
+        self.shop_report_table.setColumnWidth(0, 100)
+        self.shop_report_table.setColumnWidth(1, 200)
+        self.shop_report_table.setColumnWidth(2, 200)
+        self.shop_report_table.setColumnWidth(3, 200)
+        self.shop_report_table.setHorizontalHeaderLabels(['Name', 'Products', 'Costumers', 'Sellers'])
+
+        self.shop_report_load_data()
+        #____________________________________________________________
+
         self.gridLayout_6.addWidget(self.shop_report_table, 1, 5, 5, 1)
         self.sallerrate_list = QtWidgets.QTableWidget(self.tab)
         self.sallerrate_list.setObjectName("sallerrate_list")
@@ -296,9 +393,9 @@ class operator_panel(object):
         self.costumer_list_refresh_button = QtWidgets.QPushButton(self.tab_2)
         self.costumer_list_refresh_button.setObjectName("costumer_list_refresh_button")
         self.gridLayout_8.addWidget(self.costumer_list_refresh_button, 7, 0, 1, 1)
-        self.refresh_costumer_list_table = QtWidgets.QPushButton(self.tab_2)
-        self.refresh_costumer_list_table.setObjectName("refresh_costumer_list_table")
-        self.gridLayout_8.addWidget(self.refresh_costumer_list_table, 7, 0, 1, 1)
+        self.refresh_costumer_list_table_button = QtWidgets.QPushButton(self.tab_2)
+        self.refresh_costumer_list_table_button.setObjectName("refresh_costumer_list_table_button")
+        self.gridLayout_8.addWidget(self.refresh_costumer_list_table_button, 7, 0, 1, 1)
         self.pushButton_5 = QtWidgets.QPushButton(self.tab_2)
         self.pushButton_5.setObjectName("pushButton_5")
         self.gridLayout_8.addWidget(self.pushButton_5, 6, 0, 1, 1)
@@ -314,19 +411,26 @@ class operator_panel(object):
         self.costumerlist_table.setRowCount(0)
 
         #_________________________ costumer table fill __________________________
-        self.costumerlist_table.setColumnWidth(0,100)
-        self.costumerlist_table.setColumnWidth(1,200)
-        self.costumerlist_table.setColumnWidth(2,80)
+        self.costumerlist_table.setColumnWidth(0,60)
+        self.costumerlist_table.setColumnWidth(1,100)
+        self.costumerlist_table.setColumnWidth(2,200)
         self.costumerlist_table.setColumnWidth(3,100)
 
+        
+        self.costumerlist_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
 
-        self.costumerlist_table.setHorizontalHeaderLabels(['', 'CU_ID', 'EMAIL', 'LOCATION'])
+        self.costumerlist_table.setHorizontalHeaderLabels(['profile', 'CU_ID', 'EMAIL', 'LOCATION'])
         self.costumerlist_table.verticalHeader().hide()
         self.costumer_load_data()
+        self.costumerlist_table.cellClicked.connect(self.print_test)
+
         for index in range(self.costumerlist_table.rowCount()):
-            self.btn = QPushButton("show")
-            self.costumerlist_table.setCellWidget(index, 0, self.btn)
-        self.btn.clicked.connect(self.print_test)
+            self.show_costumer_profile  = QPushButton("🙍")
+            self.costumerlist_table.setCellWidget(index, 0, self.show_costumer_profile )
+
+            self.show_costumer_profile .clicked.connect(self.get_CU_ID)
+            self.show_costumer_profile.setStyleSheet("background-color : #c9c9c9")
+        
         #________________________________________________________________________ 
         self.gridLayout_8.addWidget(self.costumerlist_table, 1, 0, 1, 1)
         self.label_7 = QtWidgets.QLabel(self.tab_2)
@@ -336,6 +440,29 @@ class operator_panel(object):
         self.costumer_report_table.setObjectName("costumer_report_table")
         self.costumer_report_table.setColumnCount(0)
         self.costumer_report_table.setRowCount(0)
+      #_________________________ costumer report table fill __________________________
+        self.costumer_report_table.setColumnWidth(0,100)
+        self.costumer_report_table.setColumnWidth(1,100)
+        self.costumer_report_table.setColumnWidth(2,200)
+
+        
+        self.costumer_report_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
+
+        # self.costumerlist_table.setHorizontalHeaderLabels(['Show profile', 'CU_ID', 'EMAIL', 'LOCATION'])
+        # self.costumerlist_table.verticalHeader().hide()
+        # self.costumer_load_data()
+        # self.costumerlist_table.cellClicked.connect(self.print_test)
+
+        # for index in range(self.costumerlist_table.rowCount()):
+        #     self.show_costumer_profile  = QPushButton("Profile")
+        #     self.costumerlist_table.setCellWidget(index, 0, self.show_costumer_profile )
+
+        #     self.show_costumer_profile .clicked.connect(self.get_CU_ID)
+        #     self.show_costumer_profile.setStyleSheet("background-color : #00A693")
+        
+        #________________________________________________________________________ 
+
+
         self.gridLayout_8.addWidget(self.costumer_report_table, 1, 1, 6, 1)
         self.label_8 = QtWidgets.QLabel(self.tab_2)
         self.label_8.setObjectName("label_8")
@@ -351,8 +478,24 @@ class operator_panel(object):
         self.gridLayout_8.addWidget(self.product_table_refresh, 7, 2, 1, 1)
         self.product_table = QtWidgets.QTableWidget(self.tab_2)
         self.product_table.setObjectName("product_table")
-        self.product_table.setColumnCount(0)
+        self.product_table.setColumnCount(4)
         self.product_table.setRowCount(0)
+    #_________________________ product table fill __________________________
+        self.product_table.setColumnWidth(0,100)
+        self.product_table.setColumnWidth(1,200)
+        self.product_table.setColumnWidth(2,50)
+        self.product_table.setColumnWidth(3,80)
+
+        
+        self.product_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
+
+        self.product_table.setHorizontalHeaderLabels(['PR_ID', 'NAME', 'NUMBER', 'PRICE'])
+        
+        self.product_table_load_data()
+        
+        
+        #________________________________________________________________________ 
+
         self.gridLayout_8.addWidget(self.product_table, 1, 2, 6, 1)
         self.gridLayout_7.addLayout(self.gridLayout_8, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tab_2, "")
@@ -364,7 +507,19 @@ class operator_panel(object):
 
     #____________________ test _____________________________________
     def print_test(self):
+        # self.costumerlist_table.
         print("test done!")
+    
+    def get_CU_ID(self):
+        current_row = self.costumerlist_table.currentRow()
+        current_column = self.costumerlist_table.currentColumn()
+        cell_value = self.costumerlist_table.item(current_row, current_column + 1).text()
+        print(cell_value)
+    def get_SL_ID(self):
+        current_row = self.seller_list_table.currentRow()
+        current_column = self.seller_list_table.currentColumn()
+        cell_value = self.seller_list_table.item(current_row, current_column + 1).text()
+        print(cell_value)
     #_______________________________________________________________
 
     def retranslateUi(self, Form):
@@ -404,7 +559,7 @@ class operator_panel(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("Form", "SELLER"))
         self.delete_costumer.setText(_translate("Form", "delete"))
         self.costumer_list_refresh_button.setText(_translate("Form", "sort"))
-        self.refresh_costumer_list_table.setText(_translate("Form", "refresh"))
+        self.refresh_costumer_list_table_button.setText(_translate("Form", "refresh"))
         self.pushButton_5.setText(_translate("Form", "refresh"))
         self.addcostumer.setText(_translate("Form", "add"))
         self.costumer_list_sort.setText(_translate("Form", "sort"))
@@ -417,28 +572,70 @@ class operator_panel(object):
 
     def __row_count(self, table_name:str):
         conn = sqlite3.connect('database.sqlite3')
-        cursor = conn.execute("SELECT count(*) FROM %s"%(table_name))
+        cursor = conn.execute("SELECT count(*) FROM '{}';" .format(table_name))
         for row in cursor:
             return row[0]
     def __row_count_SPECIAL(self, table_name:str, SPECIAL):
         conn = sqlite3.connect('database.sqlite3')
-        cursor = conn.execute("SELECT count(%s) FROM %s"%(SPECIAL ,table_name))
+        cursor = conn.execute("SELECT count(*) FROM '{}' WHERE STATUS = '{}'".format(table_name, SPECIAL))
         for row in cursor:
             return row[0]
 
+
+
+    #_____________________ product load data function _____________________
+    def product_table_load_data(self):
+        row_count = self.__row_count('PRODUCT')
+        self.product_table.setRowCount(row_count)
+        tablerow = 0 
+        for row in the_operator.product_report():
+            self.product_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
+            self.product_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
+            self.product_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
+            self.product_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[3]))
+            tablerow +=1
+
+    #______________________________________________________________________
+
+
+    #_____________________ new product request load data function _____________________
+    def new_product_request_load_data(self):
+        row_count = self.__row_count_SPECIAL('PRODUCT','NEW' )
+        self.new_product_tabel.setRowCount(row_count)
+        tablerow = 0 
+        for row in the_operator.check_product():
+            self.new_product_tabel.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[0]))
+            self.new_product_tabel.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[1]))
+            self.new_product_tabel.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(row[2]))
+            self.new_product_tabel.setItem(tablerow, 5, QtWidgets.QTableWidgetItem(row[3]))
+            self.new_product_tabel.setItem(tablerow, 6, QtWidgets.QTableWidgetItem(row[4]))
+            self.new_product_tabel.setItem(tablerow, 7, QtWidgets.QTableWidgetItem(row[5]))
+            tablerow +=1
+
+    #__________________________________________________________________________________
+
+    #_____________________ new buy request load data function _____________________
+    def buy_request_load_data(self):
+        row_count = self.__row_count_SPECIAL('ORDER','NEW' )
+        self.new_buy_request_table.setRowCount(row_count)
+        tablerow = 0 
+        for row in the_operator.check_order():
+            self.new_buy_request_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[0]))
+            self.new_buy_request_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[1]))
+            self.new_buy_request_table.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(row[2]))
+            self.new_buy_request_table.setItem(tablerow, 5, QtWidgets.QTableWidgetItem(row[3]))
+            self.new_buy_request_table.setItem(tablerow, 6, QtWidgets.QTableWidgetItem(row[4]))
+            tablerow +=1
+
     #_____________________ costumer load data function _____________________
     def costumer_load_data(self):
-        conn = sqlite3.connect('database.sqlite3')
-        cur = conn.cursor()
-        query = 'SELECT CU_ID, EMAIL, LOCATION FROM CUSTOMER'
-        row_count = self.__row_count('CUSTOMER')
-
+        row_count = self.__row_count('COSTUMER')
         self.costumerlist_table.setRowCount(row_count)
         tablerow = 0 
-        for row in cur.execute(query):
-            self.costumerlist_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
-            self.costumerlist_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
-            self.costumerlist_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
+        for row in the_operator.costumer_report():
+            self.costumerlist_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[0]))
+            self.costumerlist_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[1]))
+            self.costumerlist_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[2]))
             tablerow +=1
         
     #________________________________________________________________________
@@ -446,32 +643,41 @@ class operator_panel(object):
 
     #_____________________ seller load data function ________________________
     def seller_load_data(self):
-        conn = sqlite3.connect('database.sqlite3')
-        cur = conn.cursor()
-        query = 'SELECT SL_ID,EMAIL,SCORE FROM SELLER'
+        
         row_count = self.__row_count('SELLER')
 
         self.seller_list_table.setRowCount(row_count)
         tablerow = 0 
-        for row in cur.execute(query):
-            self.seller_list_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
-            self.seller_list_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
-            self.seller_list_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
-
+        for row in the_operator.seller_report():
+            self.seller_list_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[0]))
+            self.seller_list_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[1]))
+            self.seller_list_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[2]))
             tablerow +=1
+    #________________________________________________________________________
+
+    #_____________________ shop load data function ________________________
+    def shop_report_load_data(self):
+        row_count = self.__row_count('SHOP')
+        self.shop_report_table.setRowCount(row_count)
+        result = the_operator.shop_reports()
+        tablerow = 0 
+        for row in result:
+            self.shop_report_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
+            self.shop_report_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
+            self.shop_report_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
+            self.shop_report_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[3]))
+            tablerow +=1
+
     #________________________________________________________________________
 
 
     #_____________________ sell report load data function ________________________
     def sell_report_load_data(self):
-        conn = sqlite3.connect('database.sqlite3')
-        cur = conn.cursor()
-        query = 'SELECT PR_ID, SHOP_NAME, SL_ID, DATE_TIME, CU_ID FROM SELL_REPORT'
         row_count = self.__row_count('SELL_REPORT')
-
         self.sell_report_table.setRowCount(row_count)
+        result = the_operator.sell_report()
         tablerow = 0 
-        for row in cur.execute(query):
+        for row in result:
             self.sell_report_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
             self.sell_report_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
             self.sell_report_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
@@ -505,6 +711,7 @@ class operator_panel(object):
         off_pr_id = self.off_PR_ID.text()
 
         the_operator.off_code_generator(exp, off_pr_id,off_cu_id,num,perecentage)
+        self.load_off_data()
     #_______________________________________________________________________________
 
 
