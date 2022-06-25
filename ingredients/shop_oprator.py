@@ -70,11 +70,38 @@ class operators:
             print("Done!")
 
 
+    def total_rate(self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        cu_count_query = "SELECT count(*) FROM COSTUMER"
+        sl_count_query = "SELECT count(*) FROM SELLER"
+        pr_count_query = "SELECT count(*) FROM PRODUCT"
+        shop_count_query = "SELECT count(*) FROM SHOP"
+
+        data_cu_count_query = cur.execute(cu_count_query)
+        data_sl_count_query = cur.execute(sl_count_query)
+        data_pr_count_query = cur.execute(pr_count_query)
+        data_shop_count_query = cur.execute(shop_count_query)
+
+        for row in data_cu_count_query:
+            count_data_cu_count_query = row[0]
+        for row in data_sl_count_query:
+            count_data_sl_count_query = row[0]
+        for row in data_pr_count_query:
+            count_data_pr_count_query = row[0]
+        for row in data_shop_count_query:
+            count_data_shop_count_query = row[0]
+
+
+        return count_data_cu_count_query, count_data_sl_count_query, count_data_pr_count_query, count_data_shop_count_query
+
+
+
 
     def load_cu_profile(self, CU_ID):
         conn = sqlite3.connect('database.sqlite3')
         cur = conn.cursor()
-        information_query = "SELECT CU_ID, EMAIL, PASSWORD, LOCATION, SCORE, TotalPurchase FROM COSTUMER WHERE CU_ID = '{}'" .format(CU_ID)
+        information_query = "SELECT CU_ID, EMAIL, PASSWORD, LOCATION, SCORE, TOTAL_PURCHASE, ACTIVE_STATUS FROM COSTUMER WHERE CU_ID = '{}'" .format(CU_ID)
         order_list_query = "SELECT SL_ID, ORDER_LIST, DATE, STATUS FROM 'ORDER' WHERE CU_ID = '{}'" .format(CU_ID)
         basket_list_query = "SELECT BASKET FROM COSTUMER WHERE CU_ID = '{}'" .format(CU_ID)
         favorite_list_query = "SELECT FAVORIT FROM COSTUMER WHERE CU_ID = '{}'" .format(CU_ID)
@@ -94,7 +121,7 @@ class operators:
     def load_SL_profile(self, SL_ID):
         conn = sqlite3.connect('database.sqlite3')
         cur = conn.cursor()
-        information_query = "SELECT SL_ID, EMAIL, PASSWORD, STATUS, SCORE, LOCATION FROM SELLER WHERE SL_ID = '{}'" .format(SL_ID)
+        information_query = "SELECT SL_ID, EMAIL, PASSWORD, STATUS, SCORE, LOCATION, ACTIVE_STATUS FROM SELLER WHERE SL_ID = '{}'" .format(SL_ID)
         product_list_query = "SELECT PRODUCTS FROM SELLER WHERE SL_ID = '{}'" .format(SL_ID)
         
         information_query_data = cur.execute(information_query)
@@ -112,11 +139,27 @@ class operators:
         return new_product_report_data
 
     def accept_product(self, PR_ID):
-       pass
+        conn = sqlite3.connect('database.sqlite3')
+        try:
+            conn.execute('''UPDATE PRODUCT STATUS = ACCEPTED WHERE PR_ID = {};'''.format(PR_ID))
+            conn.commit()
+        except sqlite3.Error:
+            print("error! something went wrong")
+        else:
+            print("Done!")
 
 
     def reject_product(self, PR_ID):
-        pass
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        try:
+            conn.execute('''UPDATE PRODUCT STATUS = REJECTED WHERE PR_ID = {};'''.format(PR_ID))
+            conn.commit()
+        except sqlite3.Error:
+            print("error! something went wrong")
+        else:
+            print("Done!")
+
 
     def check_seller(self):
         conn = sqlite3.connect('database.sqlite3')
@@ -126,7 +169,24 @@ class operators:
         return new_seller_report_data
 
     def accept_seller(self, SL_ID):
-        pass
+        conn = sqlite3.connect('database.sqlite3')
+        try:
+            conn.execute('''UPDATE SELLER STATUS = ACCEPTED WHERE SL_ID = {};'''.format(SL_ID))
+            conn.commit()
+        except sqlite3.Error:
+            print("error! something went wrong")
+        else:
+            print("Done!")
+
+    def reject_seller(self, SL_ID):
+        conn = sqlite3.connect('database.sqlite3')
+        try:
+            conn.execute('''UPDATE SELLER STATUS = REJECTED WHERE SL_ID = {};'''.format(SL_ID))
+            conn.commit()
+        except sqlite3.Error:
+            print("error! something went wrong")
+        else:
+            print("Done!")
 
     def check_order(self):
         conn = sqlite3.connect('database.sqlite3')
@@ -136,16 +196,37 @@ class operators:
         return new_order_report_data
 
     def accept_order(self, CU_ID):
-        pass
+        conn = sqlite3.connect('database.sqlite3')
+        try:
+            conn.execute('''UPDATE 'ORDER' STATUS = ACCEPTED WHERE CU_ID = {};'''.format(CU_ID))
+            conn.commit()
+        except sqlite3.Error:
+            print("error! something went wrong")
+        else:
+            print("Done!")
 
     def reject_order(self, CU_ID):
-        pass
+        conn = sqlite3.connect('database.sqlite3')
+        try:
+            conn.execute('''UPDATE 'ORDER' STATUS = REJECTED WHERE CU_ID = {};'''.format(CU_ID))
+            conn.commit()
+        except sqlite3.Error:
+            print("error! something went wrong")
+        else:
+            print("Done!")
     
+
+    def costumer_list (self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = "SELECT CU_ID, EMAIL, LOCATION FROM COSTUMER WHERE ACTIVE_STATUS = 'ACTIVE'"
+        costumer_list_data = cur.execute(query)
+        return costumer_list_data
 
     def costumer_report (self):
         conn = sqlite3.connect('database.sqlite3')
         cur = conn.cursor()
-        query = 'SELECT CU_ID, EMAIL, LOCATION FROM COSTUMER'
+        query = "SELECT CU_ID, SCORE, TOTAL_PURCHASE FROM COSTUMER WHERE ACTIVE_STATUS = 'ACTIVE'"
         costumer_report_data = cur.execute(query)
         return costumer_report_data
 
@@ -156,12 +237,20 @@ class operators:
         shop_report_data = cur.execute(query)
         return shop_report_data
 
+
+    def seller_list(self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = "SELECT SL_ID,EMAIL,SCORE FROM SELLER WHERE ACTIVE_STATUS = 'ACTIVE'"
+        seller_report_data = cur.execute(query)
+        return seller_report_data
+
     def seller_report(self):
         conn = sqlite3.connect('database.sqlite3')
         cur = conn.cursor()
-        query = 'SELECT SL_ID,EMAIL,SCORE FROM SELLER'
-        seller_report_data = cur.execute(query)
-        return seller_report_data
+        query = "SELECT SL_ID,SCORE, TOTAL_SALES, NET_INCOME FROM SELLER WHERE ACTIVE_STATUS = 'ACTIVE'"
+        seller_list_data = cur.execute(query)
+        return seller_list_data
 
     def product_report(self):
     # give list of all products and number of them 
@@ -251,21 +340,50 @@ class shop:
         
         
     def add_costumer_to_shop(self, CU_ID):
-        pass
+        conn = sqlite3.connect('database.sqlite3')
+        try:
+            conn.execute('''UPDATE COSTUMER ACTIVE_STATUS = ACTIVE WHERE CU_ID = {};''' .format(CU_ID))
+            conn.commit()           
+        except sqlite3.Error:
+            print("error!")
+        else:
+            print("Done!")
 
 
 
     def del_customer_to_shop(self, CU_ID):
-        pass
+        conn = sqlite3.connect('database.sqlite3')
+        try:
+            conn.execute('''UPDATE COSTUMER ACTIVE_STATUS = SUSPENDED WHERE CU_ID = {};''' .format(CU_ID))
+            conn.commit()           
+        except sqlite3.Error:
+            print("error!")
+        else:
+            print("Done!")
 
 
 
     def add_seller_to_shop(self, SL_ID):
-        pass
+        conn = sqlite3.connect('database.sqlite3')
+        try:
+            conn.execute('''UPDATE SELLER ACTIVE_STATUS = ACTIVE WHERE SL_ID = {};''' .format(SL_ID))
+            conn.commit()           
+        except sqlite3.Error:
+            print("error!")
+        else:
+            print("Done!")
+
 
 
     def del_seller_to_shop(self, SL_ID):
-        pass
+        conn = sqlite3.connect('database.sqlite3')
+        try:
+            conn.execute('''UPDATE SELLER ACTIVE_STATUS = SUSPENDED WHERE SL_ID = {};''' .format(SL_ID))
+            conn.commit()           
+        except sqlite3.Error:
+            print("error!")
+        else:
+            print("Done!")
 
 
 
@@ -281,11 +399,28 @@ class shop:
         pass
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import * 
 from PyQt5.QtWidgets import * 
+from PyQt5.QtCore import Qt
+
 
 
 ################################ start operator panel GUI ###################################
@@ -600,9 +735,9 @@ class operator_panel(object):
         self.seller_list_refresh_button = QtWidgets.QPushButton(self.tab)
         self.seller_list_refresh_button.setObjectName("seller_list_refresh_button")
         self.gridLayout_6.addWidget(self.seller_list_refresh_button, 3, 2, 1, 1)
-        self.seller_rate_refresh_button = QtWidgets.QPushButton(self.tab)
-        self.seller_rate_refresh_button.setObjectName("seller_rate_refresh_button")
-        self.gridLayout_6.addWidget(self.seller_rate_refresh_button, 7, 4, 1, 1)
+        self.total_rate_refresh_button = QtWidgets.QPushButton(self.tab)
+        self.total_rate_refresh_button.setObjectName("total_rate_refresh_button")
+        self.gridLayout_6.addWidget(self.total_rate_refresh_button, 7, 4, 1, 1)
         self.sell_report_table = QtWidgets.QTableWidget(self.tab)
         self.sell_report_table.setObjectName("sell_report_table")
         self.sell_report_table.setColumnCount(5)
@@ -646,28 +781,35 @@ class operator_panel(object):
         #____________________________________________________________
 
         self.gridLayout_6.addWidget(self.shop_report_table, 1, 5, 5, 1)
-        self.sallerrate_list = QtWidgets.QTableWidget(self.tab)
-        self.sallerrate_list.setObjectName("sallerrate_list")
-        self.sallerrate_list.setColumnCount(0)
-        self.sallerrate_list.setRowCount(0)
-        self.gridLayout_6.addWidget(self.sallerrate_list, 1, 4, 5, 1)
-        self.lineEdit_3 = QtWidgets.QLineEdit(self.tab)
-        self.lineEdit_3.setObjectName("lineEdit_3")
-        self.gridLayout_6.addWidget(self.lineEdit_3, 4, 2, 1, 1)
+        self.total_rate_list = QtWidgets.QTableWidget(self.tab)
+        self.total_rate_list.setObjectName("total_rate_list")
+        self.total_rate_list.setColumnCount(0)
+        self.total_rate_list.setRowCount(0)
+        self.gridLayout_6.addWidget(self.total_rate_list, 1, 4, 5, 1)
+        self.seller_list_line_edit = QtWidgets.QLineEdit(self.tab)
+        self.seller_list_line_edit.setObjectName("seller_list_line_edit")
+
+        self.seller_list_line_edit.setPlaceholderText("Search SL_ID ...")
+        self.seller_list_line_edit.textChanged.connect(self.search_seller)
+
+
+        self.gridLayout_6.addWidget(self.seller_list_line_edit, 4, 2, 1, 1)
         self.seller_report_refresh_button = QtWidgets.QPushButton(self.tab)
         self.seller_report_refresh_button.setObjectName("seller_report_refresh_button")
         self.gridLayout_6.addWidget(self.seller_report_refresh_button, 7, 3, 1, 1)
         self.seller_report_list = QtWidgets.QTableWidget(self.tab)
         self.seller_report_list.setObjectName("seller_report_list")
-        self.seller_report_list.setColumnCount(2)
+        self.seller_report_list.setColumnCount(4)
         self.seller_report_list.setRowCount(0)
 
         #_________________________ seller report table fill __________________________
         self.seller_report_list.setColumnWidth(0,100)
         self.seller_report_list.setColumnWidth(1,150)
-        self.seller_report_list.setHorizontalHeaderLabels([])
+        self.seller_report_list.setColumnWidth(2,150)
+        self.seller_report_list.setColumnWidth(3,150)
+        self.seller_report_list.setHorizontalHeaderLabels(['SL_ID', 'SCORE', 'TOTAL SALE', 'NET INCOME'])
 
-        # self.seller_report_load_data()
+        self.seller_report_load_data()
         #________________________________________________________________________ 
 
         self.gridLayout_6.addWidget(self.seller_report_list, 1, 3, 5, 1)
@@ -734,7 +876,7 @@ class operator_panel(object):
         self.gridLayout_8.addWidget(self.label_7, 0, 0, 1, 1)
         self.costumer_report_table = QtWidgets.QTableWidget(self.tab_2)
         self.costumer_report_table.setObjectName("costumer_report_table")
-        self.costumer_report_table.setColumnCount(0)
+        self.costumer_report_table.setColumnCount(3)
         self.costumer_report_table.setRowCount(0)
       #_________________________ costumer report table fill __________________________
         self.costumer_report_table.setColumnWidth(0,100)
@@ -744,9 +886,10 @@ class operator_panel(object):
         
         self.costumer_report_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
 
-        # self.costumerlist_table.setHorizontalHeaderLabels(['Show profile', 'CU_ID', 'EMAIL', 'LOCATION'])
-        # self.costumerlist_table.verticalHeader().hide()
-        # self.costumer_load_data()
+        self.costumer_report_table.setHorizontalHeaderLabels(['CU_ID', 'SCORE', 'TOTAL PURCHASE'])
+
+        self.costumer_report_list_load_data()
+
         # self.costumerlist_table.cellClicked.connect(self.print_test)
 
         # for index in range(self.costumerlist_table.rowCount()):
@@ -844,10 +987,10 @@ class operator_panel(object):
         self.seller_list_sort_button.setText(_translate("Form", "sort"))
         self.seller_list_delete_button.setText(_translate("Form", "delete"))
         self.label_2.setText(_translate("Form", "Seller list"))
-        self.label_4.setText(_translate("Form", "seller rate"))
+        self.label_4.setText(_translate("Form", "total rate"))
         self.sell_report_refresh_button.setText(_translate("Form", "refresh"))
         self.seller_list_refresh_button.setText(_translate("Form", "refresh"))
-        self.seller_rate_refresh_button.setText(_translate("Form", "refresh"))
+        self.total_rate_refresh_button.setText(_translate("Form", "refresh"))
         self.pushButton_18.setText(_translate("Form", "refresh"))
         self.label_17.setText(_translate("Form", "shop report"))
         self.label.setText(_translate("Form", "Sell report"))
@@ -871,14 +1014,48 @@ class operator_panel(object):
         cursor = conn.execute("SELECT count(*) FROM '{}';" .format(table_name))
         for row in cursor:
             return row[0]
-    def __row_count_SPECIAL(self, table_name:str, SPECIAL):
+    def __row_count_SPECIAL(self, table_name:str, SPECIAL, COLUMN_NAME):
         conn = sqlite3.connect('database.sqlite3')
-        cursor = conn.execute("SELECT count(*) FROM '{}' WHERE STATUS = '{}'".format(table_name, SPECIAL))
+        cursor = conn.execute("SELECT count(*) FROM '{}' WHERE {} = '{}'".format(table_name, COLUMN_NAME,SPECIAL))
         for row in cursor:
             return row[0]
 
+    #_____________________ search_seller function _____________________
+    def search_seller(self, SL_ID):
+        self.seller_list_table.setCurrentItem(None)
+        if not SL_ID:
+            return 
+        matching_items = self.seller_list_table.findItems(SL_ID, Qt.MatchContains)
+        if matching_items:
+            item = matching_items[0]  # Take the first.
+            self.seller_list_table.setCurrentItem(item)
 
+    #___________________________________________________________________
 
+    #_____________________ seller report load data function _____________________
+
+    def seller_report_load_data(self):
+        row_count = self.__row_count_SPECIAL('SELLER', 'ACTIVE', 'ACTIVE_STATUS')
+        self.seller_report_list.setRowCount(row_count)
+        tablerow = 0 
+        for row in the_operator.seller_report():
+            self.seller_report_list.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
+            self.seller_report_list.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
+            self.seller_report_list.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
+            self.seller_report_list.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[3]))
+            tablerow +=1
+
+    #_____________________ costumer report list load data function _____________________
+    def costumer_report_list_load_data(self):
+        row_count = self.__row_count_SPECIAL('COSTUMER', 'ACTIVE', 'ACTIVE_STATUS')
+        self.costumer_report_table.setRowCount(row_count)
+        tablerow = 0 
+        for row in the_operator.costumer_report():
+            self.costumer_report_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
+            self.costumer_report_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
+            self.costumer_report_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
+            
+            tablerow +=1
     #_____________________ product load data function _____________________
     def product_table_load_data(self):
         row_count = self.__row_count('PRODUCT')
@@ -896,7 +1073,7 @@ class operator_panel(object):
 
     #_____________________ new product request load data function _____________________
     def new_product_request_load_data(self):
-        row_count = self.__row_count_SPECIAL('PRODUCT','NEW' )
+        row_count = self.__row_count_SPECIAL('PRODUCT','NEW', 'STATUS' )
         self.new_product_tabel.setRowCount(row_count)
         tablerow = 0 
         for row in the_operator.check_product():
@@ -912,7 +1089,7 @@ class operator_panel(object):
 
     #_____________________ new seller request load data function _____________________
     def new_seller_request_load_data(self):
-        row_count = self.__row_count_SPECIAL('SELLER','NEW' )
+        row_count = self.__row_count_SPECIAL('SELLER','NEW', 'STATUS' )
         self.new_seller_request_table.setRowCount(row_count)
         tablerow = 0 
         for row in the_operator.check_product():
@@ -929,7 +1106,7 @@ class operator_panel(object):
 
     #_____________________ new buy request load data function _____________________
     def buy_request_load_data(self):
-        row_count = self.__row_count_SPECIAL('ORDER','NEW' )
+        row_count = self.__row_count_SPECIAL('ORDER','NEW', 'STATUS' )
         self.new_buy_request_table.setRowCount(row_count)
         tablerow = 0 
         for row in the_operator.check_order():
@@ -942,10 +1119,10 @@ class operator_panel(object):
 
     #_____________________ costumer load data function _____________________
     def costumer_load_data(self):
-        row_count = self.__row_count('COSTUMER')
+        row_count = self.__row_count_SPECIAL('COSTUMER', 'ACTIVE', 'ACTIVE_STATUS')
         self.costumerlist_table.setRowCount(row_count)
         tablerow = 0 
-        for row in the_operator.costumer_report():
+        for row in the_operator.costumer_list():
             self.costumerlist_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[0]))
             self.costumerlist_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[1]))
             self.costumerlist_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[2]))
@@ -957,11 +1134,11 @@ class operator_panel(object):
     #_____________________ seller load data function ________________________
     def seller_load_data(self):
         
-        row_count = self.__row_count('SELLER')
+        row_count = self.__row_count_SPECIAL('SELLER', 'ACTIVE', 'ACTIVE_STATUS')
 
         self.seller_list_table.setRowCount(row_count)
         tablerow = 0 
-        for row in the_operator.seller_report():
+        for row in the_operator.seller_list():
             self.seller_list_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[0]))
             self.seller_list_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[1]))
             self.seller_list_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[2]))
