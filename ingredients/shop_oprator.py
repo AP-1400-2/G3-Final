@@ -96,39 +96,62 @@ class operators:
         return count_data_cu_count_query, count_data_sl_count_query, count_data_pr_count_query, count_data_shop_count_query
 
 
-
-
-    def load_cu_profile(self, CU_ID):
+    def load_cu_profile_information(self, CU_ID):
         conn = sqlite3.connect('database.sqlite3')
         cur = conn.cursor()
-        information_query = "SELECT CU_ID, EMAIL, PASSWORD, LOCATION, SCORE, TOTAL_PURCHASE, ACTIVE_STATUS FROM COSTUMER WHERE CU_ID = '{}'" .format(CU_ID)
+        information_query = "SELECT CU_ID, EMAIL, LOCATION, SCORE, TOTAL_PURCHASE, ACTIVE_STATUS FROM COSTUMER WHERE CU_ID = '{}'" .format(CU_ID)
+        information_query_data = cur.execute(information_query)
+        return information_query_data
+        
+
+    def load_cu_profile_order_list(self, CU_ID):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
         order_list_query = "SELECT SL_ID, ORDER_LIST, DATE, STATUS FROM 'ORDER' WHERE CU_ID = '{}'" .format(CU_ID)
-        basket_list_query = "SELECT BASKET FROM COSTUMER WHERE CU_ID = '{}'" .format(CU_ID)
-        favorite_list_query = "SELECT FAVORIT FROM COSTUMER WHERE CU_ID = '{}'" .format(CU_ID)
-        comments_list_query = "SELECT PR_ID, COMMENT FROM COMMENT_LIST WHERE CU_ID = '{}'" .format(CU_ID)
-        wallet_query = "SELECT WALLET_INVENTORY FROM WALLET WHERE CU_ID = '{}'" .format(CU_ID)
-
-        information_query_data = cur.execute(information_query)
         order_list_query_data = cur.execute(order_list_query)
-        basket_list_query_data = cur.execute(basket_list_query)
-        favorite_list_query_data = cur.execute(favorite_list_query)
-        comments_list_query_data = cur.execute(comments_list_query)
-        wallet_query_data = cur.execute(wallet_query)
-
-        return information_query_data, order_list_query_data, basket_list_query_data, favorite_list_query_data, comments_list_query_data, wallet_query_data
-
-
-    def load_SL_profile(self, SL_ID):
+        return order_list_query_data
+        
+    def load_cu_profile_basket_list(self, CU_ID):
         conn = sqlite3.connect('database.sqlite3')
         cur = conn.cursor()
-        information_query = "SELECT SL_ID, EMAIL, PASSWORD, STATUS, SCORE, LOCATION, ACTIVE_STATUS FROM SELLER WHERE SL_ID = '{}'" .format(SL_ID)
-        product_list_query = "SELECT PRODUCTS FROM SELLER WHERE SL_ID = '{}'" .format(SL_ID)
+        basket_list_query = "SELECT BASKET FROM COSTUMER WHERE CU_ID = '{}'" .format(CU_ID)
+        basket_list_query_data = cur.execute(basket_list_query)
+        return basket_list_query_data
         
-        information_query_data = cur.execute(information_query)
-        product_list_query_data = cur.execute(product_list_query)
+    def load_cu_profile_favorite_list(self, CU_ID):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        favorite_list_query = "SELECT FAVORIT FROM COSTUMER WHERE CU_ID = '{}'" .format(CU_ID)
+        favorite_list_query_data = cur.execute(favorite_list_query)
+        return favorite_list_query_data
         
+    def load_cu_profile_comments_list(self, CU_ID):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        comments_list_query = "SELECT PR_ID, COMMENT FROM COMMENT_LIST WHERE CU_ID = '{}'" .format(CU_ID)
+        comments_list_query_data = cur.execute(comments_list_query)
+        return comments_list_query_data
+        
+    def load_cu_profile_wallet(self, CU_ID):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        wallet_query = "SELECT WALLET_INVENTORY FROM WALLET WHERE SPECIAL_ID = '{}'" .format(CU_ID)
+        wallet_query_data = cur.execute(wallet_query)
+        return wallet_query_data
 
-        return information_query_data, product_list_query_data
+    def load_SL_profile_information(self, SL_ID):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        information_query = "SELECT SL_ID, EMAIL, STATUS, SCORE, LOCATION, TOTAL_SALES, NET_INCOME, ACTIVE_STATUS FROM SELLER WHERE SL_ID = '{}'" .format(SL_ID)
+        information_query_data = cur.execute(information_query)
+        return information_query_data
+
+    def load_SL_profile_product(self, SL_ID):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        product_list_query = "SELECT PRODUCTS FROM SELLER WHERE SL_ID = '{}'" .format(SL_ID)
+        product_list_query_data = cur.execute(product_list_query)
+        return product_list_query_data
 
 
     def check_product(self):
@@ -723,6 +746,8 @@ class operator_panel(object):
             self.seller_list_table.setCellWidget(index, 0, self.show_seller_profile )
 
             self.show_seller_profile.clicked.connect(self.get_SL_ID)
+            self.show_seller_profile.clicked.connect(self.switch_to_seller_profile)
+            self.show_seller_profile.clicked.connect(self.print_test)
             self.show_seller_profile.setStyleSheet("background-color : #c9c9c9")
 
         
@@ -867,6 +892,7 @@ class operator_panel(object):
             self.costumerlist_table.setCellWidget(index, 0, self.show_costumer_profile )
 
             self.show_costumer_profile .clicked.connect(self.get_CU_ID)
+            self.show_costumer_profile .clicked.connect(self.switch_to_costumer_profile)
             self.show_costumer_profile.setStyleSheet("background-color : #c9c9c9")
         
         #________________________________________________________________________ 
@@ -945,6 +971,19 @@ class operator_panel(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     #____________________ test _____________________________________
+
+    def switch_to_seller_profile(self):
+        self.window = QtWidgets.QWidget()
+        self.ui = seller_profile()
+        self.ui.setupUi(self.window)
+        self.window.show()
+
+    def switch_to_costumer_profile(self):
+        self.window = QtWidgets.QWidget()
+        self.ui = costumer_profile()
+        self.ui.setupUi(self.window)
+        self.window.show()
+
     def print_test(self):
         # self.costumerlist_table.
         print("test done!")
@@ -953,12 +992,17 @@ class operator_panel(object):
         current_row = self.costumerlist_table.currentRow()
         current_column = self.costumerlist_table.currentColumn()
         cell_value = self.costumerlist_table.item(current_row, current_column + 1).text()
-        print(cell_value)
+        global get_CU_ID_value
+        get_CU_ID_value = cell_value
+
     def get_SL_ID(self):
         current_row = self.seller_list_table.currentRow()
         current_column = self.seller_list_table.currentColumn()
         cell_value = self.seller_list_table.item(current_row, current_column + 1).text()
         print(cell_value)
+        global get_SL_ID_value
+        get_SL_ID_value = cell_value
+
     #_______________________________________________________________
 
     def retranslateUi(self, Form):
@@ -1210,5 +1254,388 @@ class operator_panel(object):
             tablerow +=1
     #________________________________________________________________________________
 ################################ end operator panel #####################################
+
+
+################################ start costumer profile #################################
+class costumer_profile(object):
+    def __row_count(self, table_name:str):
+        conn = sqlite3.connect('database.sqlite3')
+        cursor = conn.execute("SELECT count(*) FROM '{}';" .format(table_name))
+        for row in cursor:
+            return row[0]
+    def __row_count_SPECIAL(self, table_name:str, SPECIAL, COLUMN_NAME):
+        conn = sqlite3.connect('database.sqlite3')
+        cursor = conn.execute("SELECT count(*) FROM '{}' WHERE {} = '{}'".format(table_name, COLUMN_NAME,SPECIAL))
+        for row in cursor:
+            return row[0]
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(657, 413)
+        self.gridLayout = QtWidgets.QGridLayout(Form)
+        self.gridLayout.setObjectName("gridLayout")
+        self.toolBox = QtWidgets.QToolBox(Form)
+        self.toolBox.setObjectName("toolBox")
+        self.page = QtWidgets.QWidget()
+        self.page.setGeometry(QtCore.QRect(0, 0, 635, 267))
+        self.page.setObjectName("page")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.page)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.label = QtWidgets.QLabel(self.page)
+        self.label.setObjectName("label")
+        self.gridLayout_2.addWidget(self.label, 0, 0, 1, 1)
+        self.costumer_profile_information_table = QtWidgets.QTableWidget(self.page)
+        self.costumer_profile_information_table.setObjectName("costumer_profile_information_table")
+        self.costumer_profile_information_table.setColumnCount(1)
+        self.costumer_profile_information_table.setRowCount(6)
+        #----------------------------seller_profile_information_table--------------------
+        self.costumer_profile_information_table.setColumnWidth(0,200)
+        
+        self.costumer_profile_information_table.setHorizontalHeaderLabels(['information'])
+        self.costumer_profile_information_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
+        self.costumer_profile_information_table.setVerticalHeaderLabels(['CU_ID', 'EMAIL', 'LOCATION', 'SCORE', 'TOTAL PURCHASE', 'ACTIVE STATUS'])
+
+        self.costumer_profile_information_table_load_data(get_CU_ID_value)
+        #--------------------------------------------------------------------------------
+
+
+        self.gridLayout_2.addWidget(self.costumer_profile_information_table, 1, 0, 1, 1)
+        self.toolBox.addItem(self.page, "")
+        self.page_2 = QtWidgets.QWidget()
+        self.page_2.setGeometry(QtCore.QRect(0, 0, 635, 267))
+        self.page_2.setObjectName("page_2")
+        self.gridLayout_5 = QtWidgets.QGridLayout(self.page_2)
+        self.gridLayout_5.setObjectName("gridLayout_5")
+        self.costumer_profile_wallet_label = QtWidgets.QLabel(self.page_2)
+        self.costumer_profile_wallet_label.setMaximumSize(QtCore.QSize(400, 16777215))
+        self.costumer_profile_wallet_label.setObjectName("costumer_profile_wallet_label")
+        #----------------------------costumer_profile_wallet_label--------------------
+        for info in the_operator.load_cu_profile_wallet(get_CU_ID_value):
+            self.costumer_profile_wallet_label.setText('Wallet: '+str(info[0])+'$')
+        #--------------------------------------------------------------------------------
+        self.gridLayout_5.addWidget(self.costumer_profile_wallet_label, 1, 0, 1, 1)
+        self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_9.setObjectName("horizontalLayout_9")
+        self.costumer_profile_order_table = QtWidgets.QTableWidget(self.page_2)
+        self.costumer_profile_order_table.setObjectName("costumer_profile_order_table")
+        self.costumer_profile_order_table.setColumnCount(5)
+        self.costumer_profile_order_table.setRowCount(0)
+        #----------------------------costumer_profile_order_table--------------------
+        self.costumer_profile_order_table.setColumnWidth(0,200)
+        
+        self.costumer_profile_order_table.setHorizontalHeaderLabels(['seller name', 'ORDER' , 'number' , 'date', 'status'])
+        self.costumer_profile_order_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
+        self.costumer_profile_order_table.setVerticalHeaderLabels([''])
+
+        self.costumer_profile_order_table_load_data(get_CU_ID_value)
+        #--------------------------------------------------------------------------------
+
+        self.horizontalLayout_9.addWidget(self.costumer_profile_order_table)
+        self.gridLayout_5.addLayout(self.horizontalLayout_9, 1, 1, 1, 1)
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.label_5 = QtWidgets.QLabel(self.page_2)
+        self.label_5.setObjectName("label_5")
+        self.horizontalLayout_4.addWidget(self.label_5)
+        self.gridLayout_5.addLayout(self.horizontalLayout_4, 0, 1, 1, 1)
+        self.toolBox.addItem(self.page_2, "")
+        self.page_3 = QtWidgets.QWidget()
+        self.page_3.setGeometry(QtCore.QRect(0, 0, 635, 267))
+        self.page_3.setObjectName("page_3")
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.page_3)
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
+        self.costumer_profile_basket_table = QtWidgets.QTableWidget(self.page_3)
+        self.costumer_profile_basket_table.setObjectName("costumer_profile_basket_table")
+        self.costumer_profile_basket_table.setColumnCount(1)
+        self.costumer_profile_basket_table.setRowCount(0)
+        #----------------------------costumer_profile_basket_table--------------------
+        self.costumer_profile_basket_table.setColumnWidth(0,300)
+        
+        self.costumer_profile_basket_table.setHorizontalHeaderLabels(['Basket items'])
+        self.costumer_profile_basket_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
+        self.costumer_profile_basket_table.setVerticalHeaderLabels([''])
+
+        self.costumer_profile_basket_table_load_data(get_CU_ID_value)
+        #--------------------------------------------------------------------------------
+
+        self.horizontalLayout_7.addWidget(self.costumer_profile_basket_table)
+        self.costumer_profile_favorite_table = QtWidgets.QTableWidget(self.page_3)
+        self.costumer_profile_favorite_table.setObjectName("costumer_profile_favorite_table")
+        self.costumer_profile_favorite_table.setColumnCount(1)
+        self.costumer_profile_favorite_table.setRowCount(0)
+        #----------------------------costumer_profile_favorite_table--------------------
+        self.costumer_profile_favorite_table.setColumnWidth(0,300)
+        
+        self.costumer_profile_favorite_table.setHorizontalHeaderLabels(['Favorite items'])
+        self.costumer_profile_favorite_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
+        self.costumer_profile_favorite_table.setVerticalHeaderLabels([''])
+
+        self.costumer_profile_favorite_table_load_data(get_CU_ID_value)
+        #--------------------------------------------------------------------------------
+
+        self.horizontalLayout_7.addWidget(self.costumer_profile_favorite_table)
+        self.gridLayout_3.addLayout(self.horizontalLayout_7, 1, 0, 1, 1)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.label_4 = QtWidgets.QLabel(self.page_3)
+        self.label_4.setObjectName("label_4")
+        self.horizontalLayout_2.addWidget(self.label_4)
+        self.label_3 = QtWidgets.QLabel(self.page_3)
+        self.label_3.setObjectName("label_3")
+        self.horizontalLayout_2.addWidget(self.label_3)
+        self.gridLayout_3.addLayout(self.horizontalLayout_2, 0, 0, 1, 1)
+        self.toolBox.addItem(self.page_3, "")
+        self.page_4 = QtWidgets.QWidget()
+        self.page_4.setGeometry(QtCore.QRect(0, 0, 635, 267))
+        self.page_4.setObjectName("page_4")
+        self.gridLayout_4 = QtWidgets.QGridLayout(self.page_4)
+        self.gridLayout_4.setObjectName("gridLayout_4")
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.label_6 = QtWidgets.QLabel(self.page_4)
+        self.label_6.setObjectName("label_6")
+        self.horizontalLayout.addWidget(self.label_6)
+        self.gridLayout_4.addLayout(self.horizontalLayout, 0, 0, 1, 1)
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.costumer_profile_comment_table = QtWidgets.QTableWidget(self.page_4)
+        self.costumer_profile_comment_table.setObjectName("costumer_profile_comment_table")
+        self.costumer_profile_comment_table.setColumnCount(2)
+        self.costumer_profile_comment_table.setRowCount(0)
+        #----------------------------costumer_profile_comment_table--------------------
+        self.costumer_profile_comment_table.setColumnWidth(0,80)
+        self.costumer_profile_comment_table.setColumnWidth(1,800)
+
+        self.costumer_profile_comment_table.setHorizontalHeaderLabels(['PR_ID', 'Comment'])
+        self.costumer_profile_comment_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
+        self.costumer_profile_comment_table_load_data(get_CU_ID_value)
+        
+        #--------------------------------------------------------------------------------
+        self.horizontalLayout_6.addWidget(self.costumer_profile_comment_table)
+        self.gridLayout_4.addLayout(self.horizontalLayout_6, 1, 0, 1, 1)
+        self.toolBox.addItem(self.page_4, "")
+        self.gridLayout.addWidget(self.toolBox, 0, 0, 1, 1)
+
+        self.retranslateUi(Form)
+        self.toolBox.setCurrentIndex(0)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Costumer profile"))
+        self.label.setText(_translate("Form", "CU ID "))
+        self.toolBox.setItemText(self.toolBox.indexOf(self.page), _translate("Form", "Information"))
+        self.label_5.setText(_translate("Form", "order list"))
+        self.toolBox.setItemText(self.toolBox.indexOf(self.page_2), _translate("Form", "Order list "))
+        self.label_4.setText(_translate("Form", "Basket"))
+        self.label_3.setText(_translate("Form", "favorit"))
+        self.toolBox.setItemText(self.toolBox.indexOf(self.page_3), _translate("Form", "Basket / Favorite"))
+        self.label_6.setText(_translate("Form", "Comments list"))
+        self.toolBox.setItemText(self.toolBox.indexOf(self.page_4), _translate("Form", "Comments"))
+
+    
+    
+
+    #--------------------costumer_profile_comment_table_load_data ------------------------
+    def costumer_profile_comment_table_load_data(self,CU_ID):
+        row_count = self.__row_count_SPECIAL('COMMENT_LIST', CU_ID, 'CU_ID')
+        self.costumer_profile_comment_table.setRowCount(row_count)
+
+        tablerow = 0 
+        for row in the_operator.load_cu_profile_comments_list(CU_ID):
+            self.costumer_profile_comment_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
+            self.costumer_profile_comment_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
+            tablerow +=1
+        
+        
+            
+    #-------------------------------------------------------------------------------------------
+
+    #--------------------costumer_profile_favorite_table_load_data ------------------------
+    def costumer_profile_favorite_table_load_data(self,CU_ID):
+        result = the_operator.load_cu_profile_favorite_list(CU_ID)
+        for item in result:
+            favorite = item[0].split(',')
+        self.costumer_profile_favorite_table.setRowCount(len(favorite))
+        for row in range(len(favorite)):
+            self.costumer_profile_favorite_table.setItem(row, 0, QtWidgets.QTableWidgetItem(favorite[row]))
+            
+    #-------------------------------------------------------------------------------------------
+    #--------------------costumer_profile_basket_table_load_data ------------------------
+    def costumer_profile_basket_table_load_data(self,CU_ID):
+        result = the_operator.load_cu_profile_basket_list(CU_ID)
+        for item in result:
+            basket = item[0].split(',')
+        self.costumer_profile_basket_table.setRowCount(len(basket))
+        for row in range(len(basket)):
+            self.costumer_profile_basket_table.setItem(row, 0, QtWidgets.QTableWidgetItem(basket[row]))
+            
+    #-------------------------------------------------------------------------------------------
+
+    #--------------------costumer_profile_information_table_load_data ------------------------
+    def costumer_profile_information_table_load_data(self,CU_ID):
+        result = the_operator.load_cu_profile_information(CU_ID)
+        for row in result:
+            self.costumer_profile_information_table.setItem(0, 0, QtWidgets.QTableWidgetItem(row[0]))
+            self.costumer_profile_information_table.setItem(1, 0, QtWidgets.QTableWidgetItem(row[1]))
+            self.costumer_profile_information_table.setItem(2, 0, QtWidgets.QTableWidgetItem(row[2]))
+            self.costumer_profile_information_table.setItem(3, 0, QtWidgets.QTableWidgetItem(row[3]))
+            self.costumer_profile_information_table.setItem(4, 0, QtWidgets.QTableWidgetItem(row[4]))
+            self.costumer_profile_information_table.setItem(5, 0, QtWidgets.QTableWidgetItem(row[5]))
+    #-------------------------------------------------------------------------------------------
+
+    
+    #--------------------costumer_profile_order_table_load_data ------------------------
+    def costumer_profile_order_table_load_data(self,CU_ID):
+        result = the_operator.load_cu_profile_order_list(CU_ID)
+        for order in result:
+            seller_name = order[0]
+            orders = eval(order[1])
+            date = order[2]
+            status = order[3]
+
+        orders_num = len(list(orders.keys()))
+
+        self.costumer_profile_order_table.setRowCount(orders_num)
+
+        for row in range(orders_num):
+            self.costumer_profile_order_table.setItem(row, 0, QtWidgets.QTableWidgetItem(seller_name))
+            
+        for row in range(orders_num):
+            self.costumer_profile_order_table.setItem(row, 1, QtWidgets.QTableWidgetItem(list(orders.keys())[row]))
+
+        rowcounter = 0
+        for row in list(orders.keys()):
+            self.costumer_profile_order_table.setItem(rowcounter, 2, QtWidgets.QTableWidgetItem(str(orders[row])))
+            rowcounter += 1
+
+        for row in range(orders_num):
+            self.costumer_profile_order_table.setItem(row, 3, QtWidgets.QTableWidgetItem(date))
+
+        for row in range(orders_num):
+            self.costumer_profile_order_table.setItem(row, 4, QtWidgets.QTableWidgetItem(status))
+            
+    #-------------------------------------------------------------------------------------------   
+
+
+################################  end costumer profile  #################################
+
+################################ start seller profile ###################################
+class seller_profile(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(762, 486)
+        self.gridLayout = QtWidgets.QGridLayout(Form)
+        self.gridLayout.setObjectName("gridLayout")
+        self.toolBox = QtWidgets.QToolBox(Form)
+        self.toolBox.setObjectName("toolBox")
+        self.page = QtWidgets.QWidget()
+        self.page.setGeometry(QtCore.QRect(0, 0, 740, 402))
+        self.page.setObjectName("page")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.page)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.label = QtWidgets.QLabel(self.page)
+        self.label.setObjectName("label")
+        self.gridLayout_2.addWidget(self.label, 0, 0, 1, 1)
+        self.seller_profile_information_table = QtWidgets.QTableWidget(self.page)
+        self.seller_profile_information_table.setObjectName("seller_profile_information_table")
+        self.seller_profile_information_table.setColumnCount(1)
+        self.seller_profile_information_table.setRowCount(8)
+        #----------------------------seller_profile_information_table--------------------
+        self.seller_profile_information_table.setColumnWidth(0,200)
+        
+        self.seller_profile_information_table.setHorizontalHeaderLabels(['Information'])
+        self.seller_profile_information_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
+        self.seller_profile_information_table.setVerticalHeaderLabels(['SL_ID', 'EMAIL', 'STATUS', 'SCORE', 'LOCATION', 'TOTAL SALES', 'NET INCOME', 'ACTIVE STATUS'])
+
+        self.seller_profile_information_table_load_data('SL111111')
+        #--------------------------------------------------------------------------------
+        self.gridLayout_2.addWidget(self.seller_profile_information_table, 1, 0, 1, 1)
+        self.toolBox.addItem(self.page, "")
+        self.page_2 = QtWidgets.QWidget()
+        self.page_2.setGeometry(QtCore.QRect(0, 0, 740, 402))
+        self.page_2.setObjectName("page_2")
+        self.gridLayout_5 = QtWidgets.QGridLayout(self.page_2)
+        self.gridLayout_5.setObjectName("gridLayout_5")
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.label_5 = QtWidgets.QLabel(self.page_2)
+        self.label_5.setObjectName("label_5")
+        self.horizontalLayout_4.addWidget(self.label_5)
+        self.gridLayout_5.addLayout(self.horizontalLayout_4, 0, 1, 1, 1)
+        self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_9.setObjectName("horizontalLayout_9")
+        self.seller_profile_products_table = QtWidgets.QTableWidget(self.page_2)
+        self.seller_profile_products_table.setObjectName("seller_profile_products_table")
+        self.seller_profile_products_table.setColumnCount(1)
+        self.seller_profile_products_table.setRowCount(0)
+        #----------------------------seller_profile_information_table--------------------
+        self.seller_profile_products_table.setColumnWidth(0,200)
+        
+        self.seller_profile_products_table.setHorizontalHeaderLabels(['Product'])
+        self.seller_profile_products_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
+        self.seller_profile_products_table.setVerticalHeaderLabels([])
+
+        self.seller_profile_product_table_load_data(get_SL_ID_value)
+        #--------------------------------------------------------------------------------
+
+        self.horizontalLayout_9.addWidget(self.seller_profile_products_table)
+        self.gridLayout_5.addLayout(self.horizontalLayout_9, 1, 1, 1, 1)
+        self.label_2 = QtWidgets.QLabel(self.page_2)
+        self.label_2.setMaximumSize(QtCore.QSize(400, 16777215))
+        self.label_2.setObjectName("label_2")
+        self.gridLayout_5.addWidget(self.label_2, 1, 0, 1, 1)
+        self.toolBox.addItem(self.page_2, "")
+        self.gridLayout.addWidget(self.toolBox, 0, 0, 1, 1)
+
+        self.retranslateUi(Form)
+        self.toolBox.setCurrentIndex(1)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Seller profile"))
+        self.label.setText(_translate("Form", "SL ID"))
+        self.toolBox.setItemText(self.toolBox.indexOf(self.page), _translate("Form", "Information"))
+        self.label_5.setText(_translate("Form", "product list"))
+        self.label_2.setText(_translate("Form", "wallet inventory"))
+        self.toolBox.setItemText(self.toolBox.indexOf(self.page_2), _translate("Form", "Product list"))
+    #------------------------ seller_profile_information_table_load_data -------------------
+    def seller_profile_information_table_load_data(self, SL_ID):
+        information_query  = the_operator.load_SL_profile_information(SL_ID)
+        
+        for row in information_query:
+            self.seller_profile_information_table.setItem(0, 0, QtWidgets.QTableWidgetItem(row[0]))
+            self.seller_profile_information_table.setItem(1, 0, QtWidgets.QTableWidgetItem(row[1]))
+            self.seller_profile_information_table.setItem(2, 0, QtWidgets.QTableWidgetItem(row[2]))
+            self.seller_profile_information_table.setItem(3, 0, QtWidgets.QTableWidgetItem(row[3]))
+            self.seller_profile_information_table.setItem(4, 0, QtWidgets.QTableWidgetItem(row[4]))
+            self.seller_profile_information_table.setItem(5, 0, QtWidgets.QTableWidgetItem(row[5]))
+            self.seller_profile_information_table.setItem(6, 0, QtWidgets.QTableWidgetItem(row[6]))
+            self.seller_profile_information_table.setItem(7, 0, QtWidgets.QTableWidgetItem(row[7]))
+    #---------------------------------------------------------------------------------------
+    #------------------------ seller_profile_product_table_load_data -----------------------
+    def seller_profile_product_table_load_data(self, SL_ID):
+        product_query  = the_operator.load_SL_profile_product(SL_ID)
+        for i in product_query:
+            data = i[0].split(',')
+        print(data)
+        self.seller_profile_products_table.setRowCount(len(data))
+        for row in range(len(data)):
+            self.seller_profile_products_table.setItem(row, 0, QtWidgets.QTableWidgetItem(data[row]))
+            
+    #---------------------------------------------------------------------------------------
+
+################################  end seller profile  ###################################
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Form = QtWidgets.QWidget()
+    ui = costumer_profile()
+    ui.setupUi(Form)
+    Form.show()
+    sys.exit(app.exec_())
 
 
