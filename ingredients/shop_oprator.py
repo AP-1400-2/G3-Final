@@ -70,31 +70,46 @@ class operators:
             print("Done!")
 
 
-    def total_rate(self):
+    def total_rate_cu(self):
         conn = sqlite3.connect('database.sqlite3')
         cur = conn.cursor()
         cu_count_query = "SELECT count(*) FROM COSTUMER"
-        sl_count_query = "SELECT count(*) FROM SELLER"
-        pr_count_query = "SELECT count(*) FROM PRODUCT"
-        shop_count_query = "SELECT count(*) FROM SHOP"
-
         data_cu_count_query = cur.execute(cu_count_query)
-        data_sl_count_query = cur.execute(sl_count_query)
-        data_pr_count_query = cur.execute(pr_count_query)
-        data_shop_count_query = cur.execute(shop_count_query)
-
         for row in data_cu_count_query:
             count_data_cu_count_query = row[0]
+        return count_data_cu_count_query
+        
+        
+    def total_rate_sl(self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        sl_count_query = "SELECT count(*) FROM SELLER"
+        data_sl_count_query = cur.execute(sl_count_query)
         for row in data_sl_count_query:
             count_data_sl_count_query = row[0]
+        return count_data_sl_count_query
+        
+        
+
+    def total_rate_pr(self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        pr_count_query = "SELECT count(*) FROM PRODUCT"
+        data_pr_count_query = cur.execute(pr_count_query)
         for row in data_pr_count_query:
             count_data_pr_count_query = row[0]
+        return count_data_pr_count_query
+       
+
+    def total_rate_shop(self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        shop_count_query = "SELECT count(*) FROM SHOP"
+        data_shop_count_query = cur.execute(shop_count_query)
         for row in data_shop_count_query:
             count_data_shop_count_query = row[0]
-
-
-        return count_data_cu_count_query, count_data_sl_count_query, count_data_pr_count_query, count_data_shop_count_query
-
+        return count_data_shop_count_query
+    
 
     def load_cu_profile_information(self, CU_ID):
         conn = sqlite3.connect('database.sqlite3')
@@ -587,6 +602,7 @@ class operator_panel(object):
 
         for index in range(self.new_seller_request_table.rowCount()):
             self.seller_request_accept  = QPushButton("✅")
+
                 
             self.new_seller_request_table.setCellWidget(index, 0, self.seller_request_accept )
 
@@ -808,8 +824,17 @@ class operator_panel(object):
         self.gridLayout_6.addWidget(self.shop_report_table, 1, 5, 5, 1)
         self.total_rate_list = QtWidgets.QTableWidget(self.tab)
         self.total_rate_list.setObjectName("total_rate_list")
-        self.total_rate_list.setColumnCount(0)
-        self.total_rate_list.setRowCount(0)
+        self.total_rate_list.setColumnCount(1)
+        self.total_rate_list.setRowCount(4)
+        #_____________________total_rate_list_________________
+        self.total_rate_list.setColumnWidth(0, 100)
+        
+        self.total_rate_list.setHorizontalHeaderLabels(['Count'])
+        self.total_rate_list.setVerticalHeaderLabels(['Costumer', 'Seller', 'Products', 'Shops'])
+        self.total_rate_load_data()
+        #____________________________________________________________
+
+
         self.gridLayout_6.addWidget(self.total_rate_list, 1, 4, 5, 1)
         self.seller_list_line_edit = QtWidgets.QLineEdit(self.tab)
         self.seller_list_line_edit.setObjectName("seller_list_line_edit")
@@ -852,6 +877,11 @@ class operator_panel(object):
         self.gridLayout_8.addWidget(self.delete_costumer, 4, 0, 1, 1)
         self.costumer_ID_line = QtWidgets.QLineEdit(self.tab_2)
         self.costumer_ID_line.setObjectName("costumer_ID_line")
+
+        self.costumer_ID_line.setPlaceholderText("Search CU_ID ...")
+        self.costumer_ID_line.textChanged.connect(self.search_costumer)
+
+
         self.gridLayout_8.addWidget(self.costumer_ID_line, 3, 0, 1, 1)
         self.costumer_list_refresh_button = QtWidgets.QPushButton(self.tab_2)
         self.costumer_list_refresh_button.setObjectName("costumer_list_refresh_button")
@@ -1064,7 +1094,19 @@ class operator_panel(object):
         for row in cursor:
             return row[0]
 
-    #_____________________ search_seller function _____________________
+    #_____________________ total_rate_load_data function _____________________
+    def total_rate_load_data(self):
+        CU_rate = the_operator.total_rate_cu()
+        SL_rate = the_operator.total_rate_sl()
+        PR_rate = the_operator.total_rate_pr()
+        Shop_rate = the_operator.total_rate_shop()
+
+        self.total_rate_list.setItem(0, 0, QtWidgets.QTableWidgetItem(str(CU_rate)))
+        self.total_rate_list.setItem(1, 0, QtWidgets.QTableWidgetItem(str(SL_rate)))
+        self.total_rate_list.setItem(2, 0, QtWidgets.QTableWidgetItem(str(PR_rate)))
+        self.total_rate_list.setItem(3, 0, QtWidgets.QTableWidgetItem(str(Shop_rate)))
+    #_________________________________________________________________________
+    #_____________________ search function _____________________
     def search_seller(self, SL_ID):
         self.seller_list_table.setCurrentItem(None)
         if not SL_ID:
@@ -1074,6 +1116,14 @@ class operator_panel(object):
             item = matching_items[0]  # Take the first.
             self.seller_list_table.setCurrentItem(item)
 
+    def search_costumer(self, CU_ID):
+        self.costumerlist_table.setCurrentItem(None)
+        if not CU_ID:
+            return 
+        matching_items = self.costumerlist_table.findItems(CU_ID, Qt.MatchContains)
+        if matching_items:
+            item = matching_items[0]  # Take the first.
+            self.costumerlist_table.setCurrentItem(item)
     #___________________________________________________________________
 
     #_____________________ seller report load data function _____________________
@@ -1543,13 +1593,13 @@ class seller_profile(object):
         self.seller_profile_information_table.setColumnCount(1)
         self.seller_profile_information_table.setRowCount(8)
         #----------------------------seller_profile_information_table--------------------
-        self.seller_profile_information_table.setColumnWidth(0,200)
+        self.seller_profile_information_table.setColumnWidth(0,700)
         
         self.seller_profile_information_table.setHorizontalHeaderLabels(['Information'])
         self.seller_profile_information_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
         self.seller_profile_information_table.setVerticalHeaderLabels(['SL_ID', 'EMAIL', 'STATUS', 'SCORE', 'LOCATION', 'TOTAL SALES', 'NET INCOME', 'ACTIVE STATUS'])
 
-        self.seller_profile_information_table_load_data('SL111111')
+        self.seller_profile_information_table_load_data(get_SL_ID_value)
         #--------------------------------------------------------------------------------
         self.gridLayout_2.addWidget(self.seller_profile_information_table, 1, 0, 1, 1)
         self.toolBox.addItem(self.page, "")
@@ -1571,7 +1621,7 @@ class seller_profile(object):
         self.seller_profile_products_table.setColumnCount(1)
         self.seller_profile_products_table.setRowCount(0)
         #----------------------------seller_profile_information_table--------------------
-        self.seller_profile_products_table.setColumnWidth(0,200)
+        self.seller_profile_products_table.setColumnWidth(0,800)
         
         self.seller_profile_products_table.setHorizontalHeaderLabels(['Product'])
         self.seller_profile_products_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
@@ -1628,14 +1678,5 @@ class seller_profile(object):
     #---------------------------------------------------------------------------------------
 
 ################################  end seller profile  ###################################
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = costumer_profile()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
 
 
