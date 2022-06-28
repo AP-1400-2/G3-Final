@@ -2,7 +2,7 @@
 from ingredients.customer import *
 from ingredients.shop_oprator import operator_panel
 from ingredients.shop_oprator import operators as op
-from ingredients.shop_oprator import shop as sh
+# from ingredients.shop_oprator import shop as sh
 
 
 from ingredients.shop_seller import *

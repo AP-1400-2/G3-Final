@@ -1,4 +1,7 @@
 import sqlite3
+
+import traceback
+import sys
 from random import randint as rint
 # operator sql table
 
@@ -34,10 +37,14 @@ class operators:
         old_password = conn.execute("SELECT PASSWORD FROM OPERATOR WHERE EMAIL = '{}' " .format(self.__email))
         if old_password == oldpassword:
             try:
-                conn.execute("UPDATE OPERATOR PASSWORD = '{}' WHERE EMAIL = '{}'" .format(newpassword, self.__email))
+                conn.execute("UPDATE OPERATOR SET PASSWORD = '{}' WHERE EMAIL = '{}'" .format(newpassword, self.__email))
                 conn.commit()            
-            except sqlite3.Error:
-                print("error! something went wrong")
+            except sqlite3.Error as er:
+                print('SQLite error: %s' % (' '.join(er.args)))
+                print("Exception class is: ", er.__class__)
+                print('SQLite traceback: ')
+                exc_type, exc_value, exc_tb = sys.exc_info()
+                print(traceback.format_exception(exc_type, exc_value, exc_tb))
             else:
                 print("Done!")
 
@@ -49,10 +56,14 @@ class operators:
             database_password = row[0]
         if database_password == password:
             try:
-                conn.execute("UPDATE OPERATOR EMAIL = '{}' WHERE EMAIL = '{}'" .format(newewmail, self.__email))
+                conn.execute("UPDATE OPERATOR SET EMAIL = '{}' WHERE EMAIL = '{}'" .format(newewmail, self.__email))
                 conn.commit()
-            except sqlite3.Error:
-                print("error! something went wrong")
+            except sqlite3.Error as er:
+                print('SQLite error: %s' % (' '.join(er.args)))
+                print("Exception class is: ", er.__class__)
+                print('SQLite traceback: ')
+                exc_type, exc_value, exc_tb = sys.exc_info()
+                print(traceback.format_exception(exc_type, exc_value, exc_tb))
             else:
                 print("Done!")
 
@@ -64,8 +75,12 @@ class operators:
             conn.execute('''INSERT INTO OPERATOR(EMAIL,PASSWORD) \
                         VALUES('{}','{}');'''.format(data['_operators__email'],data['_operators__password']))
             conn.commit()
-        except sqlite3.Error:
-            print("error! something went wrong")
+        except sqlite3.Error as er:
+            print('SQLite error: %s' % (' '.join(er.args)))
+            print("Exception class is: ", er.__class__)
+            print('SQLite traceback: ')
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            print(traceback.format_exception(exc_type, exc_value, exc_tb))
         else:
             print("Done!")
 
@@ -179,10 +194,14 @@ class operators:
     def accept_product(self, PR_ID):
         conn = sqlite3.connect('database.sqlite3')
         try:
-            conn.execute('''UPDATE PRODUCT STATUS = ACCEPTED WHERE PR_ID = {};'''.format(PR_ID))
+            conn.execute('''UPDATE PRODUCT SET STATUS = 'ACCEPTED' WHERE PR_ID = '{}';'''.format(PR_ID))
             conn.commit()
-        except sqlite3.Error:
-            print("error! something went wrong")
+        except sqlite3.Error as er:
+            print('SQLite error: %s' % (' '.join(er.args)))
+            print("Exception class is: ", er.__class__)
+            print('SQLite traceback: ')
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            print(traceback.format_exception(exc_type, exc_value, exc_tb))
         else:
             print("Done!")
 
@@ -191,10 +210,14 @@ class operators:
         conn = sqlite3.connect('database.sqlite3')
         cur = conn.cursor()
         try:
-            conn.execute('''UPDATE PRODUCT STATUS = REJECTED WHERE PR_ID = {};'''.format(PR_ID))
+            conn.execute('''UPDATE PRODUCT SET STATUS = 'REJECTED' WHERE PR_ID = '{}';'''.format(PR_ID))
             conn.commit()
-        except sqlite3.Error:
-            print("error! something went wrong")
+        except sqlite3.Error as er:
+            print('SQLite error: %s' % (' '.join(er.args)))
+            print("Exception class is: ", er.__class__)
+            print('SQLite traceback: ')
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            print(traceback.format_exception(exc_type, exc_value, exc_tb))
         else:
             print("Done!")
 
@@ -209,20 +232,30 @@ class operators:
     def accept_seller(self, SL_ID):
         conn = sqlite3.connect('database.sqlite3')
         try:
-            conn.execute('''UPDATE SELLER STATUS = ACCEPTED WHERE SL_ID = {};'''.format(SL_ID))
+            conn.execute('''UPDATE SELLER SET  STATUS = 'ACCEPTED' WHERE SL_ID = '{}';'''.format(SL_ID))
             conn.commit()
-        except sqlite3.Error:
-            print("error! something went wrong")
+            conn.execute('''UPDATE SELLER SET  ACTIVE_STATUS = 'ACTIVE' WHERE SL_ID = '{}';'''.format(SL_ID))
+            conn.commit()
+        except sqlite3.Error as er:
+            print('SQLite error: %s' % (' '.join(er.args)))
+            print("Exception class is: ", er.__class__)
+            print('SQLite traceback: ')
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            print(traceback.format_exception(exc_type, exc_value, exc_tb))
         else:
             print("Done!")
 
     def reject_seller(self, SL_ID):
         conn = sqlite3.connect('database.sqlite3')
         try:
-            conn.execute('''UPDATE SELLER STATUS = REJECTED WHERE SL_ID = {};'''.format(SL_ID))
+            conn.execute('''UPDATE SELLER SET STATUS = 'REJECTED' WHERE SL_ID = '{}';'''.format(SL_ID))
             conn.commit()
-        except sqlite3.Error:
-            print("error! something went wrong")
+        except sqlite3.Error as er:
+            print('SQLite error: %s' % (' '.join(er.args)))
+            print("Exception class is: ", er.__class__)
+            print('SQLite traceback: ')
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            print(traceback.format_exception(exc_type, exc_value, exc_tb))
         else:
             print("Done!")
 
@@ -236,20 +269,28 @@ class operators:
     def accept_order(self, CU_ID):
         conn = sqlite3.connect('database.sqlite3')
         try:
-            conn.execute('''UPDATE 'ORDER' STATUS = ACCEPTED WHERE CU_ID = {};'''.format(CU_ID))
+            conn.execute('''UPDATE 'ORDER' SET STATUS = 'ACCEPTED' WHERE CU_ID = '{}';'''.format(CU_ID))
             conn.commit()
-        except sqlite3.Error:
-            print("error! something went wrong")
+        except sqlite3.Error as er:
+            print('SQLite error: %s' % (' '.join(er.args)))
+            print("Exception class is: ", er.__class__)
+            print('SQLite traceback: ')
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            print(traceback.format_exception(exc_type, exc_value, exc_tb))
         else:
             print("Done!")
 
     def reject_order(self, CU_ID):
         conn = sqlite3.connect('database.sqlite3')
         try:
-            conn.execute('''UPDATE 'ORDER' STATUS = REJECTED WHERE CU_ID = {};'''.format(CU_ID))
+            conn.execute('''UPDATE 'ORDER' SET STATUS = 'REJECTED' WHERE CU_ID = '{}';'''.format(CU_ID))
             conn.commit()
-        except sqlite3.Error:
-            print("error! something went wrong")
+        except sqlite3.Error as er:
+            print('SQLite error: %s' % (' '.join(er.args)))
+            print("Exception class is: ", er.__class__)
+            print('SQLite traceback: ')
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            print(traceback.format_exception(exc_type, exc_value, exc_tb))
         else:
             print("Done!")
     
@@ -268,12 +309,19 @@ class operators:
         costumer_report_data = cur.execute(query)
         return costumer_report_data
 
-    def shop_reports(self):
+    def costumer_sort(self):
         conn = sqlite3.connect('database.sqlite3')
         cur = conn.cursor()
-        query = 'SELECT NAME, PRODUCTS_PR_ID, COSTUMER_CU_ID, SELLER_SL_ID  FROM SHOP'
-        shop_report_data = cur.execute(query)
-        return shop_report_data
+        query = "SELECT CU_ID, EMAIL, LOCATION FROM COSTUMER WHERE ACTIVE_STATUS = 'ACTIVE' ORDER BY SCORE desc"
+        order_costumer_list_data = cur.execute(query)
+        return order_costumer_list_data
+
+    # def shop_reports(self):
+    #     conn = sqlite3.connect('database.sqlite3')
+    #     cur = conn.cursor()
+    #     query = 'SELECT NAME, PRODUCTS_PR_ID, COSTUMER_CU_ID, SELLER_SL_ID  FROM SHOP'
+    #     shop_report_data = cur.execute(query)
+    #     return shop_report_data
 
 
     def seller_list(self):
@@ -282,6 +330,13 @@ class operators:
         query = "SELECT SL_ID,EMAIL,SCORE FROM SELLER WHERE ACTIVE_STATUS = 'ACTIVE'"
         seller_report_data = cur.execute(query)
         return seller_report_data
+
+    def seller_sort(self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = "SELECT SL_ID,EMAIL,SCORE FROM SELLER WHERE ACTIVE_STATUS = 'ACTIVE' ORDER BY SCORE desc"
+        order_seller_report_data = cur.execute(query)
+        return order_seller_report_data
 
     def seller_report(self):
         conn = sqlite3.connect('database.sqlite3')
@@ -340,62 +395,33 @@ class operators:
         SL_id = 'SL%d' %(num)
         return SL_id 
 
-# shop sql table
-
-'''CREATE TABLE "SHOP" (
-	"ID"	INTEGER NOT NULL UNIQUE,
-	"NAME"	TEXT NOT NULL UNIQUE,
-	"PRODUCTS_PR_ID"	TEXT,
-	"CUSTOMER_CU_ID"	TEXT,
-	"SELLER_SL_ID"	TEXT,
-	"INVENTORY_WALLET"	INTEGER DEFAULT 0,
-	FOREIGN KEY("CUSTOMER_CU_ID") REFERENCES "CUSTOMER"("CU_ID"),
-	FOREIGN KEY("PRODUCTS_PR_ID") REFERENCES "PRODUCT"("PR_ID"),
-	PRIMARY KEY("ID" AUTOINCREMENT)
-);'''
-
-class shop:
-    def __init__(self, shop_name : str, seller : list , products : list, costumer : list, inventory_wallet : int):
-        self.__shop_name = shop_name
-        self.__seller = seller
-        self.__products = products
-        self.__costumer = costumer
-        self.__inventory_wallet = inventory_wallet
-
-
-    def add_to_db(self):
-        conn = sqlite3.connect('database.sqlite3')
-        data = self.__dict__
-        try:
-            conn.execute('''INSERT INTO SHOP(NAME, PRODUCTS_PR_ID, CUSTOMER_CU_ID, SELLER_SL_ID, INVENTORY_WALLET) \
-            VALUES('{}', '{}', '{}', '{}', '{}');''' .format(data['_shop__shop_name'], data['_shop__products'],
-                                                     data['_shop__costumer'], data['_shop__seller'], data['_shop__inventory_wallet']))
-            conn.commit()           
-        except sqlite3.Error:
-            print("error!")
-        else:
-            print("Done!")
-        
-        
     def add_costumer_to_shop(self, CU_ID):
         conn = sqlite3.connect('database.sqlite3')
         try:
-            conn.execute('''UPDATE COSTUMER ACTIVE_STATUS = ACTIVE WHERE CU_ID = {};''' .format(CU_ID))
+            conn.execute("UPDATE COSTUMER SET ACTIVE_STATUS = 'ACTIVE' WHERE CU_ID ='{}'" .format(CU_ID))
             conn.commit()           
-        except sqlite3.Error:
-            print("error!")
+        except sqlite3.Error as er:
+            print('SQLite error: %s' % (' '.join(er.args)))
+            print("Exception class is: ", er.__class__)
+            print('SQLite traceback: ')
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            print(traceback.format_exception(exc_type, exc_value, exc_tb))
         else:
             print("Done!")
 
 
-
+    
     def del_customer_to_shop(self, CU_ID):
         conn = sqlite3.connect('database.sqlite3')
         try:
-            conn.execute('''UPDATE COSTUMER ACTIVE_STATUS = SUSPENDED WHERE CU_ID = {};''' .format(CU_ID))
+            conn.execute('''UPDATE COSTUMER SET ACTIVE_STATUS = 'SUSPENDED' WHERE CU_ID = '{}';''' .format(CU_ID))
             conn.commit()           
-        except sqlite3.Error:
-            print("error!")
+        except sqlite3.Error as er:
+            print('SQLite error: %s' % (' '.join(er.args)))
+            print("Exception class is: ", er.__class__)
+            print('SQLite traceback: ')
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            print(traceback.format_exception(exc_type, exc_value, exc_tb))
         else:
             print("Done!")
 
@@ -404,10 +430,14 @@ class shop:
     def add_seller_to_shop(self, SL_ID):
         conn = sqlite3.connect('database.sqlite3')
         try:
-            conn.execute('''UPDATE SELLER ACTIVE_STATUS = ACTIVE WHERE SL_ID = {};''' .format(SL_ID))
-            conn.commit()           
-        except sqlite3.Error:
-            print("error!")
+            conn.execute('''UPDATE SELLER SET ACTIVE_STATUS = 'ACTIVE' WHERE SL_ID = '{}';''' .format(SL_ID))
+            conn.commit()                       
+        except sqlite3.Error as er:
+            print('SQLite error: %s' % (' '.join(er.args)))
+            print("Exception class is: ", er.__class__)
+            print('SQLite traceback: ')
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            print(traceback.format_exception(exc_type, exc_value, exc_tb))
         else:
             print("Done!")
 
@@ -416,15 +446,16 @@ class shop:
     def del_seller_to_shop(self, SL_ID):
         conn = sqlite3.connect('database.sqlite3')
         try:
-            conn.execute('''UPDATE SELLER ACTIVE_STATUS = SUSPENDED WHERE SL_ID = {};''' .format(SL_ID))
+            conn.execute("UPDATE SELLER SET ACTIVE_STATUS = 'SUSPENDED' WHERE SL_ID = '{}'" .format(SL_ID))
             conn.commit()           
-        except sqlite3.Error:
-            print("error!")
+        except sqlite3.Error as er:
+            print('SQLite error: %s' % (' '.join(er.args)))
+            print("Exception class is: ", er.__class__)
+            print('SQLite traceback: ')
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            print(traceback.format_exception(exc_type, exc_value, exc_tb))
         else:
             print("Done!")
-
-
-
     # def card_to_wallet(self, value):
     #     pass
 
@@ -436,6 +467,77 @@ class shop:
     def time_compute(self, CU_location, SL_location):
         pass
 
+
+# shop sql table
+
+# '''CREATE TABLE "SHOP" (
+# 	"ID"	INTEGER NOT NULL UNIQUE,
+# 	"NAME"	TEXT NOT NULL UNIQUE,
+# 	"PRODUCTS_PR_ID"	TEXT,
+# 	"CUSTOMER_CU_ID"	TEXT,
+# 	"SELLER_SL_ID"	TEXT,
+# 	"INVENTORY_WALLET"	INTEGER DEFAULT 0,
+# 	FOREIGN KEY("CUSTOMER_CU_ID") REFERENCES "CUSTOMER"("CU_ID"),
+# 	FOREIGN KEY("PRODUCTS_PR_ID") REFERENCES "PRODUCT"("PR_ID"),
+# 	PRIMARY KEY("ID" AUTOINCREMENT)
+# );'''
+
+# class shop:
+#     def __init__(self, seller : list , products : list, costumer : list, inventory_wallet : int):
+#         self.__seller = seller
+#         self.__products = products
+#         self.__costumer = costumer
+#         self.__inventory_wallet = inventory_wallet
+
+
+#     @property
+#     def shop_name(self):
+#         return self.__shop_name
+#     @shop_name.setter
+#     def shop_name(self, value : str):
+#         self.change_name(value)
+    
+#     @property
+#     def seller(self):
+#         return self.__shop_name
+#     @shop_name.setter
+#     def shop_name(self, value : str):
+#         self.change_name(value)
+
+
+#     def add_to_db(self):
+#         conn = sqlite3.connect('database.sqlite3')
+#         data = self.__dict__
+#         try:
+#             conn.execute('''INSERT INTO SHOP( PRODUCTS_PR_ID, CUSTOMER_CU_ID, SELLER_SL_ID, INVENTORY_WALLET) \
+#             VALUES('{}', '{}', '{}', '{}');''' .format( data['_shop__products'],
+#                                                      data['_shop__costumer'], data['_shop__seller'], data['_shop__inventory_wallet']))
+#             conn.commit()           
+#         except sqlite3.Error:
+#             print("error!")
+#         else:
+#             print("Done!")
+        
+        
+    
+#     def change_name(self, new_name):
+#         conn = sqlite3.connect('database.sqlite3')
+#         data = self.__dict__
+#         try:
+#             conn.execute("UPDATE SET SHOP_NAME = '{}'" .format(self.__shop_name))
+#             conn.commit()           
+#         except sqlite3.Error as er:
+#             print('SQLite error: %s' % (' '.join(er.args)))
+#             print("Exception class is: ", er.__class__)
+#             print('SQLite traceback: ')
+#             exc_type, exc_value, exc_tb = sys.exc_info()
+#             print(traceback.format_exception(exc_type, exc_value, exc_tb))
+#         else:
+#             print("Done!")
+
+
+
+    
 
 
 
@@ -490,15 +592,25 @@ class operator_panel(object):
         self.gridLayout_3.addWidget(self.label_20, 0, 1, 1, 1)
         self.new_product_refresh = QtWidgets.QPushButton(Form)
         self.new_product_refresh.setObjectName("new_product_refresh")
+
+        self.new_product_refresh.clicked.connect(self.new_product_request_load_data)
+
         self.gridLayout_3.addWidget(self.new_product_refresh, 2, 1, 1, 1)
-        self.accept_button = QtWidgets.QPushButton(Form)
-        self.accept_button.setObjectName("accept_button")
-        self.gridLayout_3.addWidget(self.accept_button, 8, 0, 1, 4)
+        self.show_rejected_button = QtWidgets.QPushButton(Form)
+        self.show_rejected_button.setObjectName("show_rejected_button")
+        self.show_rejected_button.setText("Show rejected")
+        self.gridLayout_3.addWidget(self.show_rejected_button, 8, 0, 1, 4)
         self.new_seller_table_refresh = QtWidgets.QPushButton(Form)
         self.new_seller_table_refresh.setObjectName("new_seller_table_refresh")
+
+        self.new_seller_table_refresh.clicked.connect(self.new_seller_request_load_data)
+
         self.gridLayout_3.addWidget(self.new_seller_table_refresh, 2, 2, 1, 1)
         self.new_buy_table_refresh = QtWidgets.QPushButton(Form)
         self.new_buy_table_refresh.setObjectName("new_buy_table_refresh")
+
+        self.new_buy_table_refresh.clicked.connect(self.buy_request_load_data)
+
         self.gridLayout_3.addWidget(self.new_buy_table_refresh, 2, 0, 1, 1)
         self.new_buy_request_table = QtWidgets.QTableWidget(Form)
         self.new_buy_request_table.setObjectName("new_buy_request_table")
@@ -523,11 +635,14 @@ class operator_panel(object):
 
         for index in range(self.new_buy_request_table.rowCount()):
             self.buy_request_accept  = QPushButton("✅")
-                
+            self.buy_request_accept.clicked.connect(self.finde_new_buy_id_accept)
+            self.buy_request_accept.clicked.connect(self.accept_buy_request_function)
             self.new_buy_request_table.setCellWidget(index, 0, self.buy_request_accept )
 
         for index in range(self.new_buy_request_table.rowCount()):
             self.buy_request_reject  = QPushButton("❌")
+            self.buy_request_reject.clicked.connect(self.finde_new_buy_id_reject)
+            self.buy_request_accept.clicked.connect(self.reject_buy_request_function)
             
 
             self.new_buy_request_table.setCellWidget(index, 1, self.buy_request_reject )
@@ -564,16 +679,16 @@ class operator_panel(object):
 
         for index in range(self.new_product_tabel.rowCount()):
             self.product_request_accept  = QPushButton("✅")
-                
+            self.product_request_accept.clicked.connect(self.finde_new_product_id_accept)
+            self.product_request_accept.clicked.connect(self.accept_new_product_function)
             self.new_product_tabel.setCellWidget(index, 0, self.product_request_accept )
 
         for index in range(self.new_product_tabel.rowCount()):
             self.product_request_reject  = QPushButton("❌")
-            
+            self.product_request_reject.clicked.connect(self.finde_new_product_id_reject)
+            self.product_request_reject.clicked.connect(self.reject_new_product_function)
 
             self.new_product_tabel.setCellWidget(index, 1, self.product_request_reject )
-
-            # self.show_seller_profile.clicked.connect(self.get_buy_id)
     #________________________________________________________________________
 
 
@@ -602,36 +717,55 @@ class operator_panel(object):
 
         for index in range(self.new_seller_request_table.rowCount()):
             self.seller_request_accept  = QPushButton("✅")
-
+            self.seller_request_accept.clicked.connect(self.finde_new_seller_id_accept)
+            self.seller_request_accept.clicked.connect(self.accept_new_seller_function)
                 
             self.new_seller_request_table.setCellWidget(index, 0, self.seller_request_accept )
 
         for index in range(self.new_seller_request_table.rowCount()):
             self.seller_request_reject  = QPushButton("❌")
+            self.seller_request_reject.clicked.connect(self.finde_new_seller_id_reject)
+            self.seller_request_reject.clicked.connect(self.reject_new_seller_function)
             
 
             self.new_seller_request_table.setCellWidget(index, 1, self.seller_request_reject )
 
-            # self.show_seller_profile.clicked.connect(self.get_buy_id)
     #________________________________________________________________________
 
         self.gridLayout_3.addWidget(self.new_seller_request_table, 1, 2, 1, 1)
-        self.label_18 = QtWidgets.QLabel(Form)
-        self.label_18.setText("")
-        self.label_18.setObjectName("label_18")
-        self.gridLayout_3.addWidget(self.label_18, 9, 0, 1, 3)
-        self.label_6 = QtWidgets.QLabel(Form)
-        self.label_6.setObjectName("label_6")
-        self.gridLayout_3.addWidget(self.label_6, 3, 0, 1, 1)
+        # self.label_18 = QtWidgets.QLabel(Form)
+        # self.label_18.setText("")
+        # self.label_18.setObjectName("label_18")
+        # self.gridLayout_3.addWidget(self.label_18, 9, 0, 1, 3)
+        # self.combobox_1 = QtWidgets.QComboBox(Form)
+        # self.combobox_1.setObjectName("combobox_1")
+        # self.combobox_1.addItem('Buy Request')
+        # self.combobox_1.addItem('New Product')
+        # self.combobox_1.addItem('New Seller')
+
+        # self.gridLayout_3.addWidget(self.combobox_1, 3, 0, 1, 1)
         self.label_9 = QtWidgets.QLabel(Form)
         self.label_9.setObjectName("label_9")
         self.gridLayout_3.addWidget(self.label_9, 0, 0, 1, 1)
         self.label_10 = QtWidgets.QLabel(Form)
         self.label_10.setObjectName("label_10")
         self.gridLayout_3.addWidget(self.label_10, 0, 2, 1, 1)
-        self.CU_ID_SL_ID_line_accept = QtWidgets.QLineEdit(Form)
-        self.CU_ID_SL_ID_line_accept.setObjectName("CU_ID_SL_ID_line_accept")
-        self.gridLayout_3.addWidget(self.CU_ID_SL_ID_line_accept, 3, 1, 1, 2)
+        # self.IDs_search = QtWidgets.QLineEdit(Form)
+        # self.IDs_search.setObjectName("IDs_search")
+        # self.IDs_search.setPlaceholderText("Search ...")
+
+        # self.combobox_1.activated.connect(self.select_table)
+        # table = self.combobox_1.currentText()
+
+        # if self.combobox_1.currentText() == 'New Seller':
+        #     self.IDs_search.textChanged.connect(self.seller_search)
+        # if self.combobox_1.currentText() == 'Buy Request':
+        #     self.IDs_search.textChanged.connect(self.buy_search)
+        # if self.combobox_1.currentText() == 'New Product':
+        #     self.IDs_search.textChanged.connect(self.product_search)
+        
+
+        # self.gridLayout_3.addWidget(self.IDs_search, 3, 1, 1, 2)
         self.gridLayout_2.addLayout(self.gridLayout_3, 1, 4, 1, 1)
         self.verticalLayout_15 = QtWidgets.QVBoxLayout()
         self.verticalLayout_15.setObjectName("verticalLayout_15")
@@ -667,22 +801,28 @@ class operator_panel(object):
         self.gridLayout_5.setObjectName("gridLayout_5")
         self.off_num = QtWidgets.QLineEdit(Form)
         self.off_num.setObjectName("off_num")
+        self.off_num.setPlaceholderText("numbers")
 
         self.gridLayout_5.addWidget(self.off_num, 1, 1, 1, 1)
         self.off_EXP_date = QtWidgets.QLineEdit(Form)
         self.off_EXP_date.setObjectName("off_EXP_date")
+        self.off_EXP_date.setPlaceholderText("year-mounth-day")
+
 
         self.gridLayout_5.addWidget(self.off_EXP_date, 0, 1, 1, 1)
         self.off_percentage = QtWidgets.QLineEdit(Form)
         self.off_percentage.setObjectName("off_percentage")
+        self.off_percentage.setPlaceholderText("off percentage")
 
         self.gridLayout_5.addWidget(self.off_percentage, 4, 1, 1, 1)
         self.off_CU_ID = QtWidgets.QLineEdit(Form)
         self.off_CU_ID.setObjectName("off_CU_ID")
+        self.off_CU_ID.setPlaceholderText("Costumer ID")
 
         self.gridLayout_5.addWidget(self.off_CU_ID, 2, 1, 1, 1)
         self.off_PR_ID = QtWidgets.QLineEdit(Form)
         self.off_PR_ID.setObjectName("off_PR_ID")
+        self.off_PR_ID.setPlaceholderText("Product ID")
 
         self.gridLayout_5.addWidget(self.off_PR_ID, 3, 1, 1, 1)
         self.label_12 = QtWidgets.QLabel(Form)
@@ -720,15 +860,26 @@ class operator_panel(object):
         self.gridLayout_6.setObjectName("gridLayout_6")
         self.seller_list_add_button = QtWidgets.QPushButton(self.tab)
         self.seller_list_add_button.setObjectName("seller_list_add_button")
+
+        self.seller_list_add_button.clicked.connect(self.seller_list_add_function)
+
         self.gridLayout_6.addWidget(self.seller_list_add_button, 7, 2, 1, 1)
         self.label_3 = QtWidgets.QLabel(self.tab)
         self.label_3.setObjectName("label_3")
         self.gridLayout_6.addWidget(self.label_3, 0, 3, 1, 1)
         self.seller_list_sort_button = QtWidgets.QPushButton(self.tab)
+
+        self.seller_list_sort_button.clicked.connect(self.seller_load_data_order)
+
         self.seller_list_sort_button.setObjectName("seller_list_sort_button")
         self.gridLayout_6.addWidget(self.seller_list_sort_button, 2, 2, 1, 1)
         self.seller_list_delete_button = QtWidgets.QPushButton(self.tab)
         self.seller_list_delete_button.setObjectName("seller_list_delete_button")
+
+        self.seller_list_delete_button.clicked.connect(self.seller_list_delete_function)
+        
+        
+
         self.gridLayout_6.addWidget(self.seller_list_delete_button, 5, 2, 1, 1)
         self.label_2 = QtWidgets.QLabel(self.tab)
         self.label_2.setObjectName("label_2")
@@ -772,12 +923,21 @@ class operator_panel(object):
         self.gridLayout_6.addLayout(self.verticalLayout_7, 1, 2, 1, 1)
         self.sell_report_refresh_button = QtWidgets.QPushButton(self.tab)
         self.sell_report_refresh_button.setObjectName("sell_report_refresh_button")
+
+        self.sell_report_refresh_button.clicked.connect(self.sell_report_load_data)
+
         self.gridLayout_6.addWidget(self.sell_report_refresh_button, 7, 0, 1, 1)
         self.seller_list_refresh_button = QtWidgets.QPushButton(self.tab)
         self.seller_list_refresh_button.setObjectName("seller_list_refresh_button")
+
+        self.seller_list_refresh_button.clicked.connect(self.seller_load_data)
+
         self.gridLayout_6.addWidget(self.seller_list_refresh_button, 3, 2, 1, 1)
         self.total_rate_refresh_button = QtWidgets.QPushButton(self.tab)
         self.total_rate_refresh_button.setObjectName("total_rate_refresh_button")
+
+        self.total_rate_refresh_button.clicked.connect(self.total_rate_load_data)
+
         self.gridLayout_6.addWidget(self.total_rate_refresh_button, 7, 4, 1, 1)
         self.sell_report_table = QtWidgets.QTableWidget(self.tab)
         self.sell_report_table.setObjectName("sell_report_table")
@@ -797,31 +957,34 @@ class operator_panel(object):
         
         #________________________________________________________________________ 
         self.gridLayout_6.addWidget(self.sell_report_table, 1, 0, 5, 1)
-        self.pushButton_18 = QtWidgets.QPushButton(self.tab)
-        self.pushButton_18.setObjectName("pushButton_18")
-        self.gridLayout_6.addWidget(self.pushButton_18, 7, 5, 1, 1)
-        self.label_17 = QtWidgets.QLabel(self.tab)
-        self.label_17.setObjectName("label_17")
-        self.gridLayout_6.addWidget(self.label_17, 0, 5, 1, 1)
+        # self.Shop_report_refresh = QtWidgets.QPushButton(self.tab)
+        # self.Shop_report_refresh.setObjectName("Shop_report_refresh")
+
+        # self.Shop_report_refresh.clicked.connect(self.shop_report_load_data)
+
+        # self.gridLayout_6.addWidget(self.Shop_report_refresh, 7, 5, 1, 1)
+        # self.label_17 = QtWidgets.QLabel(self.tab)
+        # self.label_17.setObjectName("label_17")
+        # self.gridLayout_6.addWidget(self.label_17, 0, 5, 1, 1)
         self.label = QtWidgets.QLabel(self.tab)
         self.label.setMaximumSize(QtCore.QSize(16777215, 50))
         self.label.setObjectName("label")
         self.gridLayout_6.addWidget(self.label, 0, 0, 1, 1)
-        self.shop_report_table = QtWidgets.QTableWidget(self.tab)
-        self.shop_report_table.setObjectName("shop_report_table")
-        self.shop_report_table.setColumnCount(4)
-        self.shop_report_table.setRowCount(0)
-        #_____________________shop report table fill_________________
-        self.shop_report_table.setColumnWidth(0, 100)
-        self.shop_report_table.setColumnWidth(1, 200)
-        self.shop_report_table.setColumnWidth(2, 200)
-        self.shop_report_table.setColumnWidth(3, 200)
-        self.shop_report_table.setHorizontalHeaderLabels(['Name', 'Products', 'Costumers', 'Sellers'])
+        # self.shop_report_table = QtWidgets.QTableWidget(self.tab)
+        # self.shop_report_table.setObjectName("shop_report_table")
+        # self.shop_report_table.setColumnCount(4)
+        # self.shop_report_table.setRowCount(0)
+        # #_____________________shop report table fill_________________
+        # self.shop_report_table.setColumnWidth(0, 100)
+        # self.shop_report_table.setColumnWidth(1, 200)
+        # self.shop_report_table.setColumnWidth(2, 200)
+        # self.shop_report_table.setColumnWidth(3, 200)
+        # self.shop_report_table.setHorizontalHeaderLabels(['Name', 'Products', 'Costumers', 'Sellers'])
 
-        self.shop_report_load_data()
+        # self.shop_report_load_data()
         #____________________________________________________________
 
-        self.gridLayout_6.addWidget(self.shop_report_table, 1, 5, 5, 1)
+        # self.gridLayout_6.addWidget(self.shop_report_table, 1, 5, 5, 1)
         self.total_rate_list = QtWidgets.QTableWidget(self.tab)
         self.total_rate_list.setObjectName("total_rate_list")
         self.total_rate_list.setColumnCount(1)
@@ -841,11 +1004,17 @@ class operator_panel(object):
 
         self.seller_list_line_edit.setPlaceholderText("Search SL_ID ...")
         self.seller_list_line_edit.textChanged.connect(self.search_seller)
-
+        self.seller_list_line_edit.textChanged.connect(self.seller_id_finder)
+        
+        
+        
 
         self.gridLayout_6.addWidget(self.seller_list_line_edit, 4, 2, 1, 1)
         self.seller_report_refresh_button = QtWidgets.QPushButton(self.tab)
         self.seller_report_refresh_button.setObjectName("seller_report_refresh_button")
+
+        self.seller_report_refresh_button.clicked.connect(self.seller_report_load_data)
+
         self.gridLayout_6.addWidget(self.seller_report_refresh_button, 7, 3, 1, 1)
         self.seller_report_list = QtWidgets.QTableWidget(self.tab)
         self.seller_report_list.setObjectName("seller_report_list")
@@ -874,12 +1043,16 @@ class operator_panel(object):
         self.gridLayout_8.setObjectName("gridLayout_8")
         self.delete_costumer = QtWidgets.QPushButton(self.tab_2)
         self.delete_costumer.setObjectName("delete_costumer")
+
+        self.delete_costumer.clicked.connect(self.delete_costumer_from_list)
+
         self.gridLayout_8.addWidget(self.delete_costumer, 4, 0, 1, 1)
         self.costumer_ID_line = QtWidgets.QLineEdit(self.tab_2)
         self.costumer_ID_line.setObjectName("costumer_ID_line")
 
         self.costumer_ID_line.setPlaceholderText("Search CU_ID ...")
         self.costumer_ID_line.textChanged.connect(self.search_costumer)
+        self.costumer_ID_line.textChanged.connect(self.costumer_id_finder)
 
 
         self.gridLayout_8.addWidget(self.costumer_ID_line, 3, 0, 1, 1)
@@ -888,14 +1061,23 @@ class operator_panel(object):
         self.gridLayout_8.addWidget(self.costumer_list_refresh_button, 7, 0, 1, 1)
         self.refresh_costumer_list_table_button = QtWidgets.QPushButton(self.tab_2)
         self.refresh_costumer_list_table_button.setObjectName("refresh_costumer_list_table_button")
+
+        self.refresh_costumer_list_table_button.clicked.connect(self.costumer_load_data)
+
         self.gridLayout_8.addWidget(self.refresh_costumer_list_table_button, 7, 0, 1, 1)
         self.pushButton_5 = QtWidgets.QPushButton(self.tab_2)
         self.pushButton_5.setObjectName("pushButton_5")
         self.gridLayout_8.addWidget(self.pushButton_5, 6, 0, 1, 1)
         self.addcostumer = QtWidgets.QPushButton(self.tab_2)
         self.addcostumer.setObjectName("addcostumer")
+
+        self.addcostumer.clicked.connect(self.add_costumer_list)
+
         self.gridLayout_8.addWidget(self.addcostumer, 6, 0, 1, 1)
         self.costumer_list_sort = QtWidgets.QPushButton(self.tab_2)
+
+        self.costumer_list_sort.clicked.connect(self.order_costumer_table_fill)
+
         self.costumer_list_sort.setObjectName("costumer_list_sort")
         self.gridLayout_8.addWidget(self.costumer_list_sort, 2, 0, 1, 1)
         self.costumerlist_table = QtWidgets.QTableWidget(self.tab_2)
@@ -964,12 +1146,18 @@ class operator_panel(object):
         self.gridLayout_8.addWidget(self.label_8, 0, 1, 1, 1)
         self.costumer_report_refresh = QtWidgets.QPushButton(self.tab_2)
         self.costumer_report_refresh.setObjectName("costumer_report_refresh")
+
+        self.costumer_report_refresh.clicked.connect(self.costumer_report_list_load_data)
+
         self.gridLayout_8.addWidget(self.costumer_report_refresh, 7, 1, 1, 1)
         self.label_5 = QtWidgets.QLabel(self.tab_2)
         self.label_5.setObjectName("label_5")
         self.gridLayout_8.addWidget(self.label_5, 0, 2, 1, 1)
         self.product_table_refresh = QtWidgets.QPushButton(self.tab_2)
         self.product_table_refresh.setObjectName("product_table_refresh")
+
+        self.product_table_refresh.clicked.connect(self.product_table_load_data)
+
         self.gridLayout_8.addWidget(self.product_table_refresh, 7, 2, 1, 1)
         self.product_table = QtWidgets.QTableWidget(self.tab_2)
         self.product_table.setObjectName("product_table")
@@ -1033,6 +1221,57 @@ class operator_panel(object):
         global get_SL_ID_value
         get_SL_ID_value = cell_value
 
+    def finde_new_seller_id_accept(self):
+        current_row = self.new_seller_request_table.currentRow()
+        current_column = self.new_seller_request_table.currentColumn()
+        cell_value = self.new_seller_request_table.item(current_row, current_column + 2).text()
+        print(cell_value)
+        global New_SL_ID_value
+        New_SL_ID_value = cell_value
+
+    def finde_new_seller_id_reject(self):
+        current_row = self.new_seller_request_table.currentRow()
+        current_column = self.new_seller_request_table.currentColumn()
+        cell_value = self.new_seller_request_table.item(current_row, current_column + 1).text()
+        print(cell_value)
+        global New_SL_ID_value
+        New_SL_ID_value = cell_value
+
+    def finde_new_product_id_accept(self):
+        current_row = self.new_product_tabel.currentRow()
+        current_column = self.new_product_tabel.currentColumn()
+        cell_value = self.new_product_tabel.item(current_row, current_column + 2).text()
+        print(cell_value)
+        global New_PR_ID_value
+        New_PR_ID_value = cell_value
+        
+    def finde_new_product_id_reject(self):
+        current_row = self.new_product_tabel.currentRow()
+        current_column = self.new_product_tabel.currentColumn()
+        cell_value = self.new_product_tabel.item(current_row, current_column + 1).text()
+        print(cell_value)
+        global New_PR_ID_value
+        New_PR_ID_value = cell_value
+
+    def finde_new_buy_id_accept(self):
+        current_row = self.new_buy_request_table.currentRow()
+        current_column = self.new_buy_request_table.currentColumn()
+        cell_value = self.new_buy_request_table.item(current_row, current_column + 2).text()
+        print(cell_value)
+        global New_Buy_ID_value
+        New_Buy_ID_value = cell_value
+        
+    def finde_new_buy_id_reject(self):
+        current_row = self.new_buy_request_table.currentRow()
+        current_column = self.new_buy_request_table.currentColumn()
+        cell_value = self.new_buy_request_table.item(current_row, current_column + 1).text()
+        print(cell_value)
+        global New_Buy_ID_value
+        New_Buy_ID_value = cell_value
+    # def select_table(self):
+    #     global table
+    #     table = self.combobox_1.currentText()
+        
     #_______________________________________________________________
 
     def retranslateUi(self, Form):
@@ -1042,10 +1281,10 @@ class operator_panel(object):
         self.log_out_button.setText(_translate("Form", "logout"))
         self.label_20.setText(_translate("Form", "new product"))
         self.new_product_refresh.setText(_translate("Form", "refresh"))
-        self.accept_button.setText(_translate("Form", "accept"))
+        # self.show_rejected_button.setText(_translate("Form",))
         self.new_seller_table_refresh.setText(_translate("Form", "refresh"))
         self.new_buy_table_refresh.setText(_translate("Form", "refresh"))
-        self.label_6.setText(_translate("Form", "ID"))
+        # self.label_6.setText(_translate("Form", "ID"))
         self.label_9.setText(_translate("Form", "new buy request"))
         self.label_10.setText(_translate("Form", "new seller request"))
         self.label_11.setText(_translate("Form", "off_code"))
@@ -1065,8 +1304,8 @@ class operator_panel(object):
         self.sell_report_refresh_button.setText(_translate("Form", "refresh"))
         self.seller_list_refresh_button.setText(_translate("Form", "refresh"))
         self.total_rate_refresh_button.setText(_translate("Form", "refresh"))
-        self.pushButton_18.setText(_translate("Form", "refresh"))
-        self.label_17.setText(_translate("Form", "shop report"))
+        # self.Shop_report_refresh.setText(_translate("Form", "refresh"))
+        # self.label_17.setText(_translate("Form", "shop report"))
         self.label.setText(_translate("Form", "Sell report"))
         self.seller_report_refresh_button.setText(_translate("Form", "refresh"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("Form", "SELLER"))
@@ -1106,6 +1345,12 @@ class operator_panel(object):
         self.total_rate_list.setItem(2, 0, QtWidgets.QTableWidgetItem(str(PR_rate)))
         self.total_rate_list.setItem(3, 0, QtWidgets.QTableWidgetItem(str(Shop_rate)))
     #_________________________________________________________________________
+    def seller_id_finder(self,SL_ID):
+        global THE_SL_ID 
+        THE_SL_ID = SL_ID
+    def costumer_id_finder(self, CU_ID):
+        global THE_CU_ID 
+        THE_CU_ID = CU_ID
     #_____________________ search function _____________________
     def search_seller(self, SL_ID):
         self.seller_list_table.setCurrentItem(None)
@@ -1115,6 +1360,7 @@ class operator_panel(object):
         if matching_items:
             item = matching_items[0]  # Take the first.
             self.seller_list_table.setCurrentItem(item)
+        
 
     def search_costumer(self, CU_ID):
         self.costumerlist_table.setCurrentItem(None)
@@ -1124,6 +1370,35 @@ class operator_panel(object):
         if matching_items:
             item = matching_items[0]  # Take the first.
             self.costumerlist_table.setCurrentItem(item)
+
+    # def buy_search(self,buy_index):
+    #     self.new_buy_request_table.setCurrentItem(None)
+    #     if not buy_index:
+    #         return 
+    #     matching_items = self.new_buy_request_table.findItems(buy_index, Qt.MatchContains)
+    #     if matching_items:
+    #         item = matching_items[0]  # Take the first.
+    #         self.new_buy_request_table.setCurrentItem(item)
+
+
+    # def product_search(self,product_index):
+    #     self.new_product_tabel.setCurrentItem(None)
+    #     if not product_index:
+    #         return 
+    #     matching_items = self.new_product_tabel.findItems(product_index, Qt.MatchContains)
+    #     if matching_items:
+    #         item = matching_items[0]  # Take the first.
+    #         self.new_product_tabel.setCurrentItem(item)
+
+    # def seller_search(self, seller_index):
+    #     self.new_seller_request_table.setCurrentItem(None)
+    #     if not seller_index:
+    #         return 
+    #     matching_items = self.new_seller_request_table.findItems(seller_index, Qt.MatchContains)
+    #     if matching_items:
+    #         item = matching_items[0]  # Take the first.
+    #         self.new_seller_request_table.setCurrentItem(item)
+        
     #___________________________________________________________________
 
     #_____________________ seller report load data function _____________________
@@ -1186,7 +1461,7 @@ class operator_panel(object):
         row_count = self.__row_count_SPECIAL('SELLER','NEW', 'STATUS' )
         self.new_seller_request_table.setRowCount(row_count)
         tablerow = 0 
-        for row in the_operator.check_product():
+        for row in the_operator.check_seller():
             self.new_seller_request_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[0]))
             self.new_seller_request_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[1]))
             self.new_seller_request_table.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(row[2]))
@@ -1211,6 +1486,8 @@ class operator_panel(object):
             self.new_buy_request_table.setItem(tablerow, 6, QtWidgets.QTableWidgetItem(row[4]))
             tablerow +=1
 
+
+
     #_____________________ costumer load data function _____________________
     def costumer_load_data(self):
         row_count = self.__row_count_SPECIAL('COSTUMER', 'ACTIVE', 'ACTIVE_STATUS')
@@ -1222,6 +1499,24 @@ class operator_panel(object):
             self.costumerlist_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[2]))
             tablerow +=1
         
+    def order_costumer_table_fill(self):
+        row_count = self.__row_count_SPECIAL('COSTUMER', 'ACTIVE', 'ACTIVE_STATUS')
+        self.costumerlist_table.setRowCount(row_count)
+        tablerow = 0 
+        for row in the_operator.costumer_sort():
+            self.costumerlist_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[0]))
+            self.costumerlist_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[1]))
+            self.costumerlist_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[2]))
+            tablerow +=1
+
+    def delete_costumer_from_list(self):
+        the_operator.del_customer_to_shop(THE_CU_ID)
+        self.seller_load_data()
+
+    def add_costumer_list(self):
+        the_operator.add_costumer_to_shop(THE_CU_ID)
+        self.seller_load_data()
+
     #________________________________________________________________________
 
 
@@ -1237,20 +1532,62 @@ class operator_panel(object):
             self.seller_list_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[1]))
             self.seller_list_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[2]))
             tablerow +=1
+
+    def seller_load_data_order(self):
+        row_count = self.__row_count_SPECIAL('SELLER', 'ACTIVE', 'ACTIVE_STATUS')
+        self.seller_list_table.setRowCount(row_count)
+        tablerow = 0 
+        for row in the_operator.seller_sort():
+            self.seller_list_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[0]))
+            self.seller_list_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[1]))
+            self.seller_list_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[2]))
+            tablerow +=1
+
+    def seller_list_delete_function(self):
+        print(THE_SL_ID)
+        the_operator.del_seller_to_shop(str(THE_SL_ID))
+        self.seller_load_data()
+
+    def seller_list_add_function(self):
+        print(THE_SL_ID)
+        the_operator.add_costumer_to_shop(str(THE_SL_ID))
+        self.seller_load_data()
+
+    def accept_buy_request_function(self):
+        the_operator.accept_order(str(New_Buy_ID_value))
+        self.buy_request_load_data()
+    def reject_buy_request_function(self):
+        the_operator.reject_order(str(New_Buy_ID_value))
+        self.buy_request_load_data()
+
+    def accept_new_seller_function(self):
+        the_operator.accept_seller(str(New_SL_ID_value))
+        self.new_seller_request_load_data()
+    def reject_new_seller_function(self):
+        the_operator.reject_seller(str(New_SL_ID_value))
+        self.new_seller_request_load_data()
+
+    def accept_new_product_function(self):
+        the_operator.accept_product(str(New_PR_ID_value))
+        self.new_product_request_load_data()
+    def reject_new_product_function(self):
+        the_operator.reject_product(str(New_PR_ID_value))
+        self.new_product_request_load_data()
+
     #________________________________________________________________________
 
     #_____________________ shop load data function ________________________
-    def shop_report_load_data(self):
-        row_count = self.__row_count('SHOP')
-        self.shop_report_table.setRowCount(row_count)
-        result = the_operator.shop_reports()
-        tablerow = 0 
-        for row in result:
-            self.shop_report_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
-            self.shop_report_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
-            self.shop_report_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
-            self.shop_report_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[3]))
-            tablerow +=1
+    # def shop_report_load_data(self):
+    #     row_count = self.__row_count('SHOP')
+    #     self.shop_report_table.setRowCount(row_count)
+    #     result = the_operator.shop_reports()
+    #     tablerow = 0 
+    #     for row in result:
+    #         self.shop_report_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
+    #         self.shop_report_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
+    #         self.shop_report_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
+    #         self.shop_report_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[3]))
+    #         tablerow +=1
 
     #________________________________________________________________________
 
@@ -1679,4 +2016,144 @@ class seller_profile(object):
 
 ################################  end seller profile  ###################################
 
+################################  start rejected page ###################################
 
+
+class rejected_page(object):
+    def __row_count_SPECIAL(self, table_name:str, SPECIAL, COLUMN_NAME):
+        conn = sqlite3.connect('database.sqlite3')
+        cursor = conn.execute("SELECT count(*) FROM '{}' WHERE {} = '{}'".format(table_name, COLUMN_NAME,SPECIAL))
+        for row in cursor:
+            return row[0]
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(904, 563)
+        self.gridLayout = QtWidgets.QGridLayout(Form)
+        self.gridLayout.setObjectName("gridLayout")
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.Buy_table = QtWidgets.QTableWidget(Form)
+        self.Buy_table.setObjectName("Buy_table")
+        self.Buy_table.setColumnCount(6)
+        self.Buy_table.setRowCount(0)
+
+
+        self.Buy_table.setColumnWidth(0,60)
+        self.Buy_table.setColumnWidth(1,100)
+        self.Buy_table.setColumnWidth(2,150)
+        self.Buy_table.setColumnWidth(3,150)
+        self.Buy_table.setColumnWidth(4,150)
+        self.Buy_table.setColumnWidth(5,150)
+
+
+        self.buy_reject_load_data()
+        self.Buy_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
+
+        self.Buy_table.setHorizontalHeaderLabels(['accept', 'CU_ID','SL_ID', 'ORDER LIST', 'DATE', 'STATUS' ])
+        self.Buy_table.verticalHeader().hide()
+
+        for index in range(self.Buy_table.rowCount()):
+            self.buy_request_accept  = QPushButton("✅")
+            self.buy_request_accept.clicked.connect(self.finde_new_buy_id)
+            self.buy_request_accept.clicked.connect(self.accept_buy_request_function)
+            self.Buy_table.setCellWidget(index, 0, self.buy_request_accept )
+
+
+        self.horizontalLayout.addWidget(self.Buy_table)
+        self.Product_table = QtWidgets.QTableWidget(Form)
+        self.Product_table.setObjectName("Product_table")
+        self.Product_table.setColumnCount(0)
+        self.Product_table.setRowCount(0)
+
+
+        self.horizontalLayout.addWidget(self.Product_table)
+        self.Seller_table = QtWidgets.QTableWidget(Form)
+        self.Seller_table.setObjectName("Seller_table")
+        self.Seller_table.setColumnCount(0)
+        self.Seller_table.setRowCount(0)
+
+
+        self.horizontalLayout.addWidget(self.Seller_table)
+        self.gridLayout.addLayout(self.horizontalLayout, 3, 0, 1, 1)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.label_3 = QtWidgets.QLabel(Form)
+        self.label_3.setObjectName("label_3")
+        self.horizontalLayout_2.addWidget(self.label_3)
+        self.label_2 = QtWidgets.QLabel(Form)
+        self.label_2.setObjectName("label_2")
+        self.horizontalLayout_2.addWidget(self.label_2)
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setObjectName("label")
+        self.horizontalLayout_2.addWidget(self.label)
+        self.gridLayout.addLayout(self.horizontalLayout_2, 0, 0, 1, 1)
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.label_3.setText(_translate("Form", "Buy request"))
+        self.label_2.setText(_translate("Form", "New product"))
+        self.label.setText(_translate("Form", "New seller"))
+
+    def accept_buy_request_function(self):
+        the_operator.accept_order(str(Reject_Buy_ID_value))
+        self.buy_reject_load_data()
+
+    def finde_new_buy_id(self):
+        current_row = self.Buy_table.currentRow()
+        current_column = self.Buy_table.currentColumn()
+        cell_value = self.Buy_table.item(current_row, current_column + 1).text()
+        print(cell_value)
+        global Reject_Buy_ID_value
+        Reject_Buy_ID_value = cell_value
+
+    def buy_reject_load_data(self):
+        row_count = self.__row_count_SPECIAL('ORDER','REJECTED', 'STATUS' )
+        self.Buy_table.setRowCount(row_count)
+        tablerow = 0 
+        for row in the_operator.check_order():
+            self.Buy_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[0]))
+            self.Buy_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[1]))
+            self.Buy_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[2]))
+            self.Buy_table.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(row[3]))
+            self.Buy_table.setItem(tablerow, 5, QtWidgets.QTableWidgetItem(row[4]))
+            tablerow +=1
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Form = QtWidgets.QWidget()
+    ui = rejected_page()
+    ui.setupUi(Form)
+    Form.show()
+    sys.exit(app.exec_())
+
+################################  end rejected page ###################################
+
+################################  start operator profile ###################################
+class operator_profile(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(507, 121)
+        self.gridLayout = QtWidgets.QGridLayout(Form)
+        self.gridLayout.setObjectName("gridLayout")
+        self.Logout_button = QtWidgets.QPushButton(Form)
+        self.Logout_button.setObjectName("Logout_button")
+
+        self.gridLayout.addWidget(self.Logout_button, 1, 0, 1, 2)
+        self.email = QtWidgets.QLabel(Form)
+        self.email.setObjectName("email")
+
+        self.gridLayout.addWidget(self.email, 0, 0, 1, 2)
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Operator Profile"))
+        self.Logout_button.setText(_translate("Form", "Logout"))
+        self.email.setText(_translate("Form", "TextLabel"))
+################################  end operator profile ###################################
