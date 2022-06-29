@@ -305,6 +305,39 @@ class login_register(object):
 "example: tehran = tehr"))
         self.toolBox_2.setItemText(self.toolBox_2.indexOf(self.page_5), _translate("Form", "Seller"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("Form", "Register"))
+        #-------------kia
+        self.seller_register_button.clicked.connect(self.goTologin)
+        
+    def goTologin(self):
+        lineemail= self.seller_register_email_line.text()
+        linepassword= self.seller_register_password_line.text()
+        loc= self.seller_register_location_line.text()
+        SL_ID2 = my_operator .SL_id_generator()
+        conn= sqlite3.connect("database.sqlite3")
+        cur = conn.cursor()
+        query = f"INSERT INTO SELLER (SL_ID,EMAIL,PASSWORD,LOCATION) VALUES ('{SL_ID2}','{lineemail}','{linepassword}','{loc}')"
+        cur.execute(query)
+        conn.commit()
+        
+        self.seler_login_push_button.clicked.connect(self.goTomainpage)
+        
+    def goTomainpage(self):
+        emailline = self.seller_email_login_line.text()
+        passline = self.seller_password_login_line.text()
+        
+        if len(emailline) == 0 or len(passline) == 0:
+            self.seller_login_status.setText("Please input all fields.")
+        else:
+            conn = sqlite3.connect("database.sqlite3")
+            cur = conn.cursor()
+            query = 'SELECT PASSWORD FROM SELLER WHERE EMAIL =\'' + emailline + "\'"
+            cur.execute(query)
+            result_pass = cur.fetchone()[0]
+            if result_pass == passline:
+                print("successfully loged in")
+                self.seller_login_status.setText("successfully loged in")
+            else:
+                self.seller_login_status.setText("Invalid user or pass")
 
     def operator_login_function(self):
         operator_pass_input = self.operator_login_password_line.text()
