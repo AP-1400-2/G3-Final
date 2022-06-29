@@ -17,9 +17,10 @@ from PyQt5.QtWidgets import *
 
 
 ################################ start login panel ###################################
-
+my_operator = op('first@operator.com', 1234)
 class login_register(object):
     def setupUi(self, Form):
+        
         Form.setObjectName("Form")
         Form.resize(445, 692)
         self.gridLayout = QtWidgets.QGridLayout(Form)
@@ -250,6 +251,20 @@ class login_register(object):
         self.toolBox.setCurrentIndex(2)
         self.toolBox_2.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(Form)
+        
+        #---------------------------
+        self.seller_register_button.clicked.connect(self.goTologin)
+        
+    def goTologin(self):
+        lineemail= self.seller_register_email_line.text()
+        linepassword= self.seller_register_password_line.text()
+        loc= self.seller_register_location_line.text()
+        SL_ID2 = my_operator .SL_id_generator()
+        conn= sqlite3.connect("database.sqlite3")
+        cur = conn.cursor()
+        query = f"INSERT INTO SELLER (SL_ID,EMAIL,PASSWORD,LOCATION) VALUES ('{SL_ID2}','{lineemail}','{linepassword}','{loc}')"
+        cur.execute(query)
+        conn.commit()
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
