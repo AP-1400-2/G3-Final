@@ -1,8 +1,11 @@
 import sqlite3
 
+
 import traceback
 import sys
 from random import randint as rint
+
+
 # operator sql table
 
 '''CREATE TABLE "OPERATOR" (
@@ -579,15 +582,17 @@ class operator_panel(object):
         self.label_19.setText("")
         self.label_19.setObjectName("label_19")
         self.gridLayout_2.addWidget(self.label_19, 2, 2, 1, 1)
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.profile_button = QtWidgets.QPushButton(Form)
-        self.profile_button.setObjectName("profile_button")
-        self.verticalLayout_2.addWidget(self.profile_button)
-        self.log_out_button = QtWidgets.QPushButton(Form)
-        self.log_out_button.setObjectName("log_out_button")
-        self.verticalLayout_2.addWidget(self.log_out_button)
-        self.gridLayout_2.addLayout(self.verticalLayout_2, 0, 0, 2, 1)
+        # self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        # self.verticalLayout_2.setObjectName("verticalLayout_2")
+        # self.profile_button = QtWidgets.QPushButton(Form)
+        # self.profile_button.setObjectName("profile_button")
+        # self.verticalLayout_2.addWidget(self.profile_button)
+        # self.log_out_button = QtWidgets.QPushButton(Form)
+        # self.log_out_button.setObjectName("log_out_button")
+
+
+        # self.verticalLayout_2.addWidget(self.log_out_button)
+        # self.gridLayout_2.addLayout(self.verticalLayout_2, 0, 0, 2, 1)
         self.gridLayout_3 = QtWidgets.QGridLayout()
         self.gridLayout_3.setObjectName("gridLayout_3")
         self.label_20 = QtWidgets.QLabel(Form)
@@ -1283,8 +1288,8 @@ class operator_panel(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Operator panel"))
-        self.profile_button.setText(_translate("Form", "Profile"))
-        self.log_out_button.setText(_translate("Form", "logout"))
+        # self.profile_button.setText(_translate("Form", "Profile"))
+        # self.log_out_button.setText(_translate("Form", "logout"))
         self.label_20.setText(_translate("Form", "new product"))
         self.new_product_refresh.setText(_translate("Form", "refresh"))
         # self.show_rejected_button.setText(_translate("Form",))

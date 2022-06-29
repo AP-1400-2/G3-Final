@@ -18,6 +18,7 @@ from PyQt5.QtWidgets import *
 
 ################################ start login panel ###################################
 my_operator = op('first@operator.com', 1234)
+
 class login_register(object):
     def setupUi(self, Form):
         
@@ -254,7 +255,7 @@ class login_register(object):
         
         #---------------------------
         self.seller_register_button.clicked.connect(self.goTologin)
-        
+
     def goTologin(self):
         lineemail= self.seller_register_email_line.text()
         linepassword= self.seller_register_password_line.text()
