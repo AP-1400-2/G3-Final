@@ -2001,7 +2001,6 @@ class seller_profile(object):
 
 ################################  start rejected page ###################################
 
-
 class rejected_page(object):
     def __row_count_SPECIAL(self, table_name:str, SPECIAL, COLUMN_NAME):
         conn = sqlite3.connect('database.sqlite3')
@@ -2045,15 +2044,40 @@ class rejected_page(object):
         self.horizontalLayout.addWidget(self.Buy_table)
         self.Product_table = QtWidgets.QTableWidget(Form)
         self.Product_table.setObjectName("Product_table")
-        self.Product_table.setColumnCount(0)
+        self.Product_table.setColumnCount(8)
         self.Product_table.setRowCount(0)
+
+        self.product_request_load_data()
+        self.Product_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
+
+        self.Product_table.setHorizontalHeaderLabels(['accept','PR_ID','NAME', 'NUMBER', 'PRICE', 'SELLER LIST', 'STATUS' ])
+        self.Product_table.verticalHeader().hide()
+
+        for index in range(self.Product_table.rowCount()):
+            self.product_request_accept  = QPushButton("✅")
+            self.product_request_accept.clicked.connect(self.finde_product_id)
+            self.product_request_accept.clicked.connect(self.accept_product_function)
+            self.Product_table.setCellWidget(index, 0, self.product_request_accept )
 
 
         self.horizontalLayout.addWidget(self.Product_table)
         self.Seller_table = QtWidgets.QTableWidget(Form)
         self.Seller_table.setObjectName("Seller_table")
-        self.Seller_table.setColumnCount(0)
+        self.Seller_table.setColumnCount(8)
         self.Seller_table.setRowCount(0)
+
+        self.seller_request_load_data()
+        self.Seller_table.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # make table un editable
+
+        self.Seller_table.setHorizontalHeaderLabels(['accept', 'SL_ID','EMAIL', 'PRODUCTS', 'STATUS', 'SCORE', 'LOCATION' ])
+        self.Seller_table.verticalHeader().hide()
+
+        for index in range(self.Seller_table.rowCount()):
+            self.seller_request_accept  = QPushButton("✅")
+            self.seller_request_accept.clicked.connect(self.finde_seller_id)
+            self.seller_request_accept.clicked.connect(self.accept_seller_function)
+                
+            self.Seller_table.setCellWidget(index, 0, self.seller_request_accept )
 
 
         self.horizontalLayout.addWidget(self.Seller_table)
@@ -2104,14 +2128,46 @@ class rejected_page(object):
             self.Buy_table.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(row[3]))
             self.Buy_table.setItem(tablerow, 5, QtWidgets.QTableWidgetItem(row[4]))
             tablerow +=1
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = rejected_page()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
+
+
+    def seller_request_load_data(self):
+        pass
+    
+    def accept_seller_function(self):
+        the_operator.accept_seller(str(Reject_seller_ID_value))
+        self.seller_request_load_data()
+    def finde_seller_id(self):
+        current_row = self.Seller_table.currentRow()
+        current_column = self.Seller_table.currentColumn()
+        cell_value = self.Seller_table.item(current_row, current_column + 1).text()
+        print(cell_value)
+        global Reject_seller_ID_value
+        Reject_seller_ID_value = cell_value
+
+
+    def product_request_load_data(self):
+        pass
+
+    def finde_product_id(self):
+        current_row = self.Product_table.currentRow()
+        current_column = self.Product_table.currentColumn()
+        cell_value = self.Product_table.item(current_row, current_column + 1).text()
+        print(cell_value)
+        global Reject_product_ID_value
+        Reject_product_ID_value = cell_value
+
+    def accept_product_function(self):
+        the_operator.accept_product(str(Reject_seller_ID_value))
+        self.product_request_load_data()
+        
+# if __name__ == "__main__":
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     Form = QtWidgets.QWidget()
+#     ui = rejected_page()
+#     ui.setupUi(Form)
+#     Form.show()
+#     sys.exit(app.exec_())
 
 ################################  end rejected page ###################################
 
@@ -2140,3 +2196,12 @@ class operator_profile(object):
         self.Logout_button.setText(_translate("Form", "Logout"))
         self.email.setText(_translate("Form", "TextLabel"))
 ################################  end operator profile ###################################
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Form = QtWidgets.QWidget()
+    ui = operator_panel()
+    ui.setupUi(Form)
+    Form.show()
+    sys.exit(app.exec_())

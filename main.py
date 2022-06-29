@@ -278,7 +278,7 @@ class login_register(object):
         self.login_email_label_2.setText(_translate("Form", "email"))
         self.login_pass_label_2.setText(_translate("Form", "password"))
         self.seler_login_push_button.setText(_translate("Form", "login"))
-        self.seller_login_status.setText(_translate("Form", "Status"))
+        self.seller_login_status.setText(_translate("Form", ""))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_3), _translate("Form", "Seller"))
         self.login_email_label_3.setText(_translate("Form", "email"))
         self.login_pass_label_3.setText(_translate("Form", "password"))
@@ -307,7 +307,8 @@ class login_register(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("Form", "Register"))
         #-------------kia
         self.seller_register_button.clicked.connect(self.goTologin)
-        
+        self.seler_login_push_button.clicked.connect(self.goTomainpage)
+
     def goTologin(self):
         lineemail= self.seller_register_email_line.text()
         linepassword= self.seller_register_password_line.text()
@@ -319,7 +320,6 @@ class login_register(object):
         cur.execute(query)
         conn.commit()
         
-        self.seler_login_push_button.clicked.connect(self.goTomainpage)
         
     def goTomainpage(self):
         emailline = self.seller_email_login_line.text()
