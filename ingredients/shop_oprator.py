@@ -388,7 +388,7 @@ class operators:
         in this method we generate id for seller 'SL123456'
         '''
         conn = sqlite3.connect('database.sqlite3')
-        cursor = conn.execute ("SELECT count(*) FROM CUSTOMER")
+        cursor = conn.execute ("SELECT count(*) FROM SELLER")
         for row in cursor:
             num_of_records = row[0]
         num = (111111 + num_of_records )  
