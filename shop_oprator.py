@@ -1,13 +1,16 @@
+# author : Ali Asgharpour 
+# Github : https://github.com/Ali-Asgharpour
+
 import sqlite3
 
-
+# traceback for handel and finde sqlite errors
 import traceback
+
 import sys
 from random import randint as rint
 
 
 # operator sql table
-
 '''CREATE TABLE "OPERATOR" (
 	"ID"	INTEGER NOT NULL UNIQUE,
 	"EMAIL"	TEXT NOT NULL UNIQUE,
@@ -34,10 +37,17 @@ class operators:
     def password(self, value):
         print('error use changepassword method')
 
-
+    # change operator panel password 
     def changepassword(self, oldpassword, newpassword):
+        '''
+        this method is for change operator admin password it will get old password and compair with database 
+        password and it was same change it with new password 
+        '''
         conn = sqlite3.connect('database.sqlite3')
-        old_password = conn.execute("SELECT PASSWORD FROM OPERATOR WHERE EMAIL = '{}' " .format(self.__email))
+        cur = conn.cursor()
+        query = "SELECT PASSWORD FROM OPERATOR WHERE EMAIL = '{}' " .format(self.__email)
+        cur.execute(query)
+        old_password = cur.fetchone[0]
         if old_password == oldpassword:
             try:
                 conn.execute("UPDATE OPERATOR SET PASSWORD = '{}' WHERE EMAIL = '{}'" .format(newpassword, self.__email))
