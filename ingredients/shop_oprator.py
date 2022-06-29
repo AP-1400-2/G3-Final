@@ -456,6 +456,8 @@ class operators:
             print(traceback.format_exception(exc_type, exc_value, exc_tb))
         else:
             print("Done!")
+
+
     # def card_to_wallet(self, value):
     #     pass
 
@@ -535,25 +537,6 @@ class operators:
 #         else:
 #             print("Done!")
 
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -565,7 +548,7 @@ from PyQt5.QtCore import Qt
 
 ################################ start operator panel GUI ###################################
 
-the_operator = operators('hello', 1234)
+the_operator = operators('first@operator.com', 1234)
 class operator_panel(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")

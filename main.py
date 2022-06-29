@@ -1,4 +1,3 @@
-
 from ingredients.customer import *
 from ingredients.shop_oprator import operator_panel
 from ingredients.shop_oprator import operators as op
@@ -9,7 +8,6 @@ from ingredients.shop_seller import *
 
 
 import sqlite3
-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -111,9 +109,18 @@ class login_register(object):
         self.gridLayout_9.setObjectName("gridLayout_9")
         self.operator_login_password_line = QtWidgets.QLineEdit(self.page_2)
         self.operator_login_password_line.setObjectName("operator_login_password_line")
+
+        # global operator_pass_input
+        # operator_pass_input = self.operator_login_password_line.text()
+
         self.gridLayout_9.addWidget(self.operator_login_password_line, 1, 1, 1, 1)
         self.operator_login_email_line = QtWidgets.QLineEdit(self.page_2)
         self.operator_login_email_line.setObjectName("operator_login_email_line")
+
+        # global operator_email_input
+        # operator_email_input = self.operator_login_email_line.text()
+
+
         self.gridLayout_9.addWidget(self.operator_login_email_line, 0, 1, 1, 1)
         self.login_email_label_3 = QtWidgets.QLabel(self.page_2)
         self.login_email_label_3.setObjectName("login_email_label_3")
@@ -126,6 +133,9 @@ class login_register(object):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.operator_login_push_button = QtWidgets.QPushButton(self.page_2)
         self.operator_login_push_button.setObjectName("operator_login_push_button")
+
+        self.operator_login_push_button.clicked.connect(self.operator_login_function)
+
         self.horizontalLayout_3.addWidget(self.operator_login_push_button)
         self.gridLayout_10.addLayout(self.horizontalLayout_3, 1, 0, 1, 1)
         self.operator_login_status = QtWidgets.QLabel(self.page_2)
@@ -208,6 +218,7 @@ class login_register(object):
         self.gridLayout_15.setObjectName("gridLayout_15")
         self.seller_register_email_line = QtWidgets.QLineEdit(self.page_5)
         self.seller_register_email_line.setObjectName("seller_register_email_line")
+
         self.gridLayout_15.addWidget(self.seller_register_email_line, 0, 2, 1, 1)
         self.seller_register_password_line = QtWidgets.QLineEdit(self.page_5)
         self.seller_register_password_line.setObjectName("seller_register_password_line")
@@ -257,7 +268,7 @@ class login_register(object):
         self.login_email_label_3.setText(_translate("Form", "email"))
         self.login_pass_label_3.setText(_translate("Form", "password"))
         self.operator_login_push_button.setText(_translate("Form", "login"))
-        self.operator_login_status.setText(_translate("Form", "Status"))
+        self.operator_login_status.setText(_translate("Form", ""))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_2), _translate("Form", "Operator"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("Form", "Login"))
         self.costumer_register_button.setText(_translate("Form", "register"))
@@ -280,6 +291,30 @@ class login_register(object):
         self.toolBox_2.setItemText(self.toolBox_2.indexOf(self.page_5), _translate("Form", "Seller"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("Form", "Register"))
 
+    def operator_login_function(self):
+        operator_pass_input = self.operator_login_password_line.text()
+        operator_email_input = self.operator_login_email_line.text()
+        
+        if len(operator_email_input) == 0 or len(operator_pass_input) == 0:
+            self.operator_login_status.setText("Please input your email and password!")
+        else:
+            conn = sqlite3.connect('database.sqlite3')
+            cur = conn.cursor()
+            query = 'SELECT PASSWORD FROM OPERATOR WHERE EMAIL = \'' + operator_email_input + "\'"
+            cur.execute(query)
+            result_pass = cur.fetchone()[0]
+            if result_pass == operator_pass_input:
+                self.switch_to_operator_panel()
+            else:
+                self.operator_login_status.setText("invalid email or password")
+
+    def switch_to_operator_panel(self):
+        self.window = QtWidgets.QWidget()
+        self.ui = operator_panel()
+        self.ui.setupUi(self.window)
+        Form.hide()
+        self.window.show()
+
 ################################ end login panel #####################################
 
 
@@ -294,7 +329,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
-    ui = operator_panel()
+    ui = login_register()
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
