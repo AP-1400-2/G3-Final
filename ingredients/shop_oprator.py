@@ -190,6 +190,12 @@ class operators:
         query = "SELECT PR_ID, NAME, NUMBER, PRICE, SELLER_SL_ID, STATUS FROM 'PRODUCT' WHERE STATUS = 'NEW' "
         new_product_report_data = cur.execute(query)
         return new_product_report_data
+    def check_reject_product(self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = "SELECT PR_ID, NAME, NUMBER, PRICE, SELLER_SL_ID, STATUS FROM 'PRODUCT' WHERE STATUS = 'REJECTED' "
+        new_product_report_data = cur.execute(query)
+        return new_product_report_data
 
     def accept_product(self, PR_ID):
         conn = sqlite3.connect('database.sqlite3')
@@ -228,6 +234,12 @@ class operators:
         query = "SELECT SL_ID, EMAIL, PRODUCTS, STATUS, SCORE, LOCATION FROM SELLER  WHERE STATUS = 'NEW' "
         new_seller_report_data = cur.execute(query)
         return new_seller_report_data
+    def check_reject_seller(self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = "SELECT SL_ID, EMAIL, PRODUCTS, STATUS, SCORE, LOCATION FROM SELLER  WHERE STATUS = 'REJECTED' "
+        new_seller_report_data = cur.execute(query)
+        return new_seller_report_data
 
     def accept_seller(self, SL_ID):
         conn = sqlite3.connect('database.sqlite3')
@@ -263,6 +275,14 @@ class operators:
         conn = sqlite3.connect('database.sqlite3')
         cur = conn.cursor()
         query = "SELECT CU_ID, SL_ID, ORDER_LIST, DATE, STATUS FROM 'ORDER' WHERE STATUS = 'NEW' "
+        new_order_report_data = cur.execute(query)
+        return new_order_report_data
+
+
+    def check_reject_order(self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = "SELECT CU_ID, SL_ID, ORDER_LIST, DATE, STATUS FROM 'ORDER' WHERE STATUS = 'REJECTED' "
         new_order_report_data = cur.execute(query)
         return new_order_report_data
 
@@ -582,6 +602,9 @@ class operator_panel(object):
         self.show_rejected_button = QtWidgets.QPushButton(Form)
         self.show_rejected_button.setObjectName("show_rejected_button")
         self.show_rejected_button.setText("Show rejected")
+
+        self.show_rejected_button.clicked.connect(self.open_rejected_page)
+
         self.gridLayout_3.addWidget(self.show_rejected_button, 8, 0, 1, 4)
         self.new_seller_table_refresh = QtWidgets.QPushButton(Form)
         self.new_seller_table_refresh.setObjectName("new_seller_table_refresh")
@@ -1623,6 +1646,12 @@ class operator_panel(object):
             self.off_code_table.setItem(tablerow, 5, QtWidgets.QTableWidgetItem(row[5]))
             tablerow +=1
     #________________________________________________________________________________
+
+    def open_rejected_page(self):
+        self.window = QtWidgets.QWidget()
+        self.ui = rejected_page()
+        self.ui.setupUi(self.window)
+        self.window.show()
 ################################ end operator panel #####################################
 
 
@@ -2063,7 +2092,7 @@ class rejected_page(object):
         self.horizontalLayout.addWidget(self.Product_table)
         self.Seller_table = QtWidgets.QTableWidget(Form)
         self.Seller_table.setObjectName("Seller_table")
-        self.Seller_table.setColumnCount(8)
+        self.Seller_table.setColumnCount(7)
         self.Seller_table.setRowCount(0)
 
         self.seller_request_load_data()
@@ -2100,7 +2129,7 @@ class rejected_page(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "Rejected items"))
         self.label_3.setText(_translate("Form", "Buy request"))
         self.label_2.setText(_translate("Form", "New product"))
         self.label.setText(_translate("Form", "New seller"))
@@ -2121,7 +2150,7 @@ class rejected_page(object):
         row_count = self.__row_count_SPECIAL('ORDER','REJECTED', 'STATUS' )
         self.Buy_table.setRowCount(row_count)
         tablerow = 0 
-        for row in the_operator.check_order():
+        for row in the_operator.check_reject_order():
             self.Buy_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[0]))
             self.Buy_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[1]))
             self.Buy_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[2]))
@@ -2131,8 +2160,19 @@ class rejected_page(object):
 
 
     def seller_request_load_data(self):
-        pass
-    
+        row_count = self.__row_count_SPECIAL('SELLER','REJECTED', 'STATUS' )
+        self.Seller_table.setRowCount(row_count)
+        tablerow = 0 
+        for row in the_operator.check_reject_seller():
+            self.Seller_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[0]))
+            self.Seller_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[1]))
+            self.Seller_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[2]))
+            self.Seller_table.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(row[3]))
+            self.Seller_table.setItem(tablerow, 5, QtWidgets.QTableWidgetItem(row[4]))
+            self.Seller_table.setItem(tablerow, 6, QtWidgets.QTableWidgetItem(row[5]))
+            tablerow +=1
+
+
     def accept_seller_function(self):
         the_operator.accept_seller(str(Reject_seller_ID_value))
         self.seller_request_load_data()
@@ -2146,7 +2186,17 @@ class rejected_page(object):
 
 
     def product_request_load_data(self):
-        pass
+        row_count = self.__row_count_SPECIAL('PRODUCT','REJECTED', 'STATUS' )
+        self.Product_table.setRowCount(row_count)
+        tablerow = 0 
+        for row in the_operator.check_reject_product():
+            self.Product_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[0]))
+            self.Product_table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[1]))
+            self.Product_table.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[2]))
+            self.Product_table.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(row[3]))
+            self.Product_table.setItem(tablerow, 5, QtWidgets.QTableWidgetItem(row[4]))
+            self.Product_table.setItem(tablerow, 6, QtWidgets.QTableWidgetItem(row[5]))
+            tablerow +=1
 
     def finde_product_id(self):
         current_row = self.Product_table.currentRow()
@@ -2160,6 +2210,9 @@ class rejected_page(object):
         the_operator.accept_product(str(Reject_seller_ID_value))
         self.product_request_load_data()
         
+        
+ 
+   
 # if __name__ == "__main__":
 #     import sys
 #     app = QtWidgets.QApplication(sys.argv)
