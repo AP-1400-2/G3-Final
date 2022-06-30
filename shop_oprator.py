@@ -2240,29 +2240,46 @@ class rejected_page(object):
 ################################  end rejected page ###################################
 
 ################################  start operator profile ###################################
-class operator_profile(object):
+class check_distance(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(507, 121)
+        Form.resize(291, 562)
         self.gridLayout = QtWidgets.QGridLayout(Form)
         self.gridLayout.setObjectName("gridLayout")
-        self.Logout_button = QtWidgets.QPushButton(Form)
-        self.Logout_button.setObjectName("Logout_button")
-
-        self.gridLayout.addWidget(self.Logout_button, 1, 0, 1, 2)
-        self.email = QtWidgets.QLabel(Form)
-        self.email.setObjectName("email")
-
-        self.gridLayout.addWidget(self.email, 0, 0, 1, 2)
+        self.label_3 = QtWidgets.QLabel(Form)
+        self.label_3.setObjectName("label_3")
+        self.gridLayout.addWidget(self.label_3, 3, 0, 1, 1)
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setText("")
+        self.label.setObjectName("label")
+        self.gridLayout.addWidget(self.label, 5, 0, 1, 2)
+        self.sl_location_line = QtWidgets.QLineEdit(Form)
+        self.sl_location_line.setObjectName("sl_location_line")
+        self.gridLayout.addWidget(self.sl_location_line, 3, 1, 1, 1)
+        self.cu_location_line = QtWidgets.QLineEdit(Form)
+        self.cu_location_line.setObjectName("cu_location_line")
+        self.gridLayout.addWidget(self.cu_location_line, 1, 1, 1, 1)
+        self.check_button = QtWidgets.QPushButton(Form)
+        self.check_button.setObjectName("check_button")
+        self.gridLayout.addWidget(self.check_button, 4, 0, 1, 2)
+        self.label_2 = QtWidgets.QLabel(Form)
+        self.label_2.setObjectName("label_2")
+        self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
+        self.location_table = QtWidgets.QTableWidget(Form)
+        self.location_table.setObjectName("location_table")
+        self.location_table.setColumnCount(0)
+        self.location_table.setRowCount(0)
+        self.gridLayout.addWidget(self.location_table, 0, 0, 1, 2)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Operator Profile"))
-        self.Logout_button.setText(_translate("Form", "Logout"))
-        self.email.setText(_translate("Form", "TextLabel"))
+        Form.setWindowTitle(_translate("Form", "time compute"))
+        self.label_3.setText(_translate("Form", "Seller location"))
+        self.check_button.setText(_translate("Form", "Check"))
+        self.label_2.setText(_translate("Form", "Costumer location"))
 ################################  end operator profile ###################################
 
 if __name__ == "__main__":
