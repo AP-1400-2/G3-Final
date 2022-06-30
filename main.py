@@ -377,7 +377,6 @@ class login_register(object):
         Form.hide()
         self.window.show()
 
-
 ################################ end login panel #####################################
 
 
