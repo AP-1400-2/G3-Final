@@ -15,9 +15,16 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import * 
 from PyQt5.QtWidgets import * 
 
-
+from PyQt5 import uic
 ################################ start login panel ###################################
 my_operator = op('first@operator.com', 1234)
+
+class mainpage(QDialog):
+        def __init__(self):
+            super().__init__()
+            uic.loadUi('viwe.ui', self)
+            self.show()
+            self.signupbutton.clicked.connect(self.goTologin)
 
 class login_register(object):
     def setupUi(self, Form):
@@ -342,12 +349,7 @@ class login_register(object):
                 self.window.show()
             else:
                 self.seller_login_status.setText("Invalid user or pass")
-    class mainpage(QDialog):
-        def __init__(self):
-            super().__init__()
-            uic.loadUi('viwe.ui', self)
-            self.show()
-            self.signupbutton.clicked.connect(self.goTologin)
+    
         
         
 
@@ -374,6 +376,7 @@ class login_register(object):
         self.ui.setupUi(self.window)
         Form.hide()
         self.window.show()
+
 
 ################################ end login panel #####################################
 
