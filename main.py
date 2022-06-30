@@ -23,8 +23,27 @@ class mainpage(QDialog):
         def __init__(self):
             super().__init__()
             uic.loadUi('viwe.ui', self)
-            self.show()
-            self.signupbutton.clicked.connect(self.goTologin)
+            self.addproduct.clicked.connect(self.gotoaddproduct)
+            self.refresh.clicked.connect(self.gotorefresh)
+            self.viewdata()
+            
+        def viewdata(self):
+            pass
+        
+        def gotorefresh(self):
+            self.close()
+            self.window = mainpage()
+            self.window.show()
+            
+        def gotoaddproduct(self):
+           self.close()
+           self.window = addproduct()
+           self.window.show()
+           
+class addproduct(QDialog):
+    def __init__(self):
+        super().__init__()
+        uic.loadUi('add.ui', self)
 
 class login_register(object):
     def setupUi(self, Form):
@@ -344,7 +363,7 @@ class login_register(object):
             if result_pass == passline:
                 print("successfully loged in")
                 self.seller_login_status.setText("successfully loged in")
-                self.close()
+                Form.close()
                 self.window = mainpage()
                 self.window.show()
             else:
