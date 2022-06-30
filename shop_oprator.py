@@ -131,14 +131,14 @@ class operators:
         return count_data_pr_count_query
        
 
-    def total_rate_shop(self):
-        conn = sqlite3.connect('database.sqlite3')
-        cur = conn.cursor()
-        shop_count_query = "SELECT count(*) FROM SHOP"
-        data_shop_count_query = cur.execute(shop_count_query)
-        for row in data_shop_count_query:
-            count_data_shop_count_query = row[0]
-        return count_data_shop_count_query
+    # def total_rate_shop(self):
+    #     conn = sqlite3.connect('database.sqlite3')
+    #     cur = conn.cursor()
+    #     shop_count_query = "SELECT count(*) FROM SHOP"
+    #     data_shop_count_query = cur.execute(shop_count_query)
+    #     for row in data_shop_count_query:
+    #         count_data_shop_count_query = row[0]
+    #     return count_data_shop_count_query
     
 
     def load_cu_profile_information(self, CU_ID):
@@ -944,12 +944,12 @@ class operator_panel(object):
         self.total_rate_list = QtWidgets.QTableWidget(self.tab)
         self.total_rate_list.setObjectName("total_rate_list")
         self.total_rate_list.setColumnCount(1)
-        self.total_rate_list.setRowCount(4)
+        self.total_rate_list.setRowCount(3)
         # total_rate_list
-        self.total_rate_list.setColumnWidth(0, 100)
+        self.total_rate_list.setColumnWidth(0, 150)
         
         self.total_rate_list.setHorizontalHeaderLabels(['Count'])
-        self.total_rate_list.setVerticalHeaderLabels(['Costumer', 'Seller', 'Products', 'Shops'])
+        self.total_rate_list.setVerticalHeaderLabels(['Costumer', 'Seller', 'Products'])
         self.total_rate_load_data()
 
 
@@ -1271,12 +1271,12 @@ class operator_panel(object):
         CU_rate = the_operator.total_rate_cu()
         SL_rate = the_operator.total_rate_sl()
         PR_rate = the_operator.total_rate_pr()
-        Shop_rate = the_operator.total_rate_shop()
+        # Shop_rate = the_operator.total_rate_shop()
 
         self.total_rate_list.setItem(0, 0, QtWidgets.QTableWidgetItem(str(CU_rate)))
         self.total_rate_list.setItem(1, 0, QtWidgets.QTableWidgetItem(str(SL_rate)))
         self.total_rate_list.setItem(2, 0, QtWidgets.QTableWidgetItem(str(PR_rate)))
-        self.total_rate_list.setItem(3, 0, QtWidgets.QTableWidgetItem(str(Shop_rate)))
+        # self.total_rate_list.setItem(3, 0, QtWidgets.QTableWidgetItem(str(Shop_rate)))
     
     def seller_id_finder(self,SL_ID):
         global THE_SL_ID 
@@ -2013,7 +2013,6 @@ class rejected_page(object):
         current_row = self.Buy_table.currentRow()
         current_column = self.Buy_table.currentColumn()
         cell_value = self.Buy_table.item(current_row, current_column + 1).text()
-        print(cell_value)
         global Reject_Buy_ID_value
         Reject_Buy_ID_value = cell_value
 
@@ -2190,11 +2189,11 @@ class error_page (object):
 ################################  start error page ###################################
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = operator_panel()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     Form = QtWidgets.QWidget()
+#     ui = operator_panel()
+#     ui.setupUi(Form)
+#     Form.show()
+#     sys.exit(app.exec_())
