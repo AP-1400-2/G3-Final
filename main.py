@@ -23,8 +23,8 @@ class mainpage(QDialog):
         def __init__(self):
             super().__init__()
             uic.loadUi('viwe.ui', self)
-            self.addproduct.clicked.connect(self.gotoaddproduct)
-            self.refresh.clicked.connect(self.gotorefresh)
+            self.pushButton_2.clicked.connect(self.gotoaddproduct)
+            self.pushButton.clicked.connect(self.gotorefresh)
             self.viewdata()
             
         def viewdata(self):
