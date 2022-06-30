@@ -44,6 +44,18 @@ class addproduct(QDialog):
     def __init__(self):
         super().__init__()
         uic.loadUi('add.ui', self)
+        self.addproductbtn.clicked.connect(self.insertproduct)
+        
+    def insertproduct(self):
+        nameproduct= self.nameline.text()
+        numberproduct= self.numberline.text()
+        priceproduct= self.priceline.text()
+        conn= sqlite3.connect("database.sqlite3")
+        cur = conn.cursor()
+        query = f"INSERT INTO PRODUCT (NAME,NUMBER,PRICE) VALUES ('{nameproduct}','{numberproduct}','{priceproduct}')"
+        cur.execute(query)
+        conn.commit()
+        
 
 class login_register(object):
     def setupUi(self, Form):
