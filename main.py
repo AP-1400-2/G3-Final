@@ -337,8 +337,19 @@ class login_register(object):
             if result_pass == passline:
                 print("successfully loged in")
                 self.seller_login_status.setText("successfully loged in")
+                self.close()
+                self.window = mainpage()
+                self.window.show()
             else:
                 self.seller_login_status.setText("Invalid user or pass")
+    class mainpage(QDialog):
+        def __init__(self):
+            super().__init__()
+            uic.loadUi('viwe.ui', self)
+            self.show()
+            self.signupbutton.clicked.connect(self.goTologin)
+        
+        
 
     def operator_login_function(self):
         operator_pass_input = self.operator_login_password_line.text()
