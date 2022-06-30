@@ -9,7 +9,6 @@ import traceback
 import sys
 from random import randint as rint
 
-
 # operator sql table
 '''CREATE TABLE "OPERATOR" (
 	"ID"	INTEGER NOT NULL UNIQUE,
@@ -491,16 +490,35 @@ class operators:
             print("Done!")
 
 
-    # def card_to_wallet(self, value):
-    #     pass
+    def persentage(self):
+         pass
 
 
-    # def wallet_to_card(self, value):
-    #     pass
+    def __cu_distance(self, CU_location):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = "SELECT DISTANCE FROM LOCATION WHERE LOCAT LIKE '{}'".format(CU_location)
+        cur.execute(query)
+        result = cur.fetchone()[0]
+        return int(result)
 
+    def __sl_distance(self, SL_location):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = "SELECT DISTANCE FROM LOCATION  WHERE LOCAT LIKE '{}'".format(SL_location)
+        cur.execute(query)
+        result = cur.fetchone()[0]
+        return int(result)
 
     def time_compute(self, CU_location, SL_location):
-        pass
+        CU_DISTANCE_from = self.__cu_distance(CU_location)
+        SL_DISTANCE_from = self.__sl_distance(SL_location)
+        time_SL_to_storeroom = SL_DISTANCE_from * 5
+        time_storeroom_to_CU = CU_DISTANCE_from * 5
+
+        return (time_SL_to_storeroom + time_storeroom_to_CU)//1080
+
+
 
 
 # shop sql table
@@ -582,6 +600,10 @@ from PyQt5.QtCore import Qt
 ################################ start operator panel GUI ###################################
 
 the_operator = operators('first@operator.com', 1234)
+
+result= the_operator.time_compute('Kerman','Kerman')
+print(result)
+
 class operator_panel(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -754,10 +776,11 @@ class operator_panel(object):
     #________________________________________________________________________
 
         self.gridLayout_3.addWidget(self.new_seller_request_table, 1, 2, 1, 1)
-        # self.label_18 = QtWidgets.QLabel(Form)
-        # self.label_18.setText("")
-        # self.label_18.setObjectName("label_18")
-        # self.gridLayout_3.addWidget(self.label_18, 9, 0, 1, 3)
+        self.check_distance_button = QtWidgets.QPushButton(Form)
+        self.check_distance_button.setText("check distance")
+        self.check_distance_button.clicked.connect(self.open_distance_page)
+        self.check_distance_button.setObjectName("check_distance_button")
+        self.gridLayout_3.addWidget(self.check_distance_button, 9, 0, 1, 3)
         # self.combobox_1 = QtWidgets.QComboBox(Form)
         # self.combobox_1.setObjectName("combobox_1")
         # self.combobox_1.addItem('Buy Request')
@@ -1667,6 +1690,12 @@ class operator_panel(object):
         self.ui = rejected_page()
         self.ui.setupUi(self.window)
         self.window.show()
+
+    def open_distance_page(self):
+        self.window = QtWidgets.QWidget()
+        self.ui = check_distance()
+        self.ui.setupUi(self.window)
+        self.window.show()
 ################################ end operator panel #####################################
 
 
@@ -2239,7 +2268,8 @@ class rejected_page(object):
 
 ################################  end rejected page ###################################
 
-################################  start operator profile ###################################
+################################  start check distance ###################################
+
 class check_distance(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -2249,38 +2279,75 @@ class check_distance(object):
         self.label_3 = QtWidgets.QLabel(Form)
         self.label_3.setObjectName("label_3")
         self.gridLayout.addWidget(self.label_3, 3, 0, 1, 1)
-        self.label = QtWidgets.QLabel(Form)
-        self.label.setText("")
-        self.label.setObjectName("label")
-        self.gridLayout.addWidget(self.label, 5, 0, 1, 2)
+        self.result_label = QtWidgets.QLabel(Form)
+        self.result_label.setText("")
+        self.result_label.setObjectName("label")
+        self.gridLayout.addWidget(self.result_label, 5, 0, 1, 2)
         self.sl_location_line = QtWidgets.QLineEdit(Form)
         self.sl_location_line.setObjectName("sl_location_line")
+        global sl_location
+        sl_location = str(self.sl_location_line.text())
+
         self.gridLayout.addWidget(self.sl_location_line, 3, 1, 1, 1)
         self.cu_location_line = QtWidgets.QLineEdit(Form)
         self.cu_location_line.setObjectName("cu_location_line")
+        global cu_location
+        cu_location = str(self.cu_location_line.text())
+
         self.gridLayout.addWidget(self.cu_location_line, 1, 1, 1, 1)
         self.check_button = QtWidgets.QPushButton(Form)
         self.check_button.setObjectName("check_button")
+
+        self.check_button.clicked.connect(self.time_compute_function)
+
         self.gridLayout.addWidget(self.check_button, 4, 0, 1, 2)
         self.label_2 = QtWidgets.QLabel(Form)
         self.label_2.setObjectName("label_2")
         self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
         self.location_table = QtWidgets.QTableWidget(Form)
         self.location_table.setObjectName("location_table")
-        self.location_table.setColumnCount(0)
+        self.location_table.setColumnCount(2)
         self.location_table.setRowCount(0)
+
+
+        self.location_table.setHorizontalHeaderLabels(['Location', 'Distance'])
+        self.location_table.setColumnWidth(0,100)
+        self.location_table.setColumnWidth(1,100)
+        self.location_load_data()
+
         self.gridLayout.addWidget(self.location_table, 0, 0, 1, 2)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
+    def time_compute_function(self):
+        result = the_operator.time_compute(sl_location, self.cu_location)
+        self.result_label.setText(result)
+    def __row_count(self, table_name:str):
+        conn = sqlite3.connect('database.sqlite3')
+        cursor = conn.execute("SELECT count(*) FROM '{}';" .format(table_name))
+        for row in cursor:
+            return row[0]
+    def location_load_data(self):
+        conn = sqlite3.connect('database.sqlite3')
+        cur = conn.cursor()
+        query = "SELECT LOCAT, DISTANCE FROM LOCATION"
+        cur.execute(query)
+        row_count = self.__row_count('LOCATION')
+        self.location_table.setRowCount(row_count)
+        tablerow = 0 
+        for row in cur:
+            self.location_table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
+            self.location_table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
+            tablerow +=1
+
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "time compute"))
+        Form.setWindowTitle(_translate("Form", "Time compute"))
         self.label_3.setText(_translate("Form", "Seller location"))
         self.check_button.setText(_translate("Form", "Check"))
         self.label_2.setText(_translate("Form", "Costumer location"))
-################################  end operator profile ###################################
+################################  end check distance ###################################
 
 if __name__ == "__main__":
     import sys
