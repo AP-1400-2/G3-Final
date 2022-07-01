@@ -2,7 +2,7 @@ from customer import *
 from shop_oprator import operator_panel
 from shop_oprator import operators as op
 # from ingredients.shop_oprator import shop as sh
-
+import json
 
 from shop_seller import *
 
@@ -19,32 +19,20 @@ from PyQt5 import uic
 ################################ start login panel ###################################
 my_operator = op('first@operator.com', 1234)
 
-class mainpage(QDialog):
-        def __init__(self):
-            super().__init__()
-            uic.loadUi('viwe.ui', self)
-            self.pushButton_2.clicked.connect(self.gotoaddproduct)
-            self.pushButton.clicked.connect(self.gotorefresh)
-            self.viewdata()
-            
-        def viewdata(self):
-            pass
-        
-        def gotorefresh(self):
-            self.close()
-            self.window = mainpage()
-            self.window.show()
-            
-        def gotoaddproduct(self):
-           self.close()
-           self.window = addproduct()
-           self.window.show()
+
            
 class addproduct(QDialog):
     def __init__(self):
         super().__init__()
         uic.loadUi('add.ui', self)
         self.addproductbtn.clicked.connect(self.insertproduct)
+        self.backbtn.clicked.connect(self.backtoview)
+        
+    def backtoview(self):
+        self.close()
+        self.window=mainpage()
+        self.window.show()
+        
     def pr_id_generator(self):
         conn = sqlite3.connect('database.sqlite3')
         cursor = conn.execute ("SELECT count(*) FROM PRODUCT")
@@ -59,7 +47,8 @@ class addproduct(QDialog):
         numberproduct= self.numberline.text()
         priceproduct= self.priceline.text()
         selleridproduct = self.selleridline.text()
-        sllid = {selleridproduct:numberproduct}
+        sllid = {selleridproduct:int(numberproduct)}
+        sllid= json.dumps(sllid)
         conn= sqlite3.connect("database.sqlite3")
         cur = conn.cursor()
         PR= self.pr_id_generator()
@@ -385,9 +374,13 @@ class login_register(object):
             result_pass = cur.fetchone()[0]
             if result_pass == passline:
                 print("successfully loged in")
+                cur.execute(f"SELECT SL_ID FROM SELLER WHERE EMAIL = '{emailline}'AND PASSWORD = '{passline}' ")
+                self.sellerid= cur.fetchall()[0][0]
+                #print(self.sellerid)
                 self.seller_login_status.setText("successfully loged in")
                 Form.close()
                 self.window = mainpage()
+                self.window.getsellerid(self.sellerid)
                 self.window.show()
             else:
                 self.seller_login_status.setText("Invalid user or pass")
@@ -420,7 +413,66 @@ class login_register(object):
         self.window.show()
 
 ################################ end login panel #####################################
-
+class mainpage(QDialog):
+        def __init__(self):
+            super().__init__()
+            uic.loadUi('viwe.ui', self)
+            self.pushButton_2.clicked.connect(self.gotoaddproduct)
+            self.pushButton.clicked.connect(self.gotorefresh)
+            self.viewdata()
+        def getsellerid(self,sellerid):
+            self.sellerid = sellerid
+            return self.sellerid
+            
+            
+        def viewdata(self):
+            conn = sqlite3.connect('database.sqlite3')
+            cursor = conn.execute ("SELECT count(*) FROM PRODUCT")
+            cursor = conn.cursor()
+            cursor.execute(f"SELECT * FROM PRODUCT WHERE NUMBER > 5 or Number < 5 ")
+            getall= cursor.fetchall()
+            productname_dict = {}
+            productnumber_dict = {}
+            productprice_dict ={}
+            index = 0
+            height = 140
+            for i in getall:
+                productname= i[2]
+                productnumber= i[3]
+                productprice= i[4]
+                
+                productname_dict[index]= QLabel(self)
+                productname_dict[index].setText(productname)
+                productname_dict[index].setGeometry(120,height,71,20)
+                productname_dict[index].setObjectName("Product Name")
+                
+                productnumber_dict[index]= QLabel(self)
+                productnumber_dict[index].setText(productnumber)
+                productnumber_dict[index].setGeometry(250,height,71,20)
+                productnumber_dict[index].setObjectName("Product Number")
+                
+                productprice_dict[index]= QLabel(self)
+                productprice_dict[index].setText(productprice)
+                productprice_dict[index].setGeometry(390,height,71,20)
+                productprice_dict[index].setObjectName("Product Price")
+                
+                
+                
+                index+=1
+                height +=60
+            #print(getall)
+        
+            
+        
+        def gotorefresh(self):
+            self.close()
+            self.window = mainpage()
+            self.window.show()
+            
+        def gotoaddproduct(self):
+           self.close()
+           self.window = addproduct()
+           self.window.show()
 
 
 

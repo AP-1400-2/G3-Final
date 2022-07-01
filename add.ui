@@ -41,16 +41,6 @@
    <item row="1" column="1">
     <widget class="QLineEdit" name="numberline"/>
    </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="priceline"/>
-   </item>
-   <item row="4" column="0" colspan="2">
-    <widget class="QPushButton" name="addproductbtn">
-     <property name="text">
-      <string>add product</string>
-     </property>
-    </widget>
-   </item>
    <item row="3" column="0">
     <widget class="QLabel" name="label_4">
      <property name="text">
@@ -58,8 +48,25 @@
      </property>
     </widget>
    </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="priceline"/>
+   </item>
    <item row="3" column="1">
     <widget class="QLineEdit" name="selleridline"/>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QPushButton" name="addproductbtn">
+     <property name="text">
+      <string>add product</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QPushButton" name="backbtn">
+     <property name="text">
+      <string>back</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
