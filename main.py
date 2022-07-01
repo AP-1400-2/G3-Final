@@ -292,7 +292,7 @@ class login_register(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
         
         #---------------------------
-        self.seller_register_button.clicked.connect(self.goTologin)
+        
 
 
     def retranslateUi(self, Form):
@@ -348,6 +348,7 @@ class login_register(object):
         query = f"INSERT INTO SELLER (SL_ID,EMAIL,PASSWORD,STATUS,LOCATION) VALUES ('{SL_ID2}','{lineemail}','{linepassword}','NEW','{loc}')"
         cur.execute(query)
         conn.commit()
+        self.seller_rgister_status_label.setText("Successfully signed up!")
        
         
         
@@ -434,23 +435,23 @@ class mainpage(QDialog):
                 
                 productname_dict[index]= QLabel(self)
                 productname_dict[index].setText(productname)
-                productname_dict[index].setGeometry(120,height,71,20)
+                productname_dict[index].setGeometry(110,height,111,31)
                 productname_dict[index].setObjectName("Product Name")
                 
                 productnumber_dict[index]= QLabel(self)
                 productnumber_dict[index].setText(productnumber)
-                productnumber_dict[index].setGeometry(250,height,71,20)
+                productnumber_dict[index].setGeometry(250,height,121,31)
                 productnumber_dict[index].setObjectName("Product Number")
                 
                 productprice_dict[index]= QLabel(self)
                 productprice_dict[index].setText(productprice)
-                productprice_dict[index].setGeometry(390,height,71,20)
+                productprice_dict[index].setGeometry(390,height,111,31)
                 productprice_dict[index].setObjectName("Product Price")
                 
                 
                 
                 index+=1
-                height +=60
+                height +=70
             #print(getall)
         
             

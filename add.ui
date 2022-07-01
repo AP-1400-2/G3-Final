@@ -14,55 +14,125 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>price</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLineEdit" name="nameline"/>
-   </item>
    <item row="0" column="0">
     <widget class="QLabel" name="label">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+background-color: rgb(85, 255, 255);
+font: 12pt &quot;Malgun Gothic&quot;;
+border:2px solid blue;
+border-radius: 8%</string>
+     </property>
      <property name="text">
       <string>Name </string>
      </property>
     </widget>
    </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="priceline">
+     <property name="styleSheet">
+      <string notr="true">border:2px solid blue;
+color: rgb(172, 177, 200);
+border-radius: 8%</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="nameline">
+     <property name="styleSheet">
+      <string notr="true">border:2px solid blue;
+color:rgb(85, 0, 0);
+border-radius: 8%</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="numberline">
+     <property name="styleSheet">
+      <string notr="true">border:2px solid blue;
+color: rgb(172, 177, 200);
+border-radius: 8%</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label_2">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+background-color: rgb(85, 255, 255);
+font: 12pt &quot;Malgun Gothic&quot;;
+border:2px solid blue;
+border-radius: 8%</string>
+     </property>
      <property name="text">
       <string>number</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="numberline"/>
-   </item>
    <item row="3" column="0">
     <widget class="QLabel" name="label_4">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+background-color: rgb(85, 255, 255);
+font: 12pt &quot;Malgun Gothic&quot;;
+border:2px solid blue;
+border-radius: 8%</string>
+     </property>
      <property name="text">
       <string>seller id</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="priceline"/>
-   </item>
    <item row="3" column="1">
-    <widget class="QLineEdit" name="selleridline"/>
+    <widget class="QLineEdit" name="selleridline">
+     <property name="styleSheet">
+      <string notr="true">border:2px solid blue;
+color: rgb(172, 177, 200);
+border-radius: 8%</string>
+     </property>
+    </widget>
    </item>
-   <item row="5" column="0" colspan="2">
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+background-color: rgb(85, 255, 255);
+font: 12pt &quot;Malgun Gothic&quot;;
+border:2px solid blue;
+border-radius: 8%</string>
+     </property>
+     <property name="text">
+      <string>price</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="2">
     <widget class="QPushButton" name="addproductbtn">
+     <property name="styleSheet">
+      <string notr="true">
+background-color: rgb(255, 255, 127);
+font: 8pt &quot;Simplified Arabic Fixed&quot;;
+
+font: 18pt &quot;MS Shell Dlg 2&quot;;
+
+border: 2px solid red;
+border-radius: 8%;</string>
+     </property>
      <property name="text">
       <string>add product</string>
      </property>
     </widget>
    </item>
-   <item row="6" column="0">
+   <item row="9" column="0">
     <widget class="QPushButton" name="backbtn">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 127);
+
+font: 18pt &quot;MS Shell Dlg 2&quot;;
+
+border: 2px solid red;
+border-radius: 8%;</string>
+     </property>
      <property name="text">
       <string>back</string>
      </property>
