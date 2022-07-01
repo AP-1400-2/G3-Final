@@ -32,7 +32,7 @@ border-radius: 8%</string>
     <widget class="QLineEdit" name="priceline">
      <property name="styleSheet">
       <string notr="true">border:2px solid blue;
-color: rgb(172, 177, 200);
+color:rgb(85, 0, 0);
 border-radius: 8%</string>
      </property>
     </widget>
@@ -50,7 +50,7 @@ border-radius: 8%</string>
     <widget class="QLineEdit" name="numberline">
      <property name="styleSheet">
       <string notr="true">border:2px solid blue;
-color: rgb(172, 177, 200);
+color:rgb(85, 0, 0);
 border-radius: 8%</string>
      </property>
     </widget>
@@ -87,7 +87,7 @@ border-radius: 8%</string>
     <widget class="QLineEdit" name="selleridline">
      <property name="styleSheet">
       <string notr="true">border:2px solid blue;
-color: rgb(172, 177, 200);
+color:rgb(85, 0, 0);
 border-radius: 8%</string>
      </property>
     </widget>
