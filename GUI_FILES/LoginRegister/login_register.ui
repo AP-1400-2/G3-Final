@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -34,8 +34,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>395</width>
-            <height>526</height>
+            <width>403</width>
+            <height>549</height>
            </rect>
           </property>
           <attribute name="label">
@@ -102,6 +102,14 @@
           </layout>
          </widget>
          <widget class="QWidget" name="page_3">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>403</width>
+            <height>549</height>
+           </rect>
+          </property>
           <attribute name="label">
            <string>Seller</string>
           </attribute>
@@ -109,13 +117,31 @@
            <item row="0" column="0">
             <layout class="QGridLayout" name="gridLayout_7">
              <item row="1" column="1">
-              <widget class="QLineEdit" name="seller_password_login_line"/>
+              <widget class="QLineEdit" name="seller_password_login_line">
+               <property name="styleSheet">
+                <string notr="true">border:2px solid blue;
+color: rgb(85, 85, 0);
+border-radius: 8%</string>
+               </property>
+              </widget>
              </item>
              <item row="0" column="1">
-              <widget class="QLineEdit" name="seller_email_login_line"/>
+              <widget class="QLineEdit" name="seller_email_login_line">
+               <property name="styleSheet">
+                <string notr="true">border:2px solid blue;
+color: rgb(85, 85, 0);
+border-radius: 8%</string>
+               </property>
+              </widget>
              </item>
              <item row="0" column="0">
               <widget class="QLabel" name="login_email_label_2">
+               <property name="styleSheet">
+                <string notr="true">border:2px solid blue;
+border-radius: 8%;
+
+background-color: rgb(85, 255, 255);</string>
+               </property>
                <property name="text">
                 <string>email</string>
                </property>
@@ -123,6 +149,12 @@
              </item>
              <item row="1" column="0">
               <widget class="QLabel" name="login_pass_label_2">
+               <property name="styleSheet">
+                <string notr="true">border:2px solid blue;
+border-radius: 8%;
+
+background-color: rgb(85, 255, 255);</string>
+               </property>
                <property name="text">
                 <string>password</string>
                </property>
@@ -134,6 +166,11 @@
             <layout class="QHBoxLayout" name="horizontalLayout_2">
              <item>
               <widget class="QPushButton" name="seler_login_push_button">
+               <property name="styleSheet">
+                <string notr="true">border:2px solid green;
+background-color: rgb(184, 196, 200);
+border-radius: 8%</string>
+               </property>
                <property name="text">
                 <string>login</string>
                </property>
@@ -155,8 +192,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>395</width>
-            <height>526</height>
+            <width>403</width>
+            <height>549</height>
            </rect>
           </property>
           <attribute name="label">
@@ -166,13 +203,31 @@
            <item row="0" column="0">
             <layout class="QGridLayout" name="gridLayout_9">
              <item row="1" column="1">
-              <widget class="QLineEdit" name="operator_login_password_line"/>
+              <widget class="QLineEdit" name="operator_login_password_line">
+               <property name="styleSheet">
+                <string notr="true">border:2px solid blue;
+color: rgb(85, 85, 0);
+border-radius: 8%</string>
+               </property>
+              </widget>
              </item>
              <item row="0" column="1">
-              <widget class="QLineEdit" name="operator_login_email_line"/>
+              <widget class="QLineEdit" name="operator_login_email_line">
+               <property name="styleSheet">
+                <string notr="true">border:2px solid blue;
+color: rgb(85, 85, 0);
+border-radius: 8%</string>
+               </property>
+              </widget>
              </item>
              <item row="0" column="0">
               <widget class="QLabel" name="login_email_label_3">
+               <property name="styleSheet">
+                <string notr="true">border:2px solid blue;
+border-radius: 8%;
+
+background-color: rgb(85, 255, 255);</string>
+               </property>
                <property name="text">
                 <string>email</string>
                </property>
@@ -180,6 +235,12 @@
              </item>
              <item row="1" column="0">
               <widget class="QLabel" name="login_pass_label_3">
+               <property name="styleSheet">
+                <string notr="true">border:2px solid blue;
+border-radius: 8%;
+
+background-color: rgb(85, 255, 255);</string>
+               </property>
                <property name="text">
                 <string>password</string>
                </property>
@@ -191,6 +252,11 @@
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
               <widget class="QPushButton" name="operator_login_push_button">
+               <property name="styleSheet">
+                <string notr="true">border:2px solid green;
+background-color: rgb(184, 196, 200);
+border-radius: 8%</string>
+               </property>
                <property name="text">
                 <string>login</string>
                </property>
@@ -226,8 +292,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>400</width>
-            <height>536</height>
+            <width>403</width>
+            <height>576</height>
            </rect>
           </property>
           <attribute name="label">
@@ -240,6 +306,11 @@
               <layout class="QVBoxLayout" name="verticalLayout_2">
                <item>
                 <widget class="QPushButton" name="costumer_register_button">
+                 <property name="styleSheet">
+                  <string notr="true">border:2px solid green;
+background-color: rgb(184, 196, 200);
+border-radius: 8%</string>
+                 </property>
                  <property name="text">
                   <string>register</string>
                  </property>
@@ -264,13 +335,31 @@
              <item row="1" column="0">
               <layout class="QGridLayout" name="gridLayout_12">
                <item row="0" column="2">
-                <widget class="QLineEdit" name="costumer_register_email_line"/>
+                <widget class="QLineEdit" name="costumer_register_email_line">
+                 <property name="styleSheet">
+                  <string notr="true">border:2px solid blue;
+color: rgb(85, 85, 0);
+border-radius: 8%</string>
+                 </property>
+                </widget>
                </item>
                <item row="1" column="2">
-                <widget class="QLineEdit" name="costumer_register_password_line"/>
+                <widget class="QLineEdit" name="costumer_register_password_line">
+                 <property name="styleSheet">
+                  <string notr="true">border:2px solid blue;
+color: rgb(85, 85, 0);
+border-radius: 8%</string>
+                 </property>
+                </widget>
                </item>
                <item row="0" column="0">
                 <widget class="QLabel" name="register_email_label">
+                 <property name="styleSheet">
+                  <string notr="true">border:2px solid blue;
+border-radius: 8%;
+
+background-color: rgb(85, 255, 255);</string>
+                 </property>
                  <property name="text">
                   <string>email</string>
                  </property>
@@ -278,16 +367,34 @@
                </item>
                <item row="1" column="0">
                 <widget class="QLabel" name="register_pass_label">
+                 <property name="styleSheet">
+                  <string notr="true">border:2px solid blue;
+border-radius: 8%;
+
+background-color: rgb(85, 255, 255);</string>
+                 </property>
                  <property name="text">
                   <string>password</string>
                  </property>
                 </widget>
                </item>
                <item row="2" column="2">
-                <widget class="QLineEdit" name="costumer_register_location_line"/>
+                <widget class="QLineEdit" name="costumer_register_location_line">
+                 <property name="styleSheet">
+                  <string notr="true">border:2px solid blue;
+color: rgb(85, 85, 0);
+border-radius: 8%</string>
+                 </property>
+                </widget>
                </item>
                <item row="2" column="0">
                 <widget class="QLabel" name="register_location_label">
+                 <property name="styleSheet">
+                  <string notr="true">border:2px solid blue;
+border-radius: 8%;
+
+background-color: rgb(85, 255, 255);</string>
+                 </property>
                  <property name="text">
                   <string>location</string>
                  </property>
@@ -312,8 +419,8 @@ example: tehran = tehr</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>400</width>
-            <height>536</height>
+            <width>403</width>
+            <height>576</height>
            </rect>
           </property>
           <attribute name="label">
@@ -326,6 +433,11 @@ example: tehran = tehr</string>
               <layout class="QVBoxLayout" name="verticalLayout_3">
                <item>
                 <widget class="QPushButton" name="seller_register_button">
+                 <property name="styleSheet">
+                  <string notr="true">border:2px solid green;
+background-color: rgb(184, 196, 200);
+border-radius: 8%</string>
+                 </property>
                  <property name="text">
                   <string>register</string>
                  </property>
@@ -350,13 +462,31 @@ example: tehran = tehr</string>
              <item row="1" column="0">
               <layout class="QGridLayout" name="gridLayout_15">
                <item row="0" column="2">
-                <widget class="QLineEdit" name="seller_register_email_line"/>
+                <widget class="QLineEdit" name="seller_register_email_line">
+                 <property name="styleSheet">
+                  <string notr="true">border:2px solid blue;
+color: rgb(85, 85, 0);
+border-radius: 8%</string>
+                 </property>
+                </widget>
                </item>
                <item row="1" column="2">
-                <widget class="QLineEdit" name="seller_register_password_line"/>
+                <widget class="QLineEdit" name="seller_register_password_line">
+                 <property name="styleSheet">
+                  <string notr="true">border:2px solid blue;
+color: rgb(85, 85, 0);
+border-radius: 8%</string>
+                 </property>
+                </widget>
                </item>
                <item row="0" column="0">
                 <widget class="QLabel" name="seller_register_email_label">
+                 <property name="styleSheet">
+                  <string notr="true">border:2px solid blue;
+border-radius: 8%;
+
+background-color: rgb(85, 255, 255);</string>
+                 </property>
                  <property name="text">
                   <string>email</string>
                  </property>
@@ -364,16 +494,34 @@ example: tehran = tehr</string>
                </item>
                <item row="1" column="0">
                 <widget class="QLabel" name="seller_register_pass_label">
+                 <property name="styleSheet">
+                  <string notr="true">border:2px solid blue;
+border-radius: 8%;
+
+background-color: rgb(85, 255, 255);</string>
+                 </property>
                  <property name="text">
                   <string>password</string>
                  </property>
                 </widget>
                </item>
                <item row="2" column="2">
-                <widget class="QLineEdit" name="seller_register_location_line"/>
+                <widget class="QLineEdit" name="seller_register_location_line">
+                 <property name="styleSheet">
+                  <string notr="true">border:2px solid blue;
+color: rgb(85, 85, 0);
+border-radius: 8%</string>
+                 </property>
+                </widget>
                </item>
                <item row="2" column="0">
                 <widget class="QLabel" name="seller_register_location_label">
+                 <property name="styleSheet">
+                  <string notr="true">border:2px solid blue;
+border-radius: 8%;
+
+background-color: rgb(85, 255, 255);</string>
+                 </property>
                  <property name="text">
                   <string>location</string>
                  </property>
