@@ -6,7 +6,7 @@ import json
 
 from shop_seller import *
 
-import traceback
+
 import sqlite3
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -344,18 +344,10 @@ class login_register(object):
         loc= self.seller_register_location_line.text()
         SL_ID2 = my_operator .SL_id_generator()
         conn= sqlite3.connect("database.sqlite3")
-
-        try:
-            conn.execute(f"INSERT INTO SELLER (SL_ID,EMAIL,PASSWORD,LOCATION) VALUES ('{SL_ID2}','{lineemail}','{linepassword}','{loc}')")
-            conn.commit()
-        except sqlite3.Error as er:
-            print('SQLite error: %s' % (' '.join(er.args)))
-            print("Exception class is: ", er.__class__)
-            print('SQLite traceback: ')
-            exc_type, exc_value, exc_tb = sys.exc_info()
-            print(traceback.format_exception(exc_type, exc_value, exc_tb))
-        else:
-            print("Done!")
+        cur = conn.cursor()
+        query = f"INSERT INTO SELLER (SL_ID,EMAIL,PASSWORD,STATUS,LOCATION) VALUES ('{SL_ID2}','{lineemail}','{linepassword}','NEW','{loc}')"
+        cur.execute(query)
+        conn.commit()
        
         
         
