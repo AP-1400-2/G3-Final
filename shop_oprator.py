@@ -409,6 +409,7 @@ class operators:
         CU_id = 'CU%d' %(num)
         return CU_id 
 
+
     def SL_id_generator(self):
         '''
         in this method we generate id for seller 'SL123456'
@@ -2100,15 +2101,13 @@ class check_distance(object):
         self.gridLayout.addWidget(self.result_label, 5, 0, 1, 2)
         self.sl_location_line = QtWidgets.QLineEdit(Form)
         self.sl_location_line.setObjectName("sl_location_line")
-        global sl_location
-        sl_location = str(self.sl_location_line.text())
-
+        self.sl_location_line.setPlaceholderText("Search seller location ...")
+        self.sl_location_line.textChanged.connect(self.search_sl_location)
         self.gridLayout.addWidget(self.sl_location_line, 3, 1, 1, 1)
         self.cu_location_line = QtWidgets.QLineEdit(Form)
         self.cu_location_line.setObjectName("cu_location_line")
-        global cu_location
-        cu_location = str(self.cu_location_line.text())
-
+        self.cu_location_line.setPlaceholderText("Search Costumer location ...")
+        self.cu_location_line.textChanged.connect(self.search_cu_location)
         self.gridLayout.addWidget(self.cu_location_line, 1, 1, 1, 1)
         self.check_button = QtWidgets.QPushButton(Form)
         self.check_button.setObjectName("check_button")
@@ -2134,13 +2133,32 @@ class check_distance(object):
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
+    
+    def search_sl_location(self, index):
+        self.location_table.setCurrentItem(None)
+        if not index:
+            return 
+        matching_items = self.location_table.findItems(index, Qt.MatchContains)
+        if matching_items:
+            item = matching_items[0]  # Take the first.
+            self.location_table.setCurrentItem(item)
+    def search_cu_location(self, index):
+        self.location_table.setCurrentItem(None)
+        if not index:
+            return 
+        matching_items = self.location_table.findItems(index, Qt.MatchContains)
+        if matching_items:
+            item = matching_items[0]  # Take the first.
+            self.location_table.setCurrentItem(item)
 
     def time_compute_function(self):
-        result = the_operator.time_compute(sl_location, cu_location)
-        if len(sl_location) == 0 or len(cu_location):
+        result = the_operator.time_compute(self.sl_location_line.text(), self.cu_location_line.text())
+        
+        if len(self.sl_location_line.text()) == 0 or len(self.cu_location_line.text()) == 0:
             self.result_label.setText("Please enter values")
         else:
             self.result_label.setText(str(result) + " Day")
+
     def __row_count(self, table_name:str):
         conn = sqlite3.connect('database.sqlite3')
         cursor = conn.execute("SELECT count(*) FROM '{}';" .format(table_name))
@@ -2193,7 +2211,7 @@ class error_page (object):
 #     import sys
 #     app = QtWidgets.QApplication(sys.argv)
 #     Form = QtWidgets.QWidget()
-#     ui = operator_panel()
+#     ui = check_distance()
 #     ui.setupUi(Form)
 #     Form.show()
 #     sys.exit(app.exec_())
