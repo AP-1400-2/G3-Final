@@ -45,14 +45,25 @@ class addproduct(QDialog):
         super().__init__()
         uic.loadUi('add.ui', self)
         self.addproductbtn.clicked.connect(self.insertproduct)
-        
+    def pr_id_generator(self):
+        conn = sqlite3.connect('database.sqlite3')
+        cursor = conn.execute ("SELECT count(*) FROM PRODUCT")
+        for row in cursor:
+            num_of_records = row[0]
+        num = (111111 + num_of_records ) 
+        PR_id = 'PR%d' %(num)
+        return PR_id 
+
     def insertproduct(self):
         nameproduct= self.nameline.text()
         numberproduct= self.numberline.text()
         priceproduct= self.priceline.text()
+        selleridproduct = self.selleridline.text()
+        sllid = {selleridproduct:numberproduct}
         conn= sqlite3.connect("database.sqlite3")
         cur = conn.cursor()
-        query = f"INSERT INTO PRODUCT (NAME,NUMBER,PRICE) VALUES ('{nameproduct}','{numberproduct}','{priceproduct}')"
+        PR= self.pr_id_generator()
+        query = f"INSERT INTO PRODUCT (PR_ID,NAME,NUMBER,PRICE,SELLER_SL_ID,STATUS) VALUES ('{PR}','{nameproduct}','{numberproduct}','{priceproduct}','{sllid}','NEW')"
         cur.execute(query)
         conn.commit()
         
