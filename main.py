@@ -6,7 +6,7 @@ import json
 
 from shop_seller import *
 
-
+import traceback
 import sqlite3
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -294,20 +294,10 @@ class login_register(object):
         #---------------------------
         self.seller_register_button.clicked.connect(self.goTologin)
 
-    def goTologin(self):
-        lineemail= self.seller_register_email_line.text()
-        linepassword= self.seller_register_password_line.text()
-        loc= self.seller_register_location_line.text()
-        SL_ID2 = my_operator .SL_id_generator()
-        conn= sqlite3.connect("database.sqlite3")
-        cur = conn.cursor()
-        query = f"INSERT INTO SELLER (SL_ID,EMAIL,PASSWORD,LOCATION) VALUES ('{SL_ID2}','{lineemail}','{linepassword}','{loc}')"
-        cur.execute(query)
-        conn.commit()
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "Login / register"))
         self.costumer_login_push_button.setText(_translate("Form", "login"))
         self.login_email_label.setText(_translate("Form", "email"))
         self.login_pass_label.setText(_translate("Form", "password"))
@@ -354,10 +344,19 @@ class login_register(object):
         loc= self.seller_register_location_line.text()
         SL_ID2 = my_operator .SL_id_generator()
         conn= sqlite3.connect("database.sqlite3")
-        cur = conn.cursor()
-        query = f"INSERT INTO SELLER (SL_ID,EMAIL,PASSWORD,LOCATION) VALUES ('{SL_ID2}','{lineemail}','{linepassword}','{loc}')"
-        cur.execute(query)
-        conn.commit()
+
+        try:
+            conn.execute(f"INSERT INTO SELLER (SL_ID,EMAIL,PASSWORD,LOCATION) VALUES ('{SL_ID2}','{lineemail}','{linepassword}','{loc}')")
+            conn.commit()
+        except sqlite3.Error as er:
+            print('SQLite error: %s' % (' '.join(er.args)))
+            print("Exception class is: ", er.__class__)
+            print('SQLite traceback: ')
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            print(traceback.format_exception(exc_type, exc_value, exc_tb))
+        else:
+            print("Done!")
+       
         
         
     def goTomainpage(self):
