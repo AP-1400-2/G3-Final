@@ -149,7 +149,7 @@ class login_register(object):
         self.gridLayout_9.setObjectName("gridLayout_9")
         self.operator_login_password_line = QtWidgets.QLineEdit(self.page_2)
         self.operator_login_password_line.setObjectName("operator_login_password_line")
-
+        self.operator_login_password_line.setEchoMode(QLineEdit.Password)
         # global operator_pass_input
         # operator_pass_input = self.operator_login_password_line.text()
 

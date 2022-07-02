@@ -485,8 +485,8 @@ class operators:
             print("Done!")
 
 
-    def persentage(self):
-         pass
+    def persentage(self, total_sale):
+        net_income = total_sale - ((10*100)//net_income) 
 
 
     def __cu_distance(self, CU_location):
